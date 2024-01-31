@@ -1,0 +1,15 @@
+@import '../../Theme.scss';
+
+footer {
+  display: flex;
+  bottom: 0;
+  height: 4.9375rem;
+  padding: 0.625rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+  flex-shrink: 0;
+  background-color: $darkblueprimary;
+  margin-top: auto;
+  color: $white;
+}

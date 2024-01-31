@@ -1,0 +1,21 @@
+@import "../../Theme.scss";
+
+.btn-status {
+    width: 100%;
+
+    &--success {
+        background-color: $green;
+
+        &:hover {
+            background-color: $green !important;
+            opacity: 0.8;
+        }
+    }
+
+    &--outline {
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

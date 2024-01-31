@@ -1,0 +1,36 @@
+@import '../../../Theme.scss';
+
+//table styles
+.table-container {
+    margin-top: 1.5rem;
+}
+
+.ant-table .ant-table-container .ant-table-content table thead.ant-table-thead .ant-table-cell {
+    background-color: $main;
+    color: $white;
+}
+
+.ant-table-column-sorter {
+    color: $white !important;
+
+    &:hover {
+        color: $white;
+    }
+}
+
+:where(.css-dev-only-do-not-override-1qhpsh8).ant-table-wrapper .ant-table-filter-trigger {
+    color: $white;
+
+    &:hover {
+        color: $white;
+        opacity: 0.8;
+    }
+}
+
+//button styles
+.btn-more {
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

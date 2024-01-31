@@ -1,0 +1,88 @@
+// FONTS
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+// COLOR VARIABLES
+$sub-info: #474747;
+$main: #2d3748;
+$alert: #e74a3b;
+$unmodified: #8b8b8b;
+$orange: #d45b13;
+$female: #ff7568;
+$green: #2f903f;
+$primary: #edf2f7;
+$box: #dfdede;
+$background: #ecf8ff;
+$darkblueprimary: #2d3748;
+$white: #fff;
+$darkbluesecondary: #0b2136;
+
+//Font-size
+$font-small: 10px;
+$font-medium: 12px;
+$font-normal: 14px;
+$font-large: 16px;
+
+//Height
+
+// Style
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100vh;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+}
+
+#root,
+#layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+//class commons
+.subtitle2 {
+  font-family: Inter;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.375rem;
+}
+
+.caption1 {
+  font-family: Inter;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.125rem;
+}
+
+.headingh4 {
+  font-family: Inter;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 2.25rem;
+  /* 150% */
+  letter-spacing: 0.3rem;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
