@@ -9,12 +9,12 @@ const Header = (props: Props) => {
     <div className="header">
 {/*       <img className="header-logo" src="./assets/Logo.png" alt="@logo" /> */}
       <div className="header-user">
-{/*         <div className="header-organization">
+        <div className="header-organization">
           <div className="wrapper-logo-content">
-            <img className="organization-logo" src="./assets/organization.png" alt="@organization" />
+{/*             <img className="organization-logo" src="./assets/organization.png" alt="@organization" /> */}
             <span>uniGate</span>
           </div>
-        </div> */}
+        </div>
         <AvatarUser />
       </div>
     </div>
