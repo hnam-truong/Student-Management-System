@@ -1,9 +1,8 @@
-import { Button, Card } from "antd";
+// import { Button, Card } from "antd";
 import React from "react";
-import { ImCancelCircle } from "react-icons/im";
 import "./SyllabusCard.scss";
 
-const SyllabusCard = () => {
+const SyllabusCard:React.FC = () => {
   return (
     <div className="card">
       <div className="card-header">
@@ -12,7 +11,7 @@ const SyllabusCard = () => {
           <span className="caption1 btn-status active">Active</span>
         </div>
         <div className="btn-delete">
-          <ImCancelCircle size={24} color="#2d3748" />
+          {/* <ImCancelCircle size={24} color=" " /> */}
         </div>
       </div>
 

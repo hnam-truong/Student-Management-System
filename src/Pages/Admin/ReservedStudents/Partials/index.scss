@@ -1,0 +1,27 @@
+@import "../../../../Theme.scss";
+
+.wrapper {
+  width: 13rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.item-pop {
+  cursor: pointer;
+  display: flex;
+  gap: 1rem;
+  padding: 0.5rem 0.2rem;
+  align-items: center;
+  border-radius: 0.2rem;
+  border: 0;
+  background: $white;
+  &:hover {
+    background-color: $unmodified;
+    color: $darkblueprimary;
+  }
+}
+.icon {
+  align-items: center;
+  justify-items: center;
+  line-height: 100%;
+}

@@ -17,7 +17,15 @@
   align-items: flex-start;
   gap: 0.3125rem;
 }
-.subtitle1 {
-  font-size: $font-medium;
-  font-weight: 600;
+.user-name{
+  // max-width: 7rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+@media (max-width: $md){
+  .avatar-content{
+    font-size: small;
+    width: 4rem;
+  }
 }

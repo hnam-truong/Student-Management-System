@@ -1,0 +1,220 @@
+$colorBgContainer: #ffffff; // Use the appropriate color value
+$borderRadiusLG: 10px; // Use the appropriate value
+$classCodeColor: #f2212c;
+$table1: #1890ff;
+$table2: #52c41a;
+$table3: #faad14;
+$box: rgba(0, 0, 0, 0.1);
+$mediumScreen: 768px;
+
+.student-detail-container {
+  margin: 20px 5px;
+  padding: 5px;
+  background: $colorBgContainer;
+  .info-container {
+    display: flex;
+    justify-content: space-between;
+
+    .left-info {
+      flex-basis: 50%;
+
+      .info-item {
+        margin-bottom: 10px;
+        font-size: 18px;
+
+        strong {
+          margin-right: 20px;
+        }
+      }
+    }
+
+    .right-info {
+      flex-basis: 50%;
+      margin-left: auto;
+
+      .info-item {
+        margin-bottom: 10px;
+        font-size: 18px;
+
+        strong {
+          margin-right: 20px;
+        }
+      }
+    }
+  }
+}
+
+.academic-info-container {
+  margin: 20px 5px;
+  padding: 5px;
+  background: $colorBgContainer;
+  border-radius: $borderRadiusLG;
+
+  .info-container {
+    display: flex;
+    justify-content: space-between;
+
+    .left-info {
+      flex-basis: 50%;
+
+      .info-item {
+        margin-bottom: 10px;
+        font-size: 18px;
+
+        strong {
+          margin-right: 20px;
+        }
+      }
+    }
+
+    .right-info {
+      flex-basis: 50%;
+
+      .info-item {
+        margin-bottom: 10px;
+        font-size: 18px;
+
+        strong {
+          margin-right: 20px;
+        }
+      }
+    }
+  }
+}
+
+.score-table-container {
+  margin: 10px 5px;
+  padding: 5px;
+  background: $colorBgContainer;
+  border-radius: $borderRadiusLG;
+  display: flex;
+  flex-direction: column;
+
+  .basic-info {
+    margin-left: 20px;
+
+    .class-code {
+      color: $classCodeColor;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+  }
+
+  .score-tables {
+    display: flex;
+    flex-wrap: wrap; // Cho phép các phần tử con xuống dòng khi không đủ chỗ
+    justify-content: space-between;
+    
+
+    .quiz-table,
+    .asm-table,
+    .mock-table {
+      width: calc(
+        50% - 8px
+      ); // Đảm bảo mỗi bảng chiếm 50% với khoảng trắng giữa chúng
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px $box;
+
+      .ant-card-head {
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+      }
+    }
+
+    .quiz-table {
+      .ant-card-head {
+        background: $table1;
+        color: $colorBgContainer;
+      }
+    }
+
+    .asm-table {
+      .ant-card-head {
+        background: $table2;
+        color: $colorBgContainer;
+      }
+    }
+
+    .mock-table {
+      .ant-card-head {
+        background: $table3;
+        color: $colorBgContainer;
+      }
+    }
+  }
+}
+
+/* Additional styles for the first frame for basic information */
+
+.basic-info-frame {
+  margin: 24px 16px;
+  padding: 24px;
+  min-height: 100px;
+  background: $colorBgContainer;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+
+  .avatar-space {
+    align-items: center;
+  }
+
+  .ant-avatar {
+    margin-right: 20px;
+  }
+
+  .info-text {
+    margin-left: 20px;
+    text-align: left;
+
+    .ant-typography {
+      &.ant-typography-h3 {
+        font-weight: bolder;
+        margin: 0;
+      }
+
+      &.ant-typography-h5 {
+        font-weight: light;
+        margin: 0;
+      }
+    }
+  }
+}
+
+/* Additional styles for the second frame for tabs */
+
+.tabs-frame {
+  margin: 24px 16px;
+  padding: 24px;
+  background: $colorBgContainer;
+  border-radius: $borderRadiusLG;
+}
+
+/* Additional styles for the third frame for score */
+
+.score-frame {
+  margin: 24px 16px;
+  padding: 24px;
+  background: $colorBgContainer;
+}
+
+.avatar-container {
+  width: 120px; /* Kích thước của Avatar */
+  height: 120px; /* Kích thước của Avatar */
+  border-radius: 50%; /* Tạo hình tròn */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-initial {
+  color: $colorBgContainer; /* Màu chữ cái */
+  font-size: 24px; /* Kích thước chữ cái */
+  font-weight: bold; /* Độ đậm của chữ cái */
+}
+
+.popDel{
+  color: $classCodeColor;
+}

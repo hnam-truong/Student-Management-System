@@ -31,12 +31,8 @@ const router = createBrowserRouter([
 
       //students management
       {
-        path: "/student-list-by-id",
+        path: "/student-list",
         element: <StudentByIDManagement />,
-      },
-      {
-        path: "/student-list-by-class",
-        element: <StudentByClassManagement/>,
       },
       {
         path: "/student/:id",
@@ -55,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: "/classes",
         element: <ClassesManagement />,
+      },
+      {
+        path: "/classes/:id",
+        element: <StudentByClassManagement />,
       },
 
       //score management
