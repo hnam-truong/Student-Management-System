@@ -6,14 +6,14 @@ type Props = {};
 
 const Header = (props: Props) => {
   return <div className="header">
-    <img className="header-logo" src="" alt="@logo"/>
+{/*     <img className="header-logo" src="" alt="@logo"/> */}
     <div className="header-user">
-        <div className="header-organization">
+{/*         <div className="header-organization">
          <div className="wrapper-logo-content">
             <img className="organization-logo" src="" alt="@organization"/>
             <span>uniGate</span>
          </div>
-        </div>
+        </div> */}
         <AvatarUser/>
     </div>
   </div>;
