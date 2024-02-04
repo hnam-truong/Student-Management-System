@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
-import { Table } from 'antd';
-import type { TableColumnsType } from 'antd';
-import { Button } from 'antd';
-import { IClassStudent } from '../../../../Services/Interfaces & Types/Interfaces';
+import React, { useEffect, useState } from "react";
+import { Table } from "antd";
+import type { TableColumnsType } from "antd";
+import { Button } from "antd";
+import { IClassStudent } from "../../../../Services/Interfaces & Types/Interfaces";
 import { generateFilters } from "../../../../Services/GlobalFunctions/GenerateFilter";
 import { IoSettingsOutline } from "react-icons/io5";
 import { BsThreeDots } from "react-icons/bs";
@@ -10,9 +10,14 @@ import { BsThreeDots } from "react-icons/bs";
 interface StudentByClassProps {
   classStudent: IClassStudent[];
   loading: boolean;
+  setStudentSelect: any;
 }
 
-const StudentByClass: React.FC<StudentByClassProps> = ({ classStudent, loading }) => {
+const StudentByClass: React.FC<StudentByClassProps> = ({
+  classStudent,
+  loading,
+  setStudentSelect,
+}) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const filters: { [key: string]: ReturnType<typeof generateFilters> } = {
     FullName: generateFilters(classStudent, "FullName"),
@@ -24,8 +29,8 @@ const StudentByClass: React.FC<StudentByClassProps> = ({ classStudent, loading }
 
   const columns: TableColumnsType<IClassStudent> = [
     {
-      title: 'Full name',
-      dataIndex: 'FullName',
+      title: "Full name",
+      dataIndex: "FullName",
       key: "FullName",
       sorter: (a, b) => a.FullName.localeCompare(b.FullName),
       filters: filters.FullName,
@@ -35,9 +40,9 @@ const StudentByClass: React.FC<StudentByClassProps> = ({ classStudent, loading }
         record.FullName.indexOf(value as string) === 0,
     },
     {
-      title: 'Phone',
-      dataIndex: 'Phone',
-      key: 'Phone',
+      title: "Phone",
+      dataIndex: "Phone",
+      key: "Phone",
       filters: filters.Phone,
       filterSearch: true,
       filterMode: "tree",
@@ -45,9 +50,9 @@ const StudentByClass: React.FC<StudentByClassProps> = ({ classStudent, loading }
         record.Phone.indexOf(value as string) === 0,
     },
     {
-      title: 'Email',
-      dataIndex: 'Email',
-      key: 'Email',
+      title: "Email",
+      dataIndex: "Email",
+      key: "Email",
       filters: filters.Email,
       filterSearch: true,
       filterMode: "tree",
@@ -55,9 +60,9 @@ const StudentByClass: React.FC<StudentByClassProps> = ({ classStudent, loading }
         record.Email.indexOf(value as string) === 0,
     },
     {
-      title: 'Status',
-      dataIndex: 'Status',
-      key: 'Status',
+      title: "Status",
+      dataIndex: "Status",
+      key: "Status",
       sorter: (a, b) => a.Status.localeCompare(b.Status),
       filters: filters.Status,
       filterSearch: true,
@@ -66,19 +71,33 @@ const StudentByClass: React.FC<StudentByClassProps> = ({ classStudent, loading }
         record.Status.indexOf(value as string) === 0,
     },
     {
-      title: <Button type="link" ><IoSettingsOutline style={{ width: '20px', height: '20px', color: 'white' }} /></Button>,
-      key: 'operation',
-      fixed: 'right',
+      title: (
+        <Button type="link">
+          <IoSettingsOutline
+            style={{ width: "20px", height: "20px", color: "white" }}
+          />
+        </Button>
+      ),
+      key: "operation",
+      fixed: "right",
       width: 100,
-      render: () => <Button type="link" ><BsThreeDots style={{ width: '20px', height: '20px', color: 'black' }} /></Button>,
+      render: () => (
+        <Button type="link">
+          <BsThreeDots
+            style={{ width: "20px", height: "20px", color: "black" }}
+          />
+        </Button>
+      ),
     },
     // Add more columns as needed based on your data structure
   ];
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
     setSelectedRowKeys(newSelectedRowKeys);
   };
+  useEffect(() => {
+    setStudentSelect(selectedRowKeys);
+  }, [selectedRowKeys, setStudentSelect]);
 
   const rowSelection = {
     selectedRowKeys,
@@ -96,7 +115,8 @@ const StudentByClass: React.FC<StudentByClassProps> = ({ classStudent, loading }
         rowSelection={rowSelection}
         columns={columns}
         dataSource={scoresWithKeys}
-        loading={loading} />
+        loading={loading}
+      />
     </div>
   );
 };

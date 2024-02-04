@@ -1,16 +1,307 @@
-$colorBgContainer: #ffffff; // Use the appropriate color value
-$borderRadiusLG: 10px; // Use the appropriate value
-$classCodeColor: #f2212c;
-$table1: #1890ff;
-$table2: #52c41a;
-$table3: #faad14;
-$box: rgba(0, 0, 0, 0.1);
-$mediumScreen: 768px;
+@import "../../../Theme.scss";
+
+.student-detail-container {
+  margin: 10px 10px 5px 7px;
+
+  .info-item {
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+
+  .info-container {
+    display: grid;
+    grid-template-columns: 6fr 6fr;
+    /* 50% each for info-container-1 and info-container-2 */
+    width: 100%;
+  }
+
+  .info-container-1 {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    /* 6 equal columns */
+    gap: 10px;
+  }
+
+  .column-1 {
+    grid-column: span 2;
+    /* Column 1 spans 2 columns */
+  }
+
+  .column-2 {
+    grid-column: 3;
+    /* Column 2 starts at the third column */
+  }
+
+  .info-container-2 {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    /* 6 equal columns */
+    gap: 10px;
+  }
+
+  .column-3 {
+    grid-column: span 2;
+    /* Column 1 spans 2 columns */
+  }
+
+  .column-4 {
+    grid-column: 3;
+    /* Column 2 starts at the third column */
+  }
+}
+
+.academic-info-container {
+  margin: 10px 10px 5px 7px;
+
+  .info-item {
+    margin-bottom: 10px;
+    font-size: 16px;
+  }
+
+  .info-container {
+    display: grid;
+    grid-template-columns: 6fr 6fr;
+    /* 50% each for info-container-1 and info-container-2 */
+    width: 100%;
+  }
+
+  .info-container-1,
+  .info-container-2 {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    /* 4 equal columns for each info-container */
+    gap: 10px;
+  }
+
+  .column-1,
+  .column-3 {
+    grid-column: span 2;
+    /* Column 1 and Column 3 span 2 columns each */
+  }
+
+  .column-4 {
+    grid-column: span 2;
+    /* Column 2 and Column 4 span 2 columns each */
+  }
+
+  .column-2 {
+    grid-column: span 3;
+    /* Column 2 starts at the third column */
+  }
+}
+
+.score-table-container {
+  margin: 10px 5px;
+  padding: 5px;
+  background: $colorBgContainer;
+  border-radius: $borderRadiusLG;
+  display: flex;
+  flex-direction: column;
+  overflow-x: auto;
+  display: flex;
+  flex-wrap: wrap;
+
+  .basic-info {
+    margin-left: 20px;
+
+    .class-code {
+      color: $classCodeColor;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
+  }
+
+  .score-tables {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    min-width: 768px;
+
+
+    .quiz-table,
+    .asm-table,
+    .mock-table {
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px $box;
+      width: 80%;
+      margin: 0 auto;
+
+      .ant-card-head {
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+      }
+    }
+
+    .quiz-table {
+      .ant-card-head {
+        background: $table1;
+        color: $colorBgContainer;
+      }
+    }
+
+    .asm-table {
+      .ant-card-head {
+        background: $table2;
+        color: $colorBgContainer;
+      }
+    }
+
+    .mock-table {
+      .ant-card-head {
+        background: $table3;
+        color: $colorBgContainer;
+      }
+    }
+  }
+}
+
+/* Additional styles for the first frame for basic information */
+
+.basic-info-frame {
+  margin: 10px 10px;
+  padding: 20px;
+  min-height: 100px;
+  background: $colorBgContainer;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+
+  .avatar-space {
+    align-items: center;
+  }
+
+  .ant-avatar {
+    margin-right: 20px;
+  }
+
+  .info-text {
+    margin-left: 20px;
+    text-align: left;
+
+    .ant-typography {
+      &.ant-typography-h3 {
+        font-weight: bolder;
+        margin: 0;
+      }
+
+      &.ant-typography-h5 {
+        font-weight: light;
+        margin: 0;
+      }
+    }
+  }
+}
+
+/* Additional styles for the second frame for tabs */
+
+.tabs-frame {
+  margin: 10px 10px;
+  padding: 20px;
+  background: $colorBgContainer;
+  border-radius: $borderRadiusLG;
+}
+
+/* Additional styles for the third frame for score */
+
+.score-frame {
+  margin: 10px 10px;
+  padding: 20px;
+  background: $colorBgContainer;
+  border-radius: $borderRadiusLG;
+}
+
+.avatar-container {
+  width: 120px;
+  /* Kích thước của Avatar */
+  height: 120px;
+  /* Kích thước của Avatar */
+  border-radius: 50%;
+  /* Tạo hình tròn */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-initial {
+  color: $colorBgContainer;
+  /* Màu chữ cái */
+  font-size: 24px;
+  /* Kích thước chữ cái */
+  font-weight: bold;
+  /* Độ đậm của chữ cái */
+}
+
+.popDel {
+  color: $classCodeColor;
+}
+
+.ant-tabs .ant-tabs-tab {
+  font-size: 16px;
+  font-weight: bold;
+  padding: 0;
+}
+
+@media screen and (max-width: $md) {
+
+  .student-detail-container,
+  .academic-info-container {
+    display: flex;
+    justify-content: space-between;
+
+    .info-container {
+      display: flex;
+      flex-direction: column;
+      width: var(100); // Sử dụng biến cho độ rộng cột
+      margin-right: var(100); // Sử dụng biến cho khoảng cách giữa các cột
+
+      .info-container-1,
+      .info-container-2 {
+        display: flex;
+
+        .column {
+          flex: 1;
+        }
+      }
+
+      .info-item {
+        margin-bottom: var(--item-spacing); // Sử dụng biến cho khoảng cách giữa các mục
+      }
+    }
+  }
+
+  .score-table-container {
+    width: 100%;
+    overflow-x: auto;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+
+    .score-tables {
+      flex-direction: column; // Add this line
+
+      .quiz-table,
+      .asm-table,
+      .mock-table {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.ant-table-thead>tr>th {
+  /* Adjust the font size, padding, etc. here */
+  font-size: 11px;
+  padding: 5px;
+}
+
 
 .student-detail-container {
   margin: 20px 5px;
   padding: 5px;
   background: $colorBgContainer;
+
   .info-container {
     display: flex;
     justify-content: space-between;
@@ -105,14 +396,12 @@ $mediumScreen: 768px;
     display: flex;
     flex-wrap: wrap; // Cho phép các phần tử con xuống dòng khi không đủ chỗ
     justify-content: space-between;
-    
+
 
     .quiz-table,
     .asm-table,
     .mock-table {
-      width: calc(
-        50% - 8px
-      ); // Đảm bảo mỗi bảng chiếm 50% với khoảng trắng giữa chúng
+      width: calc(50% - 8px); // Đảm bảo mỗi bảng chiếm 50% với khoảng trắng giữa chúng
       margin-bottom: 16px;
       box-shadow: 0 2px 8px $box;
 
@@ -201,20 +490,32 @@ $mediumScreen: 768px;
 }
 
 .avatar-container {
-  width: 120px; /* Kích thước của Avatar */
-  height: 120px; /* Kích thước của Avatar */
-  border-radius: 50%; /* Tạo hình tròn */
+  width: 120px;
+  /* Kích thước của Avatar */
+  height: 120px;
+  /* Kích thước của Avatar */
+  border-radius: 50%;
+  /* Tạo hình tròn */
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .avatar-initial {
-  color: $colorBgContainer; /* Màu chữ cái */
-  font-size: 24px; /* Kích thước chữ cái */
-  font-weight: bold; /* Độ đậm của chữ cái */
+  color: $colorBgContainer;
+  /* Màu chữ cái */
+  font-size: 24px;
+  /* Kích thước chữ cái */
+  font-weight: bold;
+  /* Độ đậm của chữ cái */
 }
 
-.popDel{
+.popDel {
   color: $classCodeColor;
+}
+
+.title-delete {
+  display: flex;
+  align-items: center;
+  gap: $small;
 }

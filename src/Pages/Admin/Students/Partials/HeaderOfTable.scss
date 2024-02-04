@@ -10,7 +10,7 @@
   height: 30px;
 }
 
-.ant-table-thead .ant-table-cell {
+.ant-table .ant-table-container .ant-table-content table thead.ant-table-thead .ant-table-cell {
   background-color: $darkblueprimary !important;
   color: white !important;
 }
@@ -100,4 +100,8 @@
   display: flex;
   align-items: center;
   margin-right: 5px;
+}
+
+.custom-button {
+  background-color: $darkblueprimary !important;
 }

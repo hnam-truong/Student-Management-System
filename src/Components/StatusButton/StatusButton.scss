@@ -12,10 +12,17 @@
         }
     }
 
-    &--outline {
-        border: none;
+    &--centered {
         display: flex;
         justify-content: center;
         align-items: center;
+    }
+
+    &--outline {
+        border: none;
+    }
+
+    &--null {
+        border: 1px solid $black;
     }
 }

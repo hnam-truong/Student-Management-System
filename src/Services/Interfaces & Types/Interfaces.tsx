@@ -2,7 +2,7 @@
 export interface IStudent {
   ID: string;
   Name: string;
-  Gender: string;
+  Gender: boolean;
   DateOfBirth: Date;
   Status: string;
   Phone: string;
@@ -58,10 +58,13 @@ export interface IReservedStudent {
   DateOfBirth: Date;
   Hometown: string;
   Class: string;
+  ClassID: string;
+  CurrentModules: string;
   ReservedModule: string;
   Reason: string;
-  ReservedStartDate: Date;
-  ReservedEndDate: Date;
+  Conditions: string[] | [];
+  ReservedStartDate?: Date | undefined;
+  ReservedEndDate?: Date | undefined;
   Status: string;
 }
 
@@ -88,4 +91,16 @@ export interface IClassStudent {
   Phone: string;
   Email: string;
   Status: string;
+}
+
+//interface of reserving reasons
+export interface IReservingReason {
+  ID: string;
+  Name: string;
+}
+
+//interface of reserving conditions
+export interface IReservingCondition {
+  ID: string;
+  Name: string;
 }

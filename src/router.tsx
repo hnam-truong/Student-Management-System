@@ -3,7 +3,6 @@ import MainLayout from "./Layout/MainLayout";
 import HomePage from "./Pages/HomePage/HomePage";
 import LoginPage from "./Pages/LoginPage/LoginPage";
 import NotFoundPage from "./Pages/ErrorsPage/NotFound/NotFoundPage";
-import EmailTemplate from "./Pages/Admin/EmailTemplate/EmailTemplate";
 import ReservedStudents from "./Pages/Admin/ReservedStudents/ReservedStudents";
 import ClassesManagement from "./Pages/Trainer/ClassesManagement/ClassesManagement";
 import ScoreDetail from "./Pages/Trainer/ScoreDetail/ScoreDetail";
@@ -11,6 +10,7 @@ import EmailTemplates from "./Pages/Admin/EmailTemplates/EmailTemplates";
 import AddStudent from "./Pages/Admin/Students/Partials/AddStudent";
 import StudentDetail from "./Pages/Admin/StudentDetail/StudentDetail";
 import StudentScoresManagement from "./Pages/Trainer/StudentScoresManagement/StudentScoresManagement";
+import UpdateStudentScore from "./Pages/Trainer/UpdateStudentScore/UpdateStudentScore";
 import StudentByIDManagement from "./Pages/Admin/Students/StudentByIDManagement";
 import StudentByClassManagement from "./Pages/Admin/Students/StudentByClassManagement";
 
@@ -31,7 +31,7 @@ const router = createBrowserRouter([
 
       //students management
       {
-        path: "/student-list",
+        path: "/students",
         element: <StudentByIDManagement />,
       },
       {
@@ -39,7 +39,7 @@ const router = createBrowserRouter([
         element: <StudentDetail />,
       },
       {
-        path: "/add-student",
+        path: "/student/add",
         element: <AddStudent />,
       },
       {
@@ -62,17 +62,16 @@ const router = createBrowserRouter([
         path: "/score/:id",
         element: <ScoreDetail />,
       },
-
+      {
+        path: "/score/edit/:id",
+        element: <UpdateStudentScore />,
+      },
       {
         path: "/scores",
         element: <StudentScoresManagement />,
       },
 
       //email management
-      {
-        path: "/email-template",
-        element: <EmailTemplate />,
-      },
       {
         path: "/email-templates",
         element: <EmailTemplates />,

@@ -1,11 +1,13 @@
 import React from "react";
 import { Table } from "antd";
 import type { TableColumnsType } from "antd";
-import ActionPopUp from "./ActionPopUp";
+import { Button } from "antd";
+import { IoSettingsOutline } from "react-icons/io5";
 import { IScore } from "../../../../Services/Interfaces & Types/Interfaces";
 import { generateFilters } from "../../../../Services/GlobalFunctions/GenerateFilter";
 import "../StudentScoresManagement.scss";
 import StatusButton from "../../../../Components/StatusButton/StatusButton";
+import ActionDropdown from "../../../../Components/ActionDropdown/ActionDropdown";
 
 interface ScoresTableProps {
   scores: IScore[];
@@ -92,10 +94,10 @@ const ScoresTable: React.FC<ScoresTableProps> = ({ scores, loading }) => {
             record.CSS === value,
         },
         {
-          title: "Quiz3",
+          title: "Quiz 3",
           dataIndex: "Quiz3",
           key: "Quiz3",
-          width: 90,
+          width: 100,
           sorter: (a, b) => a.Quiz3 - b.Quiz3,
           filters: filtersQuiz3,
           filterSearch: true,
@@ -104,10 +106,10 @@ const ScoresTable: React.FC<ScoresTableProps> = ({ scores, loading }) => {
             record.Quiz3 === value,
         },
         {
-          title: "Quiz4",
+          title: "Quiz 4",
           dataIndex: "Quiz4",
           key: "Quiz4",
-          width: 90,
+          width: 100,
           sorter: (a, b) => a.Quiz4 - b.Quiz4,
           filters: filtersQuiz4,
           filterSearch: true,
@@ -116,10 +118,10 @@ const ScoresTable: React.FC<ScoresTableProps> = ({ scores, loading }) => {
             record.Quiz4 === value,
         },
         {
-          title: "Quiz5",
+          title: "Quiz 5",
           dataIndex: "Quiz5",
           key: "Quiz5",
-          width: 90,
+          width: 100,
           sorter: (a, b) => a.Quiz5 - b.Quiz5,
           filters: filtersQuiz5,
           filterSearch: true,
@@ -128,10 +130,10 @@ const ScoresTable: React.FC<ScoresTableProps> = ({ scores, loading }) => {
             record.Quiz5 === value,
         },
         {
-          title: "Quiz6",
+          title: "Quiz 6",
           dataIndex: "Quiz6",
           key: "Quiz6",
-          width: 90,
+          width: 100,
           sorter: (a, b) => a.Quiz6 - b.Quiz6,
           filters: filtersQuiz6,
           filterSearch: true,
@@ -295,7 +297,9 @@ const ScoresTable: React.FC<ScoresTableProps> = ({ scores, loading }) => {
       filterSearch: true,
       filterMode: "tree",
       onFilter: (value, record) => record.Status === value,
-      render: (value, record) => <StatusButton status={record.Status} />,
+      render: (value, record) => (
+        <StatusButton status={record.Status} isInTable={true} />
+      ),
     },
     //mock
     {
@@ -364,14 +368,28 @@ const ScoresTable: React.FC<ScoresTableProps> = ({ scores, loading }) => {
       filterSearch: true,
       filterMode: "tree",
       onFilter: (value, record) => record.MockStatus === value,
-      render: (value, record) => <StatusButton status={record.MockStatus} />,
+      render: (value, record) => (
+        <StatusButton status={record.MockStatus} isInTable={true} />
+      ),
     },
     {
-      title: "Action",
+      title: (
+        <Button type="link">
+          <IoSettingsOutline
+            style={{ width: "20px", height: "20px", color: "white" }}
+          />
+        </Button>
+      ),
       dataIndex: "Action",
       key: "Action",
       width: 60,
-      render: (value, record: IScore) => <ActionPopUp />,
+      render: (value, record: IScore) => (
+        <ActionDropdown
+          id={record?.ID}
+          viewLink="/score"
+          editLink="/score/edit"
+        />
+      ),
     },
   ];
 
@@ -396,8 +414,8 @@ const ScoresTable: React.FC<ScoresTableProps> = ({ scores, loading }) => {
         scroll={{ x: "max-content" }}
         style={{ flex: 1, overflowY: "auto" }}
         pagination={{
-          defaultPageSize: 5,
-          pageSizeOptions: ["5", "10", "20", "50", "100"],
+          defaultPageSize: 10,
+          pageSizeOptions: ["10", "20", "50", "100"],
           total: scoresWithKeys.length,
           showSizeChanger: true,
         }}

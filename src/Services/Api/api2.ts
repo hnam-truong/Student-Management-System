@@ -1,3 +1,4 @@
+//This function is handle get, post, put, del Mock API for reserved students and all classes
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { baseMockApiURL2, baseBackEndURL } from "./../Constants/ApiURL";
 

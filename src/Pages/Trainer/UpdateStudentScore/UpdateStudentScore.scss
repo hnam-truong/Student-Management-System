@@ -1,0 +1,70 @@
+@import "../../../Theme.scss";
+
+.form-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem 4rem;
+    gap: 1rem;
+
+    &__container {
+        width: 100%;
+    }
+
+    &__content {
+        width: 100%;
+        text-align: center;
+
+        &:first-child {
+            border-radius: 5px 5px 0 0;
+            background-color: $green;
+        }
+
+        &:nth-child(2) {
+            border-radius: 5px 5px 0 0;
+            background-color: $green;
+        }
+
+        &:nth-child(3) {
+            border-radius: 5px 5px 0 0;
+            background-color: $yellow100;
+        }
+
+        &:last-child {
+            border-radius: 5px 5px 0 0;
+            background-color: $blue100;
+        }
+    }
+}
+
+.ant-table-wrapper {
+    width: 100%;
+}
+
+.box-title {
+    color: $white;
+    padding: 1rem;
+
+}
+
+.ant-table-thead .ant-table-cell:first-child {
+    border-top-left-radius: 0 !important;
+}
+
+.ant-table-thead .ant-table-cell:last-child {
+    border-top-right-radius: 0 !important;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: center;
+}
+
+.form-header {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1rem;
+    align-items: center;
+}

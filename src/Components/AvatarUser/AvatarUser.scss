@@ -1,4 +1,5 @@
-@import  '../../Theme.scss';
+@import '../../Theme.scss';
+
 .avatar {
   display: flex;
   align-items: center;
@@ -11,20 +12,22 @@
   height: 2.6875rem;
   flex-shrink: 0;
 }
+
 .avatar-content {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.3125rem;
 }
-.user-name{
-  // max-width: 7rem;
+
+.user-name {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-@media (max-width: $md){
-  .avatar-content{
+
+@media (max-width: $md) {
+  .avatar-content {
     font-size: small;
     width: 4rem;
   }

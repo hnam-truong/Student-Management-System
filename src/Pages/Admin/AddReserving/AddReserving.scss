@@ -1,0 +1,46 @@
+@import "../../../Theme.scss";
+
+.btn-reversing {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $white;
+    background-color: $main;
+    border: none;
+
+    &:hover {
+        background-color: $main !important;
+        opacity: 0.9;
+        color: $white !important;
+    }
+
+    strong {
+        margin-left: 4px;
+    }
+}
+
+.form-group {
+    display: flex;
+    justify-content: space-between;
+
+    input {
+        width: 100%;
+    }
+}
+
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ant-form-item-label>label {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+:where(.css-dev-only-do-not-override-1qhpsh8).ant-modal .ant-modal-title {
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0 auto;
+}

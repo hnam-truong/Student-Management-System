@@ -1,7 +1,8 @@
+/** This button is used for add new and add reserving */
 import { Button } from "antd";
 import React from "react";
 import { MdAddCircleOutline } from "react-icons/md";
-import "../ReservingModal/ReservingModal.scss";
+import "../AddReserving.scss";
 type ClickHandler = (event: React.MouseEvent<HTMLButtonElement>) => void;
 interface ReservingButtonProps {
   onClick: ClickHandler;

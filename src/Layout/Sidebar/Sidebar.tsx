@@ -39,7 +39,7 @@ function getItem(
 const items: MenuItem[] = [
   getItem("Home", "/home", <MdOutlineHome />),
   getItem("Students", "students", <MdOutlineGroup />, [
-    getItem("Student list", "/student-list"),
+    getItem("Student list", "/students"),
     getItem("Reserve list", "/reserved-students"),
   ]),
   getItem("Syllabus", "syllabus", <IoMdBook />, [

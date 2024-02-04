@@ -18,12 +18,12 @@
     }
 }
 
-:where(.css-dev-only-do-not-override-1qhpsh8).ant-table-wrapper .ant-table-filter-trigger {
-    color: $white;
+.ant-table-wrapper .ant-table-filter-trigger {
+    color: $white !important;
 
     &:hover {
-        color: $white;
-        opacity: 0.8;
+        color: $white !important;
+        opacity: 0.8 !important;
     }
 }
 

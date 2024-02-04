@@ -2,11 +2,9 @@
 
 .header {
   display: flex;
-  // position: fixed;
-  // top: 0;
   width: 100%;
   z-index: 3;
-  padding: 0.625rem 1.25rem 0.625rem 2.5rem;
+  padding: $small $md-medium $small $xxlmedium;
   justify-content: space-between;
   align-items: center;
   flex-shrink: 0;
@@ -17,7 +15,7 @@
 .header-user {
   display: flex;
   align-items: center;
-  gap: 2.5rem;
+  gap: $xxlmedium;
 }
 
 .header-organization {
@@ -25,7 +23,7 @@
   padding: 0.3125rem 0.9375rem;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.625rem;
+  gap: $small;
   border-radius: 1.875rem;
   background-color: $darkbluesecondary;
 }
@@ -38,24 +36,28 @@
 
 .organization-logo {
   width: 1.75rem;
-  height: 1.25rem;
+  height: $md-medium;
 }
 
 @media (max-width: $md) {
   .header-logo {
     height: 3rem;
   }
+
   .wrapper-logo-content {
     height: 1rem;
     width: 3.5rem;
     gap: 0.3rem;
+
     .organization-logo {
       height: 0.9rem;
     }
+
     span {
       font-size: x-small;
     }
   }
+
   .header-user {
     gap: 1.5rem;
   }

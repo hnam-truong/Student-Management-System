@@ -1,8 +1,7 @@
-// import { Button, Card } from "antd";
 import React from "react";
 import "./SyllabusCard.scss";
 
-const SyllabusCard:React.FC = () => {
+const SyllabusCard: React.FC = () => {
   return (
     <div className="card">
       <div className="card-header">

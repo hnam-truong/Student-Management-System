@@ -3,15 +3,35 @@ import {
   IClass,
   IClassStudent,
   IReservedStudent,
+  IReservingCondition,
+  IReservingReason,
   IScore,
   IStudent,
 } from "./Services/Interfaces & Types/Interfaces";
-import { getScores, getStudents } from "./Services/GlobalFunctions/ApiCaller";
+import {
+  deleteSingleStudent,
+  getScoreByID,
+  getScores,
+  getStudentByID,
+  getStudents,
+  postScore,
+  postSingleStudent,
+  putScore,
+  putSingleStudent,
+} from "./Services/GlobalFunctions/ApiCaller";
 import {
   getClass,
   getReservedStudent,
+  getReservedStudentByID,
+  postReservedStudentByID,
 } from "./Services/GlobalFunctions/ApiCaller2";
 import { getClassStudent } from "./Services/GlobalFunctions/ApiCaller3";
+import {
+  getReservingConditions,
+  getReservingReasons,
+} from "./Services/GlobalFunctions/ApiCaller4";
+import { ToastContainer } from "react-toastify";
+import { errorNoti, successNoti } from "./Components/Notify/Notify";
 
 // NOTE:
 // 1: define interfaces/type for store
@@ -46,6 +66,79 @@ export const useStudentStore = create<IStudentStore>((set) => ({
   },
 }));
 
+// SINGLE STUDENT STORE
+interface ISingleStudentStore {
+  aStudent: IStudent | null;
+  loading: boolean;
+  getStudentByID: (id: string) => void;
+  postSingleStudent: (data: IStudent) => Promise<void>;
+  putSingleStudent: (data: IStudent, id: string) => Promise<void>;
+  deleteSingleStudent: (id: string) => Promise<void>;
+}
+
+export const useSingleStudentStore = create<ISingleStudentStore>((set) => ({
+  aStudent: null,
+  loading: false,
+  getStudentByID: async (id: string) => {
+    // Set Loading true
+    set((state) => ({ ...state, loading: true }));
+    try {
+      const data = await getStudentByID({ id });
+      const validData: IStudent | null = Array.isArray(data) ? data[0] : data;
+      // Update scores of student when fetch successfully
+      set((state) => ({ ...state, aStudent: validData }));
+    } catch (err) {
+      // Catch & log error
+      console.log("API Error:", err);
+    } finally {
+      // Set loading false
+      set((state) => ({ ...state, loading: false }));
+    }
+  },
+
+  postSingleStudent: async (data: IStudent) => {
+    // Set Loading true
+    set((state) => ({ ...state, loading: true }));
+    try {
+      await postSingleStudent({ data });
+    } catch (err) {
+      // Catch & log error
+      console.log("API Error:", err);
+    } finally {
+      // Set loading false
+      set((state) => ({ ...state, loading: false }));
+    }
+  },
+  putSingleStudent: async (data: IStudent, id: string) => {
+    // Set Loading true
+    set((state) => ({ ...state, loading: true }));
+    try {
+      await putSingleStudent({ data, id });
+    } catch (err) {
+      // Catch & log error
+      console.log("API Error:", err);
+    } finally {
+      // Set loading false
+      set((state) => ({ ...state, loading: false }));
+    }
+  },
+  deleteSingleStudent: async (id: string) => {
+    // Set Loading true
+    set((state) => ({ ...state, loading: true }));
+    try {
+      await deleteSingleStudent({ id });
+      successNoti("Student deleted successfully!");
+    } catch (err) {
+      // Catch & log error
+      console.log("API Error:", err);
+      errorNoti("Failed to delete the student. Please try again later.");
+    } finally {
+      // Set loading false
+      set((state) => ({ ...state, loading: false }));
+    }
+  },
+}));
+
 // SCORE STORE
 interface IScoreStore {
   score: IScore[] | null;
@@ -73,11 +166,69 @@ export const useScoreStore = create<IScoreStore>((set) => ({
   },
 }));
 
+// SINGLE SCORE OF A STUDENT STORE
+interface ISingleScoreStore {
+  aScore: IScore | null;
+  loading: boolean;
+  getStudentScoreByID: (id: string) => void;
+  postStudentScore: (data: IScore) => Promise<void>;
+  putStudentScore: (data: IScore, id: string) => Promise<void>;
+}
+
+export const useSingleScoreStore = create<ISingleScoreStore>((set) => ({
+  aScore: null,
+  loading: false,
+  getStudentScoreByID: async (id: string) => {
+    // Set Loading true
+    set((state) => ({ ...state, loading: true }));
+    try {
+      const data = await getScoreByID({ id });
+      const validData: IScore | null = Array.isArray(data) ? data[0] : data;
+      // Update scores of student when fetch successfully
+      set((state) => ({ ...state, aScore: validData }));
+    } catch (err) {
+      // Catch & log error
+      console.log("API Error:", err);
+    } finally {
+      // Set loading false
+      set((state) => ({ ...state, loading: false }));
+    }
+  },
+
+  postStudentScore: async (data: IScore) => {
+    // Set Loading true
+    set((state) => ({ ...state, loading: true }));
+    try {
+      await postScore({ data });
+    } catch (err) {
+      // Catch & log error
+      console.log("API Error:", err);
+    } finally {
+      // Set loading false
+      set((state) => ({ ...state, loading: false }));
+    }
+  },
+  putStudentScore: async (data: IScore, id: string) => {
+    // Set Loading true
+    set((state) => ({ ...state, loading: true }));
+    try {
+      await putScore({ data, id });
+    } catch (err) {
+      // Catch & log error
+      console.log("API Error:", err);
+    } finally {
+      // Set loading false
+      set((state) => ({ ...state, loading: false }));
+    }
+  },
+}));
+
 // RESERVED STUDENT STORE
 interface IReservedStudentStore {
   reservedStudent: IReservedStudent[] | null;
   loading: boolean;
   fetchReservedStudent: () => void;
+  postReservedStudent: (data: IReservedStudent) => Promise<void>;
 }
 
 export const useReservedStudentStore = create<IReservedStudentStore>((set) => ({
@@ -88,7 +239,7 @@ export const useReservedStudentStore = create<IReservedStudentStore>((set) => ({
     set((state) => ({ ...state, loading: true }));
     try {
       const data = await getReservedStudent();
-      // Update student when fetch successfully
+      // Update reserved students when fetch successfully
       set((state) => ({ ...state, reservedStudent: data }));
     } catch (err) {
       // Catch & log error
@@ -98,7 +249,65 @@ export const useReservedStudentStore = create<IReservedStudentStore>((set) => ({
       set((state) => ({ ...state, loading: false }));
     }
   },
+  postReservedStudent: async (data: IReservedStudent) => {
+    // Set Loading true
+    set((state) => ({ ...state, loading: true }));
+    try {
+      await postReservedStudentByID({ data });
+    } catch (err) {
+      // Catch & log error
+      console.log("API Error:", err);
+    } finally {
+      // Set loading false
+      set((state) => ({ ...state, loading: false }));
+    }
+  },
 }));
+
+// RESERVED STUDENT SINGLE STORE
+interface IReservedStudentSingleStore {
+  aReservedStudent: IReservedStudent | null;
+  loading: boolean;
+  fetchReservedStudentByID: (id: string) => void;
+  postReservedStudent: (data: IReservedStudent) => Promise<void>;
+}
+
+export const useReservedStudentSingleStore =
+  create<IReservedStudentSingleStore>((set) => ({
+    aReservedStudent: null,
+    loading: false,
+    fetchReservedStudentByID: async (id: string) => {
+      // Set Loading true
+      set((state) => ({ ...state, loading: true }));
+      try {
+        const data = await getReservedStudentByID({ id });
+        const validData: IReservedStudent | null = Array.isArray(data)
+          ? data[0]
+          : data;
+        // Update reserved student when fetch successfully
+        set((state) => ({ ...state, aReservedStudent: validData }));
+      } catch (err) {
+        // Catch & log error
+        console.log("API Error:", err);
+      } finally {
+        // Set loading false
+        set((state) => ({ ...state, loading: false }));
+      }
+    },
+    postReservedStudent: async (data: IReservedStudent) => {
+      // Set Loading true
+      set((state) => ({ ...state, loading: true }));
+      try {
+        await postReservedStudentByID({ data });
+      } catch (err) {
+        // Catch & log error
+        console.log("API Error:", err);
+      } finally {
+        // Set loading false
+        set((state) => ({ ...state, loading: false }));
+      }
+    },
+  }));
 
 // CLASS STORE
 interface IClassStore {
@@ -153,3 +362,59 @@ export const useClassStudentStore = create<IClassStudentStore>((set) => ({
     }
   },
 }));
+
+// RESERVING REASONS
+interface IReservingReasonStore {
+  reservingReason: IReservingReason[] | null;
+  loading: boolean;
+  fetchReservingReason: () => void;
+}
+
+export const useReservingReason = create<IReservingReasonStore>((set) => ({
+  reservingReason: [],
+  loading: false,
+  fetchReservingReason: async () => {
+    // Set Loading true
+    set((state) => ({ ...state, loading: true }));
+    try {
+      const data = await getReservingReasons();
+      // Update reserving reasons when fetch successfully
+      set((state) => ({ ...state, reservingReason: data }));
+    } catch (err) {
+      // Catch & log error
+      console.log("API Error:", err);
+    } finally {
+      // Set loading false
+      set((state) => ({ ...state, loading: false }));
+    }
+  },
+}));
+
+// RESERVING REASONS
+interface IReservingConditionStore {
+  reservingCondition: IReservingCondition[] | null;
+  loading: boolean;
+  fetchReservingCondition: () => void;
+}
+
+export const useReservingCondition = create<IReservingConditionStore>(
+  (set) => ({
+    reservingCondition: [],
+    loading: false,
+    fetchReservingCondition: async () => {
+      // Set Loading true
+      set((state) => ({ ...state, loading: true }));
+      try {
+        const data = await getReservingConditions();
+        // Update reserving conditions when fetch successfully
+        set((state) => ({ ...state, reservingCondition: data }));
+      } catch (err) {
+        // Catch & log error
+        console.log("API Error:", err);
+      } finally {
+        // Set loading false
+        set((state) => ({ ...state, loading: false }));
+      }
+    },
+  })
+);

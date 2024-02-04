@@ -12,3 +12,7 @@ export const baseMockApiURL2 =
 //Link Mock API for students in 1 class
 export const baseMockApiURL3 =
   "https://65b8e8a0b71048505a89bccb.mockapi.io/api/v1/";
+
+//Link Mock API for reserving conditions and reserving reason
+export const baseMockApiURL4 =
+  "https://65ba770db4d53c066552fa4e.mockapi.io/api/v1/";
