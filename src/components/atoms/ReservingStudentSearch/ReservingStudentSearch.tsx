@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React, { useState } from "react";
 import { Form, Input } from "antd";
 import type { SearchProps } from "antd/es/input/Search";
