@@ -1,92 +1,113 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
-import MainLayout from "./Layout/MainLayout";
-import HomePage from "./Pages/HomePage/HomePage";
-import LoginPage from "./Pages/LoginPage/LoginPage";
-import NotFoundPage from "./Pages/ErrorsPage/NotFound/NotFoundPage";
-import ReservedStudents from "./Pages/Admin/ReservedStudents/ReservedStudents";
-import ClassesManagement from "./Pages/Trainer/ClassesManagement/ClassesManagement";
-import ScoreDetail from "./Pages/Trainer/ScoreDetail/ScoreDetail";
-import EmailTemplates from "./Pages/Admin/EmailTemplates/EmailTemplates";
-import AddStudent from "./Pages/Admin/Students/Partials/AddStudent";
-import StudentDetail from "./Pages/Admin/StudentDetail/StudentDetail";
-import StudentScoresManagement from "./Pages/Trainer/StudentScoresManagement/StudentScoresManagement";
-import UpdateStudentScore from "./Pages/Trainer/UpdateStudentScore/UpdateStudentScore";
-import StudentByIDManagement from "./Pages/Admin/Students/StudentByIDManagement";
-import StudentByClassManagement from "./Pages/Admin/Students/StudentByClassManagement";
+import Layout from "./components/templates/Layout/Layout";
+import Home from "./components/pages/Home/Home";
+import Login from "./components/pages/Login/Login";
+import NotFound from "./components/pages/NotFound/NotFound";
+import Dashboard from "./components/pages/Dashboard/Dashboard";
+import StudentsManagement from "./components/pages/StudentsManagement/StudentsManagement";
+import StudentDetail from "./components/pages/StudentDetail/StudentDetail";
+import AddStudent from "./components/pages/AddStudent/AddStudent";
+import EditStudent from "./components/pages/EditStudent/EditStudent";
+import ReservedStudents from "./components/pages/ReservedStudents/ReservedStudents";
+import ScoresManagement from "./components/pages/ScoresManagement/ScoresManagement";
+import ScoreDetail from "./components/pages/ScoreDetail/ScoreDetail";
+import EditScore from "./components/pages/EditScore/EditScore";
+import EmailsManagement from "./components/pages/EmailsManagement/EmailsManagement";
+import ClassesManagement from "./components/pages/ClassesManagement/ClassesManagement";
+import StudentsClassManagement from "./components/pages/StudentsClassManagement/StudentsClassManagement";
+import AddScore from "./components/pages/AddScore/AddScore";
+import RouterEndpoints from "./constants/RouterEndpoints";
+import Profile from "./components/pages/Profile/Profile";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <MainLayout />,
+    element: <Layout />,
     children: [
-      //home page
+      // HOME PAGE
       {
         index: true,
-        element: <Navigate to={"/home"} />,
+        element: <Navigate to={RouterEndpoints.Home} />,
       },
       {
-        path: "/home",
-        element: <HomePage />,
+        path: RouterEndpoints.Home,
+        element: <Home />,
       },
 
-      //students management
+      // DASHBOARD
       {
-        path: "/students",
-        element: <StudentByIDManagement />,
+        path: RouterEndpoints.Dashboard,
+        element: <Dashboard />,
+      },
+
+      // STUDENTS MANAGEMENT
+      {
+        path: RouterEndpoints.StudentsManagement,
+        element: <StudentsManagement />,
       },
       {
-        path: "/student/:id",
+        path: RouterEndpoints.StudentDetail,
         element: <StudentDetail />,
       },
       {
-        path: "/student/add",
+        path: RouterEndpoints.AddStudent,
         element: <AddStudent />,
       },
       {
-        path: "/reserved-students",
+        path: RouterEndpoints.EditStudent,
+        element: <EditStudent />,
+      },
+
+      {
+        path: RouterEndpoints.ReservedStudents,
         element: <ReservedStudents />,
       },
 
-      //class management
+      // CLASSES MANAGEMENT
       {
-        path: "/classes",
+        path: RouterEndpoints.ClassesManagement,
         element: <ClassesManagement />,
       },
       {
-        path: "/classes/:id",
-        element: <StudentByClassManagement />,
+        path: RouterEndpoints.StudentsClassManagement,
+        element: <StudentsClassManagement />,
       },
-
-      //score management
+      // SCORES MANAGEMENT
       {
-        path: "/score/:id",
+        path: RouterEndpoints.ScoresManagement,
+        element: <ScoresManagement />,
+      },
+      {
+        path: RouterEndpoints.ScoreDetail,
         element: <ScoreDetail />,
       },
       {
-        path: "/score/edit/:id",
-        element: <UpdateStudentScore />,
+        path: RouterEndpoints.AddScore,
+        element: <AddScore />,
       },
       {
-        path: "/scores",
-        element: <StudentScoresManagement />,
+        path: RouterEndpoints.EditScore,
+        element: <EditScore />,
       },
 
-      //email management
+      // EMAIL MANAGEMENT
       {
-        path: "/email-templates",
-        element: <EmailTemplates />,
+        path: RouterEndpoints.EmailsManagement,
+        element: <EmailsManagement />,
       },
+      // PROFILE
+      { path: RouterEndpoints.Profile, element: <Profile /> },
     ],
   },
 
-  //public pages
+  // PUBLIC PAGES
   {
-    path: "/login",
-    element: <LoginPage />,
+    path: RouterEndpoints.Login,
+    element: <Login />,
   },
   {
     path: "*",
-    element: <NotFoundPage />,
+    element: <NotFound />,
   },
 ]);
 

@@ -1,0 +1,122 @@
+//EXTERNAL IMPORT
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;$fw-medium;$fw-semi-bold;$fw-bold;800;900&display=swap");
+
+//INTERNAL IMPORT
+//ABSTRACTS
+@import "./abstracts/breakpoints";
+@import "./abstracts/colors";
+@import "./abstracts/font-sizes";
+@import "./abstracts/font-weight";
+@import "./abstracts/sizes";
+@import "./abstracts/z-index";
+
+//BASES
+@import "./base/typography";
+
+//CLASSES
+.subtitle1 {
+  font-size: $font-size-lg-medium;
+  font-weight: $fw-normal;
+  line-height: $lg-medium;
+}
+
+.subtitle2 {
+  font-size: $font-size-xs-medium;
+  font-weight: $fw-semi-bold;
+  line-height: $medium;
+}
+
+.caption1 {
+  font-size: $font-size-lg-small;
+  font-weight: $fw-medium;
+  line-height: $medium;
+}
+
+.heading4 {
+  font-size: $font-size-lg-large;
+  font-weight: $fw-semi-bold;
+  line-height: $sm-large;
+  letter-spacing: $md-small;
+}
+
+.subtitle1-bold {
+  font-size: $font-size-lg-medium;
+  font-weight: $fw-semi-bold;
+  line-height: $lg-medium;
+}
+
+.headerh3 {
+  font-size: $font-size-larger;
+  font-weight: $fw-semi-bold;
+  line-height: $lg-large;
+  letter-spacing: 20%;
+}
+
+.headingh4 {
+  font-size: $font-size-lg-large;
+  font-weight: $fw-semi-bold;
+  line-height: $sm-large;
+  letter-spacing: $md-small;
+}
+.body1 {
+  font-size: 1rem;
+  font-weight: $fw-medium;
+  line-height: $lg-medium;
+}
+.body2 {
+  font-size: $font-size-xs-medium;
+  font-weight: $fw-medium;
+  line-height: $medium;
+}
+.body3 {
+  font-size: $font-size-xs-medium;
+  font-weight: $fw-bold;
+  line-height: $medium;
+}
+.button-md {
+  font-size: $font-size-xs-medium;
+  font-weight: $fw-bold;
+  line-height: $lg-medium;
+}
+
+.centered {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+//COMMONS
+// STYLES
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100vh;
+}
+
+body {
+  min-height: 100vh;
+  font-size: $font-size-normal;
+  display: flex;
+  flex-direction: column;
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root,
+#layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}

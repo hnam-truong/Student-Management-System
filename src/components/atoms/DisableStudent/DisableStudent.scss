@@ -1,0 +1,19 @@
+@import "../../../styles/main.scss";
+
+.delete-btn:hover {
+  font-weight: bold;
+}
+
+.title {
+  display: flex;
+  background-color: $primary-color;
+  width: 100%;
+  font-size: $font-size-large;
+  padding: $xs-medium;
+  margin-top: $md-small;
+  color: $white;
+}
+
+.ant-form-item-explain-error {
+  text-align: left;
+}
