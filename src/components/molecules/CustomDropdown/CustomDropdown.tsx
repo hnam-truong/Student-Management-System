@@ -10,13 +10,13 @@ interface CustomDropdownProps {
   id?: string;
   viewLink?: string;
   editLink?: string;
-  deleteLink?: string;
   isDelete?: boolean;
 }
 const CustomDropdown: React.FC<CustomDropdownProps> = ({
   id,
   viewLink,
   editLink,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   isDelete,
 }) => {
   let items: MenuProps["items"] = [

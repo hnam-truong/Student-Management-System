@@ -134,6 +134,7 @@ const StudentTable: React.FC<StudentTableProps> = ({
   };
 
   const scoresWithKeys = student.map((student) => ({
+  const scoresWithKeys = student.map((student) => ({
     ...student,
     key: student.ID,
   }));
