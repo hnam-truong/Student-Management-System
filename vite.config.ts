@@ -7,6 +7,9 @@ import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    outDir: "build", // Specify the output directory here
+  },
   plugins: [react()],
   test: {
     globals: true,
