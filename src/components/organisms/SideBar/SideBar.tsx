@@ -16,7 +16,7 @@ import { LuSettings } from "react-icons/lu";
 import { FaRegUser } from "react-icons/fa";
 import { GrScorecard } from "react-icons/gr";
 
-import "./Sidebar.scss";
+import "./SideBar.scss";
 import RouterEndpoints from "../../../constants/RouterEndpoints";
 
 type MenuItem = Required<MenuProps>["items"][number];
