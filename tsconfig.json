@@ -21,7 +21,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["vite.config.ts","eslintrc.cjs", "lighthouserc.ts", "src"],
+  "include": ["vite.config.ts","eslintrc.cjs", "lighthouserc.ts", "src", "antd-config.ts"],
   "exclude": ["cypress", "cypress.config.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

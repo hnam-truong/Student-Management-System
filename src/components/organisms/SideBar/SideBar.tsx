@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
-import { ConfigProvider, Menu, MenuProps } from "antd";
+import { Menu, MenuProps } from "antd";
 
 import { IoMdBook } from "react-icons/io";
 import { RiCalendar2Fill } from "react-icons/ri";
@@ -17,7 +17,6 @@ import { FaRegUser } from "react-icons/fa";
 import { GrScorecard } from "react-icons/gr";
 
 import "./Sidebar.scss";
-import Colors from "../../../constants/Colors";
 import RouterEndpoints from "../../../constants/RouterEndpoints";
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -103,31 +102,17 @@ const SideBar = () => {
   }, [width]);
   return (
     <div className={`sidebar-responsive  ${!isCollapsed && " sidebar"} `}>
-      <ConfigProvider
-        theme={{
-          components: {
-            Menu: {
-              itemSelectedColor: Colors.LighterBlack,
-              itemSelectedBg: Colors.SlightBlue,
-              collapsedWidth: 75,
-              iconSize: 22,
-              collapsedIconSize: 22,
-            },
-          },
-        }}
-      >
-        <Menu
-          onClick={handleClick}
-          defaultOpenKeys={[`${location.pathname}`]}
-          selectedKeys={[current]}
-          mode="inline"
-          items={items}
-          className={`sidebar-content subtitle1 `}
-          inlineCollapsed={isCollapsed}
-          subMenuCloseDelay={0.2}
-          subMenuOpenDelay={0.2}
-        />
-      </ConfigProvider>
+      <Menu
+        onClick={handleClick}
+        defaultOpenKeys={[`${location.pathname}`]}
+        selectedKeys={[current]}
+        mode="inline"
+        items={items}
+        className={`sidebar-content subtitle1 `}
+        inlineCollapsed={isCollapsed}
+        subMenuCloseDelay={0.2}
+        subMenuOpenDelay={0.2}
+      />
     </div>
   );
 };

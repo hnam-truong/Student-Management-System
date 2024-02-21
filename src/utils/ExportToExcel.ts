@@ -3,6 +3,7 @@ import { ColumnGroupType, ColumnsType, ColumnType } from "antd/es/table";
 import * as XLSX from "xlsx";
 import { IScore } from "../interfaces/score.interface";
 import { IStudent } from "../interfaces/student.interface";
+import { IReservedStudent } from "../interfaces/reserved-student.interface";
 
 export const exportStudentToExcel = (
   columns: TableColumnsType<IStudent>,
@@ -76,5 +77,47 @@ export const exportScoreToExcel = (
   const wb: XLSX.WorkBook = { Sheets: { data: ws }, SheetNames: ["data"] };
   XLSX.writeFile(wb, `scores${nowDate.getTime()}${fileExtension}`);
 
+  return true;
+};
+
+export const exportReserveStudentToExcel = (
+  columns: TableColumnsType<IReservedStudent>,
+  data: IReservedStudent[]
+): boolean => {
+  const nowDate = new Date();
+  // get header without setting column
+  const extractedHeader = [...columns.slice(0, -1)];
+  // get title of header with type string
+  const header = extractedHeader.map((col) => col.title as string);
+  const fileExtension = ".xlsx";
+  // get data from props data with key of header
+  const extractedData = data.map((item: IReservedStudent) =>
+    extractedHeader.map((col) => {
+      if (
+        col.key === "Gender" &&
+        item[col.key as keyof IReservedStudent] === true
+      ) {
+        return "Male";
+      }
+      if (
+        col.key === "Gender" &&
+        item[col.key as keyof IReservedStudent] === false
+      ) {
+        return "Female";
+      }
+      return item[col.key as keyof IReservedStudent]
+        ? item[col.key as keyof IReservedStudent]
+        : "";
+    })
+  );
+
+  const ws: XLSX.WorkSheet = XLSX.utils.aoa_to_sheet([]);
+  XLSX.utils.sheet_add_aoa(ws, [header, ...extractedData], { origin: "A1" });
+  // set default width of each column
+  ws["!cols"] = Array(extractedHeader.length).fill({ wch: 18 });
+  // create the workbook with a single sheet named 'data'
+  const wb: XLSX.WorkBook = { Sheets: { data: ws }, SheetNames: ["data"] };
+  // save to file
+  XLSX.writeFile(wb, `students${nowDate.getTime()}${fileExtension}`);
   return true;
 };

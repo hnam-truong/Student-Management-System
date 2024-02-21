@@ -1,7 +1,11 @@
+import { IReservedStudent } from "../interfaces/reserved-student.interface";
 import { IScore } from "../interfaces/score.interface";
 import { IStudent } from "../interfaces/student.interface";
 
-export const storeDataToCache = (data: IStudent[] | IScore[], name: string) => {
+export const storeDataToCache = (
+  data: IStudent[] | IScore[] | IReservedStudent[],
+  name: string
+) => {
   try {
     sessionStorage.setItem(name, JSON.stringify(data));
     return 1;
@@ -10,7 +14,9 @@ export const storeDataToCache = (data: IStudent[] | IScore[], name: string) => {
   }
 };
 
-export const getDataFromCache = (name: string): IStudent[] | IScore[] => {
+export const getDataFromCache = (
+  name: string
+): IStudent[] | IScore[] | IReservedStudent[] => {
   const dataCache = sessionStorage.getItem(name);
   const parseData = dataCache ? JSON.parse(dataCache) : null;
   return parseData;

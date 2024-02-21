@@ -11,35 +11,27 @@
 }
 
 .user-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  width: 100px;
+  cursor: pointer;
+  p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 .dropdown {
   display: inline-block;
 }
-.dropdown-content {
-  border-radius: $small;
-  display: none;
-  position: absolute;
-  background-color: $light-grey;
-  box-shadow: 0px $medium $xs-medium 0px rgba(0, 0, 0, 0.2);
+.content {
   z-index: 1;
-  min-width: 130px;
   right: 0;
-  padding: $small 0;
-  gap: $medium;
-}
-.dropdown:hover .dropdown-content {
-  display: block;
-  gap: $medium;
 }
 .btn {
   gap: $lg-small;
-  margin-left: $sm-smaller;
+  margin-bottom: $small;
   border: none !important;
   border-radius: none;
-  width: 95%;
+  width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;

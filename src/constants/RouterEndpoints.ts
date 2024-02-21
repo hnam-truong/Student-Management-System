@@ -34,7 +34,7 @@ enum RouterEndpoints {
   // EMAILS ROUTES
   EmailsManagement = "/emails",
   EmailConfiguration = "email-configuration",
-  StudentsClassManagement = "StudentsClassManagement"
+  StudentsClassManagement = "StudentsClassManagement",
 }
 
 export default RouterEndpoints;

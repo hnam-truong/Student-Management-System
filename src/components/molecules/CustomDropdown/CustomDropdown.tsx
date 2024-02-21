@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unused-prop-types */
 /* eslint-disable react/require-default-props */
 import React from "react";
 import type { MenuProps } from "antd";
@@ -16,8 +17,6 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
   id,
   viewLink,
   editLink,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  deleteLink,
   isDelete,
 }) => {
   let items: MenuProps["items"] = [

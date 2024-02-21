@@ -1,0 +1,33 @@
+@import "../../../styles/main.scss";
+.wrapper {
+  width: 13rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.item-pop {
+  cursor: pointer;
+  display: flex;
+  gap: $medium;
+  padding: $small $xs-small;
+  align-items: center;
+  border-radius: $sm-smaller;
+  border: 0;
+  background: $white;
+  margin-bottom: $xs-small;
+
+  &:hover {
+    background-color: $slight-blue;
+    color: $third-color;
+  }
+}
+
+.icon {
+  align-items: center;
+  justify-items: center;
+  line-height: 100%;
+}
+.ant-popover-inner,
+.ant-popover-inner {
+  padding: $small $small $xs-small $small !important;
+}

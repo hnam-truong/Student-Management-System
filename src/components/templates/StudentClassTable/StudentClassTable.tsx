@@ -107,7 +107,7 @@ const StudentClassTable: React.FC<StudentClassTableProps> = ({
     onChange: onSelectChange,
   };
 
-  const scoresWithKeys = classStudent.map((classStudent, index) => ({
+  const scoresWithKeys = classStudent.map((classStudent) => ({
     ...classStudent,
     key: classStudent.ID,
   }));

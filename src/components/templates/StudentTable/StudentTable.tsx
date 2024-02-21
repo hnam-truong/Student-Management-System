@@ -1,20 +1,32 @@
 /* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-unused-vars */
+
 /* eslint-disable @typescript-eslint/no-shadow */
 import React, { useState } from "react";
 import { Table, Button } from "antd";
-import type { TableColumnsType } from "antd";
+import type { TableColumnsType, TableProps } from "antd";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IStudent } from "../../../interfaces/student.interface";
 import { generateFilters } from "../../../utils/GenerateFilter";
 import CustomDropdown from "../../molecules/CustomDropdown/CustomDropdown";
+import {
+  getDataFromCache,
+  storeDataToCache,
+} from "../../../utils/StoreDataToCache";
+import { exportStudentToExcel } from "../../../utils/ExportToExcel";
 
 interface StudentTableProps {
   student: IStudent[];
   loading: boolean;
+  isExport: boolean;
+  completedExport: () => void;
 }
 
-const StudentTable: React.FC<StudentTableProps> = ({ student, loading }) => {
+const StudentTable: React.FC<StudentTableProps> = ({
+  student,
+  loading,
+  isExport,
+  completedExport,
+}) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const filters: { [key: string]: ReturnType<typeof generateFilters> } = {
     Name: generateFilters(student, "Name"),
@@ -100,7 +112,7 @@ const StudentTable: React.FC<StudentTableProps> = ({ student, loading }) => {
       ),
       key: "operation",
       width: 100,
-      render: (value, record) => (
+      render: (_value, record) => (
         <CustomDropdown
           id={record?.ID}
           viewLink="/student"
@@ -121,10 +133,31 @@ const StudentTable: React.FC<StudentTableProps> = ({ student, loading }) => {
     onChange: onSelectChange,
   };
 
-  const scoresWithKeys = student.map((student, index) => ({
+  const scoresWithKeys = student.map((student) => ({
     ...student,
     key: student.ID,
   }));
+  const onChange: TableProps<IStudent>["onChange"] = (
+    _pagination,
+    _filters,
+    _sorter,
+    extra
+  ) => {
+    const dataStorage = extra.currentDataSource;
+    storeDataToCache(dataStorage, "student");
+  };
+
+  const handleExport = () => {
+    const dataCache = getDataFromCache("student") as IStudent[];
+    const dataExport = dataCache || scoresWithKeys;
+    exportStudentToExcel(columns, dataExport);
+  };
+  if (isExport) {
+    handleExport();
+    setTimeout(() => {
+      completedExport();
+    }, 1000);
+  }
 
   return (
     <div>
@@ -133,6 +166,7 @@ const StudentTable: React.FC<StudentTableProps> = ({ student, loading }) => {
         columns={columns}
         dataSource={scoresWithKeys}
         loading={loading}
+        onChange={onChange}
       />
     </div>
   );

@@ -39,6 +39,10 @@
   height: $md-medium;
 }
 
+.header-logo {
+  height: $lg-large;
+}
+
 @media (max-width: $md) {
   .header-logo {
     height: $lg-large;
@@ -54,7 +58,7 @@
     }
 
     span {
-      font-size: x-small;
+      font-size: $lg-small;
     }
   }
 

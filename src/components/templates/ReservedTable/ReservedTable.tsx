@@ -2,20 +2,29 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import React, { useState } from "react";
 import { Table, Button } from "antd";
-import type { TableColumnsType } from "antd";
+import type { TableColumnsType, TableProps } from "antd";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IReservedStudent } from "../../../interfaces/reserved-student.interface";
 import { generateFilters } from "../../../utils/GenerateFilter";
 import CustomDropdown from "../../molecules/CustomDropdown/CustomDropdown";
+import { exportReserveStudentToExcel } from "../../../utils/ExportToExcel";
+import {
+  getDataFromCache,
+  storeDataToCache,
+} from "../../../utils/StoreDataToCache";
 
 interface ReservedTableProps {
   reservedStudent: IReservedStudent[] | null;
   loading: boolean;
+  isExport: boolean;
+  completedExport: () => void;
 }
 
 const ReservedTable: React.FC<ReservedTableProps> = ({
   reservedStudent,
   loading,
+  isExport,
+  completedExport,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const filters: { [key: string]: ReturnType<typeof generateFilters> } = {
@@ -281,14 +290,36 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
       }))
     : [];
 
+  const onChange: TableProps<IReservedStudent>["onChange"] = (
+    _pagination,
+    _filters,
+    _sorter,
+    extra
+  ) => {
+    const dataStorage = extra.currentDataSource;
+    storeDataToCache(dataStorage, "studentReserve");
+  };
+
+  const handleExport = () => {
+    const dataCache = getDataFromCache("studentReserve") as IReservedStudent[];
+    const dataExport = dataCache || scoresWithKeys;
+    exportReserveStudentToExcel(columns, dataExport);
+  };
+  if (isExport) {
+    handleExport();
+    setTimeout(() => {
+      completedExport();
+    }, 1000);
+  }
+
   return (
     <div>
       <Table
         rowSelection={rowSelection}
-        scroll={{ x: "max-content" }}
         columns={columns}
         dataSource={scoresWithKeys}
         loading={loading}
+        onChange={onChange}
       />
     </div>
   );
