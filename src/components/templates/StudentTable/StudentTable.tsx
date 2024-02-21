@@ -100,7 +100,7 @@ const StudentTable: React.FC<StudentTableProps> = ({ student, loading }) => {
       ),
       key: "operation",
       width: 100,
-      render: (value, record) => (
+      render: (record) => (
         <CustomDropdown
           id={record?.ID}
           viewLink="/student"
@@ -121,7 +121,7 @@ const StudentTable: React.FC<StudentTableProps> = ({ student, loading }) => {
     onChange: onSelectChange,
   };
 
-  const scoresWithKeys = student.map((student, index) => ({
+  const scoresWithKeys = student.map((student) => ({
     ...student,
     key: student.ID,
   }));
