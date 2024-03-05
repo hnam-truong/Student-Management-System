@@ -14,7 +14,7 @@ import {
 
 describe("CustomButton Components", () => {
   test("AddButton should render correctly and trigger onClick", () => {
-    const mockOnClick = jest.fn();
+    const mockOnClick = vi.fn();
     render(<AddButton onClick={mockOnClick} text="Add" />);
 
     const addButton = screen.getByText("Add");
@@ -25,7 +25,7 @@ describe("CustomButton Components", () => {
   });
 
   test("DeleteButton should render correctly and trigger onClick", () => {
-    const mockOnClick = jest.fn();
+    const mockOnClick = vi.fn();
     render(<DeleteButton onClick={mockOnClick} text="Delete" />);
 
     const deleteButton = screen.getByText("Delete");
@@ -36,18 +36,18 @@ describe("CustomButton Components", () => {
   });
 
   test("ActionButton should render correctly and trigger onClick", () => {
-    const mockOnClick = jest.fn();
+    const mockOnClick = vi.fn();
     render(<ActionButton onClick={mockOnClick} text="Action" />);
 
     const actionButton = screen.getByText("Action");
-    expect(ActionButton).toBeInTheDocument();
+    expect(actionButton).toBeInTheDocument();
 
     fireEvent.click(actionButton);
     expect(mockOnClick).toHaveBeenCalled();
   });
 
   test("ImportButton should render correctly and trigger onClick", () => {
-    const mockOnClick = jest.fn();
+    const mockOnClick = vi.fn();
     render(<ImportButton onClick={mockOnClick} text="Import" />);
 
     const importButton = screen.getByText("Import");
@@ -58,7 +58,7 @@ describe("CustomButton Components", () => {
   });
 
   test("ExportButton should render correctly and trigger onClick", () => {
-    const mockOnClick = jest.fn();
+    const mockOnClick = vi.fn();
     render(<ExportButton onClick={mockOnClick} text="Export" />);
 
     const exportButton = screen.getByText("Export");
@@ -69,7 +69,7 @@ describe("CustomButton Components", () => {
   });
 
   test("FilterButton should render correctly and trigger onClick", () => {
-    const mockOnClick = jest.fn();
+    const mockOnClick = vi.fn();
     render(<FilterButton onClick={mockOnClick} text="Filter" />);
 
     const filterButton = screen.getByText("Filter");
@@ -80,7 +80,7 @@ describe("CustomButton Components", () => {
   });
 
   test("SubmitButton should render correctly and trigger onClick", () => {
-    const mockOnClick = jest.fn();
+    const mockOnClick = vi.fn();
     render(<SubmitButton onClick={mockOnClick} text="Submit" />);
 
     const submitButton = screen.getByText("Submit");
@@ -91,7 +91,7 @@ describe("CustomButton Components", () => {
   });
 
   test("CancelButton should render correctly and trigger onClick", () => {
-    const mockOnClick = jest.fn();
+    const mockOnClick = vi.fn();
     render(<CancelButton onClick={mockOnClick} text="Cancel" />);
 
     const cancelButton = screen.getByText("Cancel");

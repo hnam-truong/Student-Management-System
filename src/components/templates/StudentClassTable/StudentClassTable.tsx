@@ -5,6 +5,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { IClassStudent } from "../../../interfaces/class-student.interface";
 import { generateFilters } from "../../../utils/GenerateFilter";
 import CustomDropdown from "../../molecules/CustomDropdown/CustomDropdown";
+import AvailableTag from "../../atoms/AvailableTag/AvailableTag";
 
 interface StudentClassTableProps {
   classStudent: IClassStudent[];
@@ -18,10 +19,12 @@ const StudentClassTable: React.FC<StudentClassTableProps> = ({
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const filters: { [key: string]: ReturnType<typeof generateFilters> } = {
     FullName: generateFilters(classStudent, "FullName"),
-    Phone: generateFilters(classStudent, "Phone"),
+    DateOfBirth: generateFilters(classStudent, "DateOfBirth"),
     Email: generateFilters(classStudent, "Email"),
+    Phone: generateFilters(classStudent, "Phone"),
+    GPA: generateFilters(classStudent, "GPA"),
+    RECer: generateFilters(classStudent, "RECer"),
     Status: generateFilters(classStudent, "Status"),
-    // Add more keys for other columns as needed
   };
 
   const columns: TableColumnsType<IClassStudent> = [
@@ -29,6 +32,7 @@ const StudentClassTable: React.FC<StudentClassTableProps> = ({
       title: "Full name",
       dataIndex: "FullName",
       key: "FullName",
+      fixed: "left",
       sorter: (a, b) => a.FullName.localeCompare(b.FullName),
       filters: filters.FullName,
       filterSearch: true,
@@ -37,14 +41,17 @@ const StudentClassTable: React.FC<StudentClassTableProps> = ({
         record.FullName.indexOf(value as string) === 0,
     },
     {
-      title: "Phone",
-      dataIndex: "Phone",
-      key: "Phone",
-      filters: filters.Phone,
+      title: "Date of Birth",
+      dataIndex: "DateOfBirth",
+      key: "DateOfBirth",
+      sorter: (a, b) =>
+        a.DateOfBirth.toString().localeCompare(b.DateOfBirth.toString()),
+      filters: filters.DateOfBirth,
       filterSearch: true,
       filterMode: "tree",
       onFilter: (value: boolean | React.Key, record) =>
-        record.Phone.indexOf(value as string) === 0,
+        record.DateOfBirth.toString().indexOf(value as string) === 0,
+      render: (dateOfBirth: string) => dateOfBirth,
     },
     {
       title: "Email",
@@ -57,6 +64,37 @@ const StudentClassTable: React.FC<StudentClassTableProps> = ({
         record.Email.indexOf(value as string) === 0,
     },
     {
+      title: "Phone",
+      dataIndex: "Phone",
+      key: "Phone",
+      filters: filters.Phone,
+      filterSearch: true,
+      filterMode: "tree",
+      onFilter: (value: boolean | React.Key, record) =>
+        record.Phone.indexOf(value as string) === 0,
+    },
+    {
+      title: "GPA",
+      dataIndex: "GPA",
+      key: "GPA",
+      sorter: (a, b) => a.GPA - b.GPA,
+      filters: filters.GPA,
+      filterSearch: true,
+      filterMode: "tree",
+      onFilter: (value: boolean | React.Key, record) => record.GPA === value,
+    },
+    {
+      title: "RECer",
+      dataIndex: "RECer",
+      key: "RECer",
+      sorter: (a, b) => a.RECer.localeCompare(b.RECer),
+      filters: filters.RECer,
+      filterSearch: true,
+      filterMode: "tree",
+      onFilter: (value: boolean | React.Key, record) =>
+        record.RECer.indexOf(value as string) === 0,
+    },
+    {
       title: "Status",
       dataIndex: "Status",
       key: "Status",
@@ -66,6 +104,11 @@ const StudentClassTable: React.FC<StudentClassTableProps> = ({
       filterMode: "tree",
       onFilter: (value: boolean | React.Key, record) =>
         record.Status.indexOf(value as string) === 0,
+      render: (status) => (
+        <div className="centered">
+          <AvailableTag status={status} />
+        </div>
+      ),
     },
     {
       title: (

@@ -29,6 +29,7 @@ const ClassTable: React.FC<ClassTableProps> = ({ classes, loading }) => {
       title: "Class",
       dataIndex: "ClassName",
       key: "ClassName",
+      fixed: "left",
       sorter: (a, b) => a.ClassName.localeCompare(b.ClassName),
       filters: filters.ClassName,
       filterSearch: true,

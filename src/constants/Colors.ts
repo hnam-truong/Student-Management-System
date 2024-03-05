@@ -29,6 +29,11 @@ enum Colors {
   LightOrange = "#ff7568",
   HoverTable = "#e9eef3",
   LightDark = "#2363a3",
+  LimeGreen = "#4db848",
+  SlateGray = "#b9b9B9",
+  Teal = "#008080",
+  LightCoral = "#f08080",
+  Tomato = "#ff8c00",
   DisableColor = "#f0f0f0",
 }
 

@@ -49,9 +49,9 @@ const Content: React.FC<ContentProps> = ({
   const handleDrop = () => {
     putReservedStudent(data?.ID, {
       ...data,
-      Status: "Drop class",
+      Status: "Drop out",
     });
-    setStatus("Drop class");
+    setStatus("Drop out");
     handleDataChange();
     setLoadingDrop(true);
     setTimeout(() => {
@@ -84,12 +84,12 @@ const Content: React.FC<ContentProps> = ({
         </div>
         <div className="subtitle1">Remind</div>
       </Button>
-      {!(status === "Drop class") && (
+      {!(status === "Drop out") && (
         <Button className="item-pop" onClick={handleDrop} loading={loadingDrop}>
           <div className="icon">
             <MdOutlinePauseCircle size={Sizes.LgMedium} />
           </div>
-          <div className="subtitle1">Drop class</div>
+          <div className="subtitle1">Drop out</div>
         </Button>
       )}
       {openRemind && (

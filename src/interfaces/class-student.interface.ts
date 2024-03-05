@@ -4,4 +4,7 @@ export interface IClassStudent {
   Phone: string;
   Email: string;
   Status: string;
+  DateOfBirth: Date;
+  GPA: number;
+  RECer: string;
 }

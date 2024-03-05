@@ -5,6 +5,7 @@ import { generateFilters } from "../../../utils/GenerateFilter";
 import CustomDropdown from "../../molecules/CustomDropdown/CustomDropdown";
 import { IUser } from "../../../interfaces/user.interface";
 import Gender from "../../atoms/Gender/Gender";
+import RoleTag from "../../atoms/RoleTag/RoleTag";
 
 interface UserTableProps {
   user: IUser[];
@@ -68,7 +69,7 @@ const UserTable: React.FC<UserTableProps> = ({
       dataIndex: "Gender",
       key: "Gender",
       render: (gender) => (
-        <div className="centered-gen">
+        <div className="centered">
           <Gender gender={gender} />
         </div>
       ),
@@ -87,6 +88,11 @@ const UserTable: React.FC<UserTableProps> = ({
       filterMode: "tree",
       onFilter: (value: boolean | React.Key, record) =>
         record.UserType.toString().indexOf(value as string) === 0,
+      render: (role) => (
+        <div className="centered">
+          <RoleTag type={role} />
+        </div>
+      ),
     },
     {
       key: "operation",

@@ -79,6 +79,7 @@ const StudentTable: React.FC<StudentTableProps> = ({
       title: "Phone",
       dataIndex: "Phone",
       key: "Phone",
+      fixed: "left",
       filters: filters.Phone,
       filterSearch: true,
       filterMode: "tree",
