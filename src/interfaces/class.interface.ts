@@ -9,6 +9,6 @@ export interface IClass {
   UpdatedBy: string;
   Duration: number;
   Location: string;
-  Status: boolean;
+  Status: string;
   ProgramID: string;
 }

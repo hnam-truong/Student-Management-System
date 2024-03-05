@@ -10,15 +10,22 @@ const antConfig = {
       iconSize: Sizes.LgMedium,
       collapsedIconSize: Sizes.LgMedium,
     },
-    Button: {
-      primaryColor: Colors.White,
-      primaryBg: Colors.Primary,
+    Table: {
+      rowSelectedBg: Colors.HoverTable,
+      rowHoverBg: Colors.HoverTable,
+      rowSelectedHoverBg: Colors.HoverTable,
+    },
+    Drawer: {
+      colorBgElevated: Colors.Secondary,
+      // colorBgMask: Colors.HoverTable,
     },
   },
   token: {
     colorPrimary: Colors.Primary,
-    colorSecondary: Colors.Secondary,
     borderRadius: 4,
+    fontFamily: "Inter, sans-serif",
+    colorTextBase: Colors.Primary,
+    // colorPrimaryTextHover: "#d4daf1be",
   },
 };
 

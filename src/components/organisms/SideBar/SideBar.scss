@@ -1,55 +1,74 @@
 @import "../../../styles/main.scss";
 
-.sidebar {
-  background-color: $secondary-color;
+.sidebar-wrapper {
   width: 100%;
-  left: 0;
-  flex: 1;
-  min-height: 100vh;
-}
-.sidebar-content {
-  background-color: $secondary-color;
-}
-.collapsed {
-  width: 76px;
-  background-color: $secondary-color;
-}
-.bg-close {
-  padding: $medium 0 0 $lg-medium;
-  background-color: $primary-color;
-  justify-content: center;
-  cursor: pointer;
-}
-.btn-close {
-  border: 1px solid transparent;
-  border-radius: 50%;
-  cursor: pointer;
-  &:hover {
-    background-color: $light-blue;
-    border: 1px solid $lighter-blue;
-  }
-}
-.ant-menu-item-selected {
-  font-weight: $fw-bold;
-  align-items: center;
-}
-
-.ant-menu-submenu-selected {
-  .ant-menu-submenu-title,
-  .ant-menu-item-selected {
-    font-weight: $fw-bold;
-    align-items: center;
-    background-color: $slight-blue;
-  }
-}
-
-@media (max-width: $md) {
-  .sidebar-responsive {
-    width: 76px;
-    background-color: $secondary-color;
+  position: relative;
+  // background-color: $secondary-color;
+  .sidebar {
     min-height: 100vh;
   }
-  .bg-close {
-    display: none;
+
+  .wrapper-btn {
+    // margin: $xs-small;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: $z-index-high;
+    border-radius: 1px solid $secondary-color;
+  }
+  .btn-menu {
+    padding: $sm-smaller;
+    border: none;
+    background-color: $sixth-color;
+    border-radius: 1px solid $secondary-color;
+    &:hover {
+      background-color: $secondary-color !important;
+    }
+  }
+  .ant-drawer-content-wrapper {
+    width: fit-content !important;
+  }
+  .ant-drawer .ant-drawer-body {
+    padding: 0 !important;
+    width: $x-sm-lager !important;
+  }
+
+  .sidebar-content {
+    background-color: $secondary-color;
+  }
+
+  .ant-menu-item-selected {
+    font-weight: $fw-semi-bold;
+    align-items: center;
+    color: $primary-color;
+    background-color: $fifth-color !important;
+  }
+  .ant-menu-title-content {
+    color: $primary-color;
+  }
+  .ant-menu-submenu-selected {
+    .ant-menu-submenu-title,
+    .ant-menu-item-selected {
+      font-weight: $fw-semi-bold;
+      align-items: center;
+      color: $primary-color;
+      background-color: $fifth-color;
+    }
+  }
+  .ant-menu-sub {
+    .ant-menu-item-only-child {
+      padding-left: $xs-larger !important;
+      color: $primary-color;
+    }
+  }
+}
+@media (max-width: $md) {
+  .sidebar-responsive {
+    width: fit-content;
+    background-color: $secondary-color;
+    height: fit-content;
+  }
+  .open-sidebar {
+    min-height: 125vh;
   }
 }

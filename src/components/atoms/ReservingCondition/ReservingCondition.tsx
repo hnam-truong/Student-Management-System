@@ -6,12 +6,14 @@ import { IReservingCondition } from "../../../interfaces/reserving-condition.int
 
 interface ReservingConditionProps {
   reservingCondition: IReservingCondition[] | null;
+  disable: boolean | false;
 }
 const ReservingCondition = ({
   reservingCondition,
+  disable,
 }: ReservingConditionProps) => (
   <Form.Item
-    label="Reserving conditions"
+    label={`${disable ? "" : "Reserving conditions"}`}
     name="ReservingConditions"
     rules={[
       {
@@ -20,14 +22,17 @@ const ReservingCondition = ({
       },
     ]}
   >
-    <Checkbox.Group className="checkbox-group">
+    <Checkbox.Group className="checkbox-group" name="checkbox-group">
       {reservingCondition?.map((condition) => (
-        <Checkbox key={condition?.ID} value={condition?.ID}>
+        <Checkbox
+          key={condition?.ID}
+          value={condition?.ID}
+          style={{ pointerEvents: `${disable ? "none" : "auto"}` }}
+        >
           {condition?.Name}
         </Checkbox>
       ))}
     </Checkbox.Group>
   </Form.Item>
 );
-
 export default ReservingCondition;

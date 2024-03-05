@@ -6,7 +6,7 @@
  */
 
 import React from "react";
-import { BsFillPersonFill } from "react-icons/bs";
+import { IoWomanSharp, IoManSharp } from "react-icons/io5";
 import Colors from "../../../constants/Colors";
 import FontSizes from "../../../constants/FontSizes";
 
@@ -17,18 +17,30 @@ interface GenderProps {
 
 const Gender: React.FC<GenderProps> = ({ gender, customFontSize }) => (
   <div>
-    {gender ? (
-      <BsFillPersonFill
-        style={{ color: Colors.LighterBlack, fontSize: customFontSize }}
+    {(gender !== undefined || gender !== null) && gender ? (
+      <IoManSharp
+        style={{
+          color: Colors.LighterBlack,
+          width: "100%",
+          alignItems: "center",
+          fontSize: customFontSize,
+        }}
       />
     ) : (
-      <BsFillPersonFill style={{ color: Colors.Red }} />
+      <IoWomanSharp
+        style={{
+          color: Colors.Red,
+          width: "100%",
+          alignItems: "center",
+          fontSize: customFontSize,
+        }}
+      />
     )}
   </div>
 );
 
 Gender.defaultProps = {
-  customFontSize: FontSizes.MdLarger,
+  customFontSize: FontSizes.XsLarger,
 };
 
 export default Gender;

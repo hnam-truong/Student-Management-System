@@ -22,21 +22,27 @@
 .dropdown {
   display: inline-block;
 }
-.content {
-  z-index: 1;
+.content-user {
+  z-index: $z-index-lowest;
   right: 0;
-}
-.btn {
-  gap: $lg-small;
-  margin-bottom: $small;
-  border: none !important;
-  border-radius: none;
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  background-color: $light-grey;
-}
-.link {
-  text-decoration: none;
+  .btn {
+    gap: $lg-small;
+    margin-bottom: $small;
+    border: none !important;
+    border-radius: none;
+    box-shadow: none !important;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    color: $primary-color;
+    background-color: $white !important;
+    &:hover {
+      color: $primary-color !important;
+      background-color: $light-white !important;
+    }
+  }
+  .link {
+    text-decoration: none;
+  }
 }

@@ -1,8 +1,6 @@
-/* eslint-disable no-console */
-
-/* eslint-disable @typescript-eslint/no-shadow */
-import React, { useState } from "react";
-import { Table, Button } from "antd";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
+import { Table } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import { IoSettingsOutline } from "react-icons/io5";
 import { IStudent } from "../../../interfaces/student.interface";
@@ -19,6 +17,8 @@ interface StudentTableProps {
   loading: boolean;
   isExport: boolean;
   completedExport: () => void;
+  handleDataChange: () => void;
+  setStudentSelect: React.Dispatch<React.SetStateAction<IStudent[]>>;
 }
 
 const StudentTable: React.FC<StudentTableProps> = ({
@@ -26,8 +26,11 @@ const StudentTable: React.FC<StudentTableProps> = ({
   loading,
   isExport,
   completedExport,
+  handleDataChange,
+  setStudentSelect,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [selectedRows, setSelectedRows] = useState<IStudent[]>([]);
   const filters: { [key: string]: ReturnType<typeof generateFilters> } = {
     Name: generateFilters(student, "Name"),
     DateOfBirth: generateFilters(student, "DateOfBirth"),
@@ -60,6 +63,7 @@ const StudentTable: React.FC<StudentTableProps> = ({
       filterMode: "tree",
       onFilter: (value: boolean | React.Key, record) =>
         record.DateOfBirth.toString().indexOf(value as string) === 0,
+      render: (dateOfBirth: string) => dateOfBirth,
     },
     {
       title: "Email",
@@ -104,28 +108,32 @@ const StudentTable: React.FC<StudentTableProps> = ({
     },
     {
       title: (
-        <Button type="link">
-          <IoSettingsOutline
-            style={{ width: "20px", height: "20px", color: "white" }}
-          />
-        </Button>
+        <div className="centered">
+          <IoSettingsOutline size={20} />
+        </div>
       ),
       key: "operation",
-      width: 100,
+      width: 80,
       render: (_value, record) => (
-        <CustomDropdown
-          id={record?.ID}
-          viewLink="/student"
-          editLink="/student/edit"
-          isDelete
-        />
+        <div className="centered">
+          <CustomDropdown
+            id={record?.ID}
+            viewLink="/student"
+            editLink="/student/edit"
+            isDelete
+            handleDataChange={handleDataChange}
+          />
+        </div>
       ),
     },
   ];
 
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
-    setSelectedRowKeys(newSelectedRowKeys);
+  const onSelectChange = (
+    selectedRowKey: React.Key[],
+    selectedRow: IStudent[]
+  ) => {
+    setSelectedRowKeys(selectedRowKey);
+    setSelectedRows(selectedRow);
   };
 
   const rowSelection = {
@@ -133,10 +141,11 @@ const StudentTable: React.FC<StudentTableProps> = ({
     onChange: onSelectChange,
   };
 
-  const scoresWithKeys = student.map((student) => ({
-    ...student,
-    key: student.ID,
+  const scoresWithKeys = student.map((_student) => ({
+    ..._student,
+    key: _student.ID,
   }));
+
   const onChange: TableProps<IStudent>["onChange"] = (
     _pagination,
     _filters,
@@ -149,24 +158,53 @@ const StudentTable: React.FC<StudentTableProps> = ({
 
   const handleExport = () => {
     const dataCache = getDataFromCache("student") as IStudent[];
-    const dataExport = dataCache || scoresWithKeys;
+    const dataExport =
+      selectedRowKeys.length > 0 ? selectedRows : dataCache || scoresWithKeys;
     exportStudentToExcel(columns, dataExport);
   };
   if (isExport) {
     handleExport();
     setTimeout(() => {
       completedExport();
-    }, 1000);
+    }, 200);
   }
 
+  useEffect(() => {
+    // Map selectedRowKeys to actual IStudent objects
+    const selectedStudents = scoresWithKeys.filter((selectedStudent) =>
+      selectedRowKeys.includes(selectedStudent.key)
+    );
+
+    // Update the state using setStudentSelect
+    setStudentSelect(selectedStudents);
+  }, [selectedRowKeys, setStudentSelect]);
+
   return (
-    <div>
+    <div
+      style={{
+        maxHeight: "70%",
+        display: "flex",
+        flexDirection: "column",
+        maxWidth: "100%",
+      }}
+      className="ant-table-container"
+    >
       <Table
+        size="middle"
+        scroll={{ x: "max-content" }}
+        style={{ flex: 1, overflowY: "auto" }}
         rowSelection={rowSelection}
         columns={columns}
         dataSource={scoresWithKeys}
         loading={loading}
         onChange={onChange}
+        pagination={{
+          defaultPageSize: 10,
+          pageSizeOptions: ["10", "20", "50", "100"],
+          total: scoresWithKeys.length,
+          showSizeChanger: true,
+        }}
+        bordered
       />
     </div>
   );

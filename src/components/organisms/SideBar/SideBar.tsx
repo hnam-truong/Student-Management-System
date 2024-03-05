@@ -1,23 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
-import { Menu, MenuProps } from "antd";
-
-import { IoMdBook } from "react-icons/io";
-import { RiCalendar2Fill } from "react-icons/ri";
+import { Button, Drawer, Menu, MenuProps } from "antd";
+import { RiCalendar2Fill, RiMenu2Line } from "react-icons/ri";
 import {
   MdOutlineGroup,
   MdOutlineSnippetFolder,
   MdOutlineHome,
   MdOutlineSchool,
-  MdBiotech,
 } from "react-icons/md";
 import { LuSettings } from "react-icons/lu";
 import { FaRegUser } from "react-icons/fa";
-import { GrScorecard } from "react-icons/gr";
 
 import "./SideBar.scss";
 import RouterEndpoints from "../../../constants/RouterEndpoints";
+import Sizes from "../../../constants/Sizes";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -43,24 +40,21 @@ const items: MenuItem[] = [
     getItem("Student list", RouterEndpoints.StudentsManagement),
     getItem("Reserve list", RouterEndpoints.ReservedStudents),
   ]),
-  getItem("Syllabus", "syllabus", <IoMdBook />, [
-    getItem("Syllabus", RouterEndpoints.SyllabusManagement),
-  ]),
-  getItem("Training program", "training-program", <MdBiotech />, [
-    getItem("Training program", RouterEndpoints.TrainingProgramManagement),
-  ]),
-  getItem("Class", "class", <MdOutlineSchool size={23} />, [
-    getItem("View class", RouterEndpoints.StudentsClassManagement),
-  ]),
-  getItem("Scores", RouterEndpoints.ScoresManagement, <GrScorecard />),
+  getItem(
+    "User management",
+    RouterEndpoints.UsersManagement,
+    <FaRegUser size={20} />
+  ),
+  getItem(
+    "Class",
+    RouterEndpoints.ClassesManagement,
+    <MdOutlineSchool size={23} />
+  ),
   getItem(
     "Training calendar",
     RouterEndpoints.TrainingCalendarManagement,
     <RiCalendar2Fill />
   ),
-  getItem("User management", "usermanagement", <FaRegUser size={20} />, [
-    getItem("User management", RouterEndpoints.UsersManagement),
-  ]),
   getItem(
     "Learning materials",
     RouterEndpoints.LearningMaterialsManagement,
@@ -75,7 +69,8 @@ const SideBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [width, setWidth] = useState(window.innerWidth);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const [openSidebar, setOpenSidebar] = useState<boolean>(false);
   const [current, setCurrent] = useState(`${location.pathname}`);
   const handleClick: MenuProps["onClick"] = (e) => {
     navigate(`${e.key}`);
@@ -85,14 +80,18 @@ const SideBar = () => {
   const handleResize = () => {
     setWidth(window.innerWidth);
   };
-
+  const onOpenSidebar = () => {
+    setOpenSidebar(true);
+  };
+  const onCloseSidebar = () => {
+    setOpenSidebar(false);
+  };
   useEffect(() => {
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
   useEffect(() => {
     if (width < 768) {
       setIsCollapsed(true);
@@ -101,18 +100,46 @@ const SideBar = () => {
     }
   }, [width]);
   return (
-    <div className={`sidebar-responsive  ${!isCollapsed && " sidebar"} `}>
-      <Menu
-        onClick={handleClick}
-        defaultOpenKeys={[`${location.pathname}`]}
-        selectedKeys={[current]}
-        mode="inline"
-        items={items}
-        className={`sidebar-content subtitle1 `}
-        inlineCollapsed={isCollapsed}
-        subMenuCloseDelay={0.2}
-        subMenuOpenDelay={0.2}
-      />
+    <div className="sidebar-wrapper">
+      {isCollapsed ? (
+        <div className={`sidebar-responsive ${openSidebar && "open-sidebar"}`}>
+          <div className="wrapper-btn">
+            <Button onClick={onOpenSidebar} className="btn-menu">
+              <RiMenu2Line size={Sizes.Large} />
+            </Button>
+          </div>
+          <Drawer
+            placement="left"
+            open={openSidebar}
+            onClose={onCloseSidebar}
+            getContainer={false}
+          >
+            <Menu
+              onClick={handleClick}
+              defaultOpenKeys={[`${location.pathname}`]}
+              selectedKeys={[current]}
+              mode="inline"
+              items={items}
+              className={`sidebar-content subtitle1 `}
+              subMenuCloseDelay={0.2}
+              subMenuOpenDelay={0.2}
+            />
+          </Drawer>
+        </div>
+      ) : (
+        <div className="sidebar">
+          <Menu
+            onClick={handleClick}
+            defaultOpenKeys={[`${location.pathname}`]}
+            selectedKeys={[current]}
+            mode="inline"
+            items={items}
+            className={`sidebar-content subtitle1 `}
+            subMenuCloseDelay={0.2}
+            subMenuOpenDelay={0.2}
+          />
+        </div>
+      )}
     </div>
   );
 };

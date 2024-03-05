@@ -39,3 +39,27 @@ export const validatePassword = (password: string) => {
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[_#?!@$%^&*-])[A-Za-z\d_#?!@$%^&*-]{8,12}$/;
   return passwordRegex.test(password);
 };
+
+// Validate GPA
+// 0<GPA<10 and OneDecimal
+export const validateGPA = (gpa: number) =>
+  typeof gpa === "number" && gpa >= 0 && gpa <= 10;
+
+// Validate DateOfBirth
+// > 18 age
+export const validateDateOfBirth = (_: unknown, dateString: string) => {
+  const today = new Date();
+  const birthDate = new Date(dateString);
+
+  let age = today.getFullYear() - birthDate.getFullYear();
+
+  if (
+    today.getMonth() < birthDate.getMonth() ||
+    (today.getMonth() === birthDate.getMonth() &&
+      today.getDate() < birthDate.getDate())
+  ) {
+    age -= 1;
+  }
+
+  return age >= 18;
+};

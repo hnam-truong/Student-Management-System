@@ -17,4 +17,42 @@
   strong {
     margin-left: 4px;
   }
+  &--grey {
+    background-color: $grey;
+    &:hover {
+      background-color: $grey !important;
+    }
+  }
+
+  &--import {
+    background-color: $green;
+    &:hover {
+      background-color: $green !important;
+    }
+  }
+
+  &--export {
+    background-color: $light-red;
+    &:hover {
+      background-color: $light-red !important;
+    }
+  }
+  &--cancel {
+    border: 1px solid $white;
+    background-color: $white !important;
+
+    &:hover {
+      border: 1px solid $light-red !important;
+      color: $light-red !important;
+      background-color: $white !important;
+    }
+    strong {
+      text-decoration: underline;
+    }
+  }
+  &--delete-default {
+    &:hover {
+      font-weight: $fw-bold;
+    }
+  }
 }

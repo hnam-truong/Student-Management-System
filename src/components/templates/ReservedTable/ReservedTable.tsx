@@ -1,32 +1,42 @@
-/* eslint-disable no-console */
-/* eslint-disable @typescript-eslint/no-shadow */
 import React, { useState } from "react";
-import { Table, Button } from "antd";
+import { Button, Table } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
 import { IoSettingsOutline } from "react-icons/io5";
+import { MdMoreHoriz } from "react-icons/md";
 import { IReservedStudent } from "../../../interfaces/reserved-student.interface";
 import { generateFilters } from "../../../utils/GenerateFilter";
-import CustomDropdown from "../../molecules/CustomDropdown/CustomDropdown";
+import ModalReservation from "../../atoms/TerminalReservation/TerminalReservation";
 import { exportReserveStudentToExcel } from "../../../utils/ExportToExcel";
 import {
   getDataFromCache,
   storeDataToCache,
 } from "../../../utils/StoreDataToCache";
+import formatDate from "../../../utils/DateFormatting";
+import Gender from "../../atoms/Gender/Gender";
+import FontSizes from "../../../constants/FontSizes";
 
 interface ReservedTableProps {
   reservedStudent: IReservedStudent[] | null;
   loading: boolean;
   isExport: boolean;
+  isImport: boolean;
   completedExport: () => void;
+  handleDataChange: () => void;
 }
 
 const ReservedTable: React.FC<ReservedTableProps> = ({
   reservedStudent,
   loading,
-  isExport,
+  isExport = false,
+  isImport = false,
   completedExport,
+  handleDataChange,
 }) => {
+  const [isShow, setIsShow] = useState<boolean>(false);
+  const [rowClick, setRowClick] = useState<string>("");
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [selectedRows, setSelectedRows] = useState<IReservedStudent[]>([]);
+  console.log(reservedStudent);
   const filters: { [key: string]: ReturnType<typeof generateFilters> } = {
     FullName: generateFilters(
       (reservedStudent || []) as IReservedStudent[],
@@ -79,6 +89,7 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
       title: "Full name",
       dataIndex: "FullName",
       key: "FullName",
+      fixed: "left",
       sorter: (a: { FullName: string }, b: { FullName: string }) =>
         a.FullName.localeCompare(b.FullName),
       filters: filters.FullName,
@@ -93,6 +104,7 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
       title: "Student code",
       dataIndex: "StudentID",
       key: "StudentID",
+      fixed: "left",
       sorter: (a: { StudentID: string }, b: { StudentID: string }) =>
         a.StudentID.localeCompare(b.StudentID),
       filters: filters.StudentID,
@@ -108,15 +120,17 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
       dataIndex: "Gender",
       key: "Gender",
       filters: [
-        { text: "Male", value: "1" },
-        { text: "Female", value: "0" },
+        { text: "Male", value: true },
+        { text: "Female", value: false },
       ],
       filterMode: "tree",
       onFilter: (
         value: boolean | React.Key,
         record: { Gender: boolean | React.Key }
       ) => record.Gender === value,
-      render: (record) => (record.Gender ? "Male" : "Female"),
+      render: (_value, record) => (
+        <Gender gender={record.Gender} customFontSize={FontSizes.XsLarger} />
+      ),
     },
 
     {
@@ -134,6 +148,7 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
         value: boolean | React.Key,
         record: { DateOfBirth: { toString: () => string | string[] } }
       ) => record.DateOfBirth.toString().indexOf(value as string) === 0,
+      render: (dateOfBirth: string) => formatDate(dateOfBirth),
     },
     {
       title: "Hometown",
@@ -222,6 +237,7 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
         const stringValue = record.ReservedStartDate?.toString() || "";
         return stringValue.includes(value as string);
       },
+      render: (reservedStartDate: string) => formatDate(reservedStartDate),
     },
     {
       title: "Reserve end date",
@@ -238,6 +254,7 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
         const stringValue = record.ReservedEndDate?.toString() || "";
         return stringValue.includes(value as string);
       },
+      render: (ReservedEndDate: string) => formatDate(ReservedEndDate),
     },
     {
       title: "Status",
@@ -255,27 +272,38 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
     },
     {
       title: (
-        <Button type="link">
-          <IoSettingsOutline
-            style={{ width: "20px", height: "20px", color: "white" }}
-          />
-        </Button>
+        <div className="centered">
+          <IoSettingsOutline size={20} />
+        </div>
       ),
       key: "operation",
-      width: 100,
-      render: (record: { ID: string | undefined }) => (
-        <CustomDropdown
-          id={record?.ID}
-          viewLink="/reserved-student"
-          editLink="/reserved-student/edit"
-        />
+      width: 80,
+      render: (record: IReservedStudent) => (
+        <div className="centered">
+          <ModalReservation
+            isShow={isShow && rowClick === record?.ID}
+            setIsShow={setIsShow}
+            data={record}
+            handleDataChange={handleDataChange}
+          >
+            <Button
+              className="btn-more"
+              onClick={() => setRowClick(record?.ID)}
+            >
+              <MdMoreHoriz />
+            </Button>
+          </ModalReservation>
+        </div>
       ),
     },
   ];
 
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
-    setSelectedRowKeys(newSelectedRowKeys);
+  const onSelectChange = (
+    selectedRowKey: React.Key[],
+    selectedRow: IReservedStudent[]
+  ) => {
+    setSelectedRowKeys(selectedRowKey);
+    setSelectedRows(selectedRow);
   };
 
   const rowSelection = {
@@ -284,9 +312,9 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
   };
 
   const scoresWithKeys = Array.isArray(reservedStudent)
-    ? reservedStudent?.map((reservedStudent) => ({
-        ...reservedStudent,
-        key: reservedStudent.ID,
+    ? reservedStudent?.map((_reservedStudent) => ({
+        ..._reservedStudent,
+        key: _reservedStudent.ID,
       }))
     : [];
 
@@ -302,24 +330,43 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
 
   const handleExport = () => {
     const dataCache = getDataFromCache("studentReserve") as IReservedStudent[];
-    const dataExport = dataCache || scoresWithKeys;
+    const dataExport =
+      selectedRowKeys.length > 0 ? selectedRows : dataCache || scoresWithKeys;
     exportReserveStudentToExcel(columns, dataExport);
   };
   if (isExport) {
     handleExport();
     setTimeout(() => {
       completedExport();
-    }, 1000);
+    }, 200);
   }
-
+  console.log("isImport", isImport);
   return (
-    <div>
+    <div
+      style={{
+        maxHeight: "70%",
+        display: "flex",
+        flexDirection: "column",
+        maxWidth: "100%",
+      }}
+      className="ant-table-container"
+    >
       <Table
+        size="middle"
+        scroll={{ x: "max-content" }}
+        style={{ flex: 1, overflowY: "auto" }}
         rowSelection={rowSelection}
         columns={columns}
         dataSource={scoresWithKeys}
         loading={loading}
         onChange={onChange}
+        bordered
+        pagination={{
+          defaultPageSize: 10,
+          pageSizeOptions: ["10", "20", "50", "100"],
+          total: scoresWithKeys.length,
+          showSizeChanger: true,
+        }}
       />
     </div>
   );

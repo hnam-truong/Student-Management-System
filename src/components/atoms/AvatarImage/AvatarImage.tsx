@@ -3,6 +3,7 @@ import { Space } from "antd";
 import { IStudent } from "../../../interfaces/student.interface";
 import Colors from "../../../constants/Colors";
 import "../../../styles/main.scss";
+import { IUser } from "../../../interfaces/user.interface";
 
 const generateColor = (name: string): string => {
   const colors = [
@@ -21,30 +22,27 @@ const generateColor = (name: string): string => {
 };
 
 interface AvatarImageProps {
-  studentDetail: IStudent;
+  detail: IStudent | IUser | null;
   isImage: boolean;
 }
 
-const AvatarImage: React.FC<AvatarImageProps> = ({
-  studentDetail,
-  isImage,
-}) => (
+const AvatarImage: React.FC<AvatarImageProps> = ({ detail, isImage }) => (
   <Space>
-    {isImage && studentDetail?.ImageUrl ? (
+    {isImage && detail?.ImageUrl !== "" && detail?.ImageUrl ? (
       <img
-        src={studentDetail.ImageUrl}
-        alt={studentDetail?.Name}
+        src={detail.ImageUrl}
+        alt={detail?.Name}
         className="avatar-container"
         data-testid="avatar-image"
       />
     ) : (
       <div
         className="centered avatar-container"
-        style={{ backgroundColor: generateColor(studentDetail?.Name) }}
+        style={{ backgroundColor: generateColor(detail?.Name || "") }}
       >
-        {studentDetail?.Name && (
+        {detail?.Name && (
           <span className="avatar-initial">
-            {studentDetail.Name.slice(0, 2).toUpperCase()}
+            {detail.Name.slice(0, 2).toUpperCase()}
           </span>
         )}
       </div>

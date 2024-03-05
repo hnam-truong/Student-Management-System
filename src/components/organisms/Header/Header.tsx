@@ -14,6 +14,7 @@ const Header: React.FC = () => (
             src="/assets/images/organization.png"
             alt="@organization"
           />
+          <span>uniGate</span>
         </div>
       </div>
       <Account />

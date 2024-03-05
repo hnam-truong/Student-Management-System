@@ -50,7 +50,7 @@ const ReservingReason: React.FC<ReservingReasonProps> = ({
         },
       ]}
     >
-      <Input.TextArea />
+      <Input.TextArea placeholder="Please enter other reason" />
     </Form.Item>
   </>
 );

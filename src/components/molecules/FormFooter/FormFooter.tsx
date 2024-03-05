@@ -7,29 +7,36 @@
  * />
  */
 
-import { Button, Form, Space } from "antd";
-import LayoutFormFooter from "../../../constants/LayoutFormFooter";
+import { Form, Space } from "antd";
+import {
+  CancelButton,
+  SubmitButton,
+} from "../../atoms/CustomButton/CustomButton";
 
 interface FormFooterProps {
   handleCancel: () => void;
-  formName: string;
+  formName?: string;
+  submitText?: string;
+  handleOk?: () => void;
 }
-const FormFooter = ({ handleCancel, formName }: FormFooterProps) => (
-  <Form.Item
-    wrapperCol={{
-      ...LayoutFormFooter.wrapperCol,
-      offset: 8,
-    }}
-    key={1}
-  >
+
+const FormFooter = ({
+  handleCancel,
+  formName,
+  submitText,
+  handleOk,
+}: FormFooterProps) => (
+  <Form.Item key={1}>
     <Space>
-      <Button key="Cancel" htmlType="reset" onClick={handleCancel}>
-        Cancel
-      </Button>
-      <Button type="primary" form={formName} key="Submit" htmlType="submit">
-        Submit
-      </Button>
+      <CancelButton text="Cancel" onClick={handleCancel} />
+      <SubmitButton formName={formName} text={submitText} onClick={handleOk} />
     </Space>
   </Form.Item>
 );
+
+FormFooter.defaultProps = {
+  submitText: "Save",
+  formName: "",
+  handleOk: () => {},
+};
 export default FormFooter;

@@ -1,0 +1,23 @@
+@import "../../../styles/main.scss";
+
+.classname-status {
+  background-color: $primary-color;
+  padding: $lg-medium;
+  color: $light-white;
+  border-top: $xs-small solid $white;
+  .cl-st {
+    display: flex;
+    align-items: center;
+    margin-top: $lg-small;
+  }
+  .date {
+    margin-top: $lg-small;
+    margin-left: $xs-small;
+  }
+  .classname-label {
+    margin-left: $xs-small;
+  }
+}
+.classstatus {
+  margin-left: $md-large;
+}

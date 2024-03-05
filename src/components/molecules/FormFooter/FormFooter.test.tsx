@@ -16,9 +16,15 @@ describe("Form Footer Component", () => {
   // Test Suite for the FormFooter component
   test("should render FormFooter with buttons", async () => {
     // Arrange
-    render(<FormFooter handleCancel={handleCancel} formName={formName} />);
-    await screen.findByRole("button", { name: /cancel/i });
-    await screen.findByRole("button", { name: /submit/i });
+    render(
+      <FormFooter
+        handleCancel={handleCancel}
+        formName={formName}
+        submitText="Create"
+      />
+    );
+    await screen.findByRole("button", { name: /Cancel/i });
+    await screen.findByRole("button", { name: /Create/i });
     // Act
     // Assert
   });
@@ -26,8 +32,14 @@ describe("Form Footer Component", () => {
   // Test case: Ensure handleCancel is called when Cancel button is clicked
   test("should call handleCancel when Cancel button is clicked", () => {
     // Arrange
-    render(<FormFooter handleCancel={handleCancel} formName={formName} />);
-    const cancelButton = screen.getByRole("button", { name: /cancel/i });
+    render(
+      <FormFooter
+        handleCancel={handleCancel}
+        formName={formName}
+        submitText="Create"
+      />
+    );
+    const cancelButton = screen.getByRole("button", { name: /Cancel/i });
 
     // Act: Simulate a click on the Cancel button
     fireEvent.click(cancelButton);
@@ -39,8 +51,14 @@ describe("Form Footer Component", () => {
   // Test case: Ensure the form attribute is set to formName when Submit button is clicked
   test("should set the form attribute to formName when Submit button is clicked", () => {
     // Arrange
-    render(<FormFooter handleCancel={handleCancel} formName={formName} />);
-    const submitButton = screen.getByRole("button", { name: /submit/i });
+    render(
+      <FormFooter
+        handleCancel={handleCancel}
+        formName={formName}
+        submitText="Create"
+      />
+    );
+    const submitButton = screen.getByRole("button", { name: /Create/i });
 
     // Act: Simulate a click on the Submit button
     fireEvent.click(submitButton);

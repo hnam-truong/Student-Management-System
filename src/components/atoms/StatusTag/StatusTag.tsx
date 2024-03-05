@@ -14,13 +14,19 @@ import SizesResponsive from "../../../constants/SizesResponsive";
 interface StatusProps {
   status: boolean | null;
   customWidth?: string; // Prop for custom width
+  isBorder?: boolean;
 }
 
-const StatusTag: React.FC<StatusProps> = ({ status, customWidth }) => {
+const StatusTag: React.FC<StatusProps> = ({
+  status,
+  customWidth,
+  isBorder,
+}) => {
   let backgroundColor: string | undefined;
   let content: string;
   let fontWeight: number;
   let textColor: string;
+  let border: string | undefined;
 
   switch (status) {
     case true:
@@ -40,6 +46,7 @@ const StatusTag: React.FC<StatusProps> = ({ status, customWidth }) => {
       content = "-";
       fontWeight = FontWeights.SemiBold;
       textColor = Colors.Black;
+      border = `1px solid ${Colors.Black}`;
       break;
   }
 
@@ -53,6 +60,7 @@ const StatusTag: React.FC<StatusProps> = ({ status, customWidth }) => {
     borderRadius: Sizes.Medium,
     width: customWidth, // Use customWidth if provided, otherwise use MdLarge
     height: Sizes.XsLarge,
+    border: isBorder ? border : undefined,
   };
 
   return <div style={style}>{content}</div>;
@@ -60,6 +68,7 @@ const StatusTag: React.FC<StatusProps> = ({ status, customWidth }) => {
 
 StatusTag.defaultProps = {
   customWidth: SizesResponsive.LgLarger, // Default value for customWidth if not provided
+  isBorder: false,
 };
 
 export default StatusTag;

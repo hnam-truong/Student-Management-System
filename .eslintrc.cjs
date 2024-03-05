@@ -60,7 +60,18 @@ module.exports = {
     "testing-library/no-debugging-utils": "warn",
     "testing-library/no-dom-import": "off",
     "no-unused-expressions": "off",
-    "@typescript-eslint/no-unused-expressions": "error",
+    "@typescript-eslint/no-unused-expressions": "off",
+
+    //tmp no console
+    "no-console": "off",
+    "no-restricted-syntax": [
+      "error",
+      {
+        selector:
+          "CallExpression[callee.object.name='console'][callee.property.name!=/^(log|warn|error|info|trace)$/]",
+        message: "Unexpected property on console object was called",
+      },
+    ],
   },
   settings: {
     react: {

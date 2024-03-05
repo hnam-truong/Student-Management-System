@@ -5,22 +5,23 @@ import { FaUserCircle } from "react-icons/fa";
 import { IoMdLogOut } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import Sizes from "../../../constants/Sizes";
 
 const Account: React.FC = () => {
   const [open, setOpen] = React.useState(false);
   const handleChange = () => setOpen(!open);
   const handleClickContent = () => setOpen(false);
   const content = (
-    <div className="content">
+    <div className="content-user">
       <Link to="/profile" className="link">
         <Button className="body1 btn" onClick={handleClickContent}>
-          <FaUserCircle size={20} />
+          <FaUserCircle size={Sizes.LgMedium} />
           Profile
         </Button>
       </Link>
       <Link to="/login" className="link">
         <Button className="body1 btn " onClick={handleClickContent}>
-          <IoMdLogOut size={20} />
+          <IoMdLogOut size={Sizes.LgMedium} />
           Log out
         </Button>
       </Link>

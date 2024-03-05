@@ -1,25 +1,19 @@
-/* eslint-disable react/require-default-props */
-/* eslint-disable @typescript-eslint/no-shadow */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
-import { Table, Button } from "antd";
+import React, { useState } from "react";
+import { Table } from "antd";
 import type { TableColumnsType } from "antd";
 import { IoSettingsOutline } from "react-icons/io5";
-import { BsThreeDots } from "react-icons/bs";
 import { IClassStudent } from "../../../interfaces/class-student.interface";
 import { generateFilters } from "../../../utils/GenerateFilter";
+import CustomDropdown from "../../molecules/CustomDropdown/CustomDropdown";
 
 interface StudentClassTableProps {
   classStudent: IClassStudent[];
   loading: boolean;
-  setStudentSelect?: any;
 }
 
 const StudentClassTable: React.FC<StudentClassTableProps> = ({
   classStudent,
   loading,
-  setStudentSelect,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const filters: { [key: string]: ReturnType<typeof generateFilters> } = {
@@ -75,21 +69,21 @@ const StudentClassTable: React.FC<StudentClassTableProps> = ({
     },
     {
       title: (
-        <Button type="link">
-          <IoSettingsOutline
-            style={{ width: "20px", height: "20px", color: "white" }}
-          />
-        </Button>
+        <div className="centered">
+          <IoSettingsOutline size={20} />
+        </div>
       ),
       key: "operation",
-      fixed: "right",
-      width: 100,
-      render: () => (
-        <Button type="link">
-          <BsThreeDots
-            style={{ width: "20px", height: "20px", color: "black" }}
+      width: 80,
+      render: (record: { ID: string | undefined }) => (
+        <div className="centered">
+          <CustomDropdown
+            id={record?.ID}
+            viewLink="/class100/student"
+            editLink="/class100/student/edit"
+            handleDataChange={() => {}}
           />
-        </Button>
+        </div>
       ),
     },
     // Add more columns as needed based on your data structure
@@ -98,27 +92,25 @@ const StudentClassTable: React.FC<StudentClassTableProps> = ({
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     setSelectedRowKeys(newSelectedRowKeys);
   };
-  useEffect(() => {
-    setStudentSelect(selectedRowKeys);
-  }, [selectedRowKeys, setStudentSelect]);
 
   const rowSelection = {
     selectedRowKeys,
     onChange: onSelectChange,
   };
 
-  const scoresWithKeys = classStudent.map((classStudent) => ({
-    ...classStudent,
-    key: classStudent.ID,
+  const scoresWithKeys = classStudent.map((student) => ({
+    ...student,
+    key: student.ID,
   }));
 
   return (
-    <div>
+    <div className="ant-table-container">
       <Table
         rowSelection={rowSelection}
         columns={columns}
         dataSource={scoresWithKeys}
         loading={loading}
+        bordered
       />
     </div>
   );

@@ -21,7 +21,9 @@
 import React, { useState } from "react";
 import { AutoComplete, Input } from "antd";
 import type { SelectProps } from "antd";
+import { IoIosSearch } from "react-icons/io";
 import Sizes from "../../../constants/Sizes";
+import "../../../styles/main.scss";
 
 const getRandomInt = (max: number, min = 0) =>
   Math.floor(Math.random() * (max - min + 1)) + min;
@@ -70,14 +72,20 @@ const SearchInput: React.FC = () => {
 
   return (
     <AutoComplete
-      popupMatchSelectWidth={Sizes.PopUpSearch}
-      style={{ width: Sizes.SearchWidth }}
+      popupMatchSelectWidth={Sizes.PopUpSearchLarge}
+      style={{ width: Sizes.SearchWidthLarge }}
       options={options}
       onSelect={onSelect}
       onSearch={handleSearch}
-      size="large"
+      className="search-input-container"
     >
-      <Input.Search size="large" placeholder="Search" enterButton />
+      <Input.Search
+        placeholder="Search"
+        enterButton
+        prefix={<IoIosSearch size={Sizes.LgMedium} />}
+        allowClear
+        size="large"
+      />
     </AutoComplete>
   );
 };

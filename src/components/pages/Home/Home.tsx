@@ -1,12 +1,4 @@
-import React, { useState } from "react";
-import ModalReservation from "../../atoms/TerminalReservation/TerminalReservation";
+import React from "react";
 
-const Home: React.FC = () => {
-  const [isShow, setIsShow] = useState(true);
-  return (
-    <ModalReservation isShow={isShow} setIsShow={setIsShow}>
-      ...
-    </ModalReservation>
-  );
-};
+const Home: React.FC = () => <div>Home </div>;
 export default Home;

@@ -17,7 +17,7 @@ export default defineConfig({
     setupFiles: "./src/setupTests.ts",
     coverage: {
       provider: "v8",
-      reportsDirectory: "./src/__tests__/unit/coverage",
+      reportsDirectory: "./src/__tests__/coverage",
     },
   },
 });

@@ -18,6 +18,12 @@ import StudentsClassManagement from "./components/pages/StudentsClassManagement/
 import AddScore from "./components/pages/AddScore/AddScore";
 import RouterEndpoints from "./constants/RouterEndpoints";
 import Profile from "./components/pages/Profile/Profile";
+import UserManagement from "./components/pages/UserManagement/UserManagement";
+import AttendeeDetail from "./components/pages/AttendeeDetail/AttendeeDetail";
+import ClassDetail from "./components/pages/ClassDetail/ClassDetail";
+import UserPermission from "./components/pages/UserPermission/UserPermission";
+import UserDetail from "./components/pages/UserDetail/UserDetail";
+import SubLayout from "./components/templates/SubLayout/SubLayout";
 
 const router = createBrowserRouter([
   {
@@ -55,7 +61,7 @@ const router = createBrowserRouter([
       },
       {
         path: RouterEndpoints.EditStudent,
-        element: <EditStudent />,
+        element: <EditStudent handleDataChange={() => {}} />,
       },
 
       {
@@ -71,6 +77,14 @@ const router = createBrowserRouter([
       {
         path: RouterEndpoints.StudentsClassManagement,
         element: <StudentsClassManagement />,
+      },
+      {
+        path: RouterEndpoints.AttendeeDetail,
+        element: <AttendeeDetail />,
+      },
+      {
+        path: RouterEndpoints.ClassDetail,
+        element: <ClassDetail />,
       },
       // SCORES MANAGEMENT
       {
@@ -95,16 +109,26 @@ const router = createBrowserRouter([
         path: RouterEndpoints.EmailsManagement,
         element: <EmailsManagement />,
       },
-      // PROFILE
-      { path: RouterEndpoints.Profile, element: <Profile /> },
+      // USER MANAGEMENT
+      { path: RouterEndpoints.UsersManagement, element: <UserManagement /> },
+      { path: RouterEndpoints.UserDetail, element: <UserDetail /> },
+      { path: RouterEndpoints.UserPermission, element: <UserPermission /> },
+    ],
+  },
+  // PROFILE
+  {
+    path: "",
+    element: <SubLayout />,
+    children: [
+      {
+        path: RouterEndpoints.Profile,
+        element: <Profile />,
+      },
     ],
   },
 
   // PUBLIC PAGES
-  {
-    path: RouterEndpoints.Login,
-    element: <Login />,
-  },
+  { path: RouterEndpoints.Login, element: <Login /> },
   {
     path: "*",
     element: <NotFound />,

@@ -2,7 +2,7 @@ export interface IStudent {
   ID: string;
   Name: string;
   Gender: boolean;
-  DateOfBirth: Date;
+  DateOfBirth: string;
   Status: string;
   Phone: string;
   Email: string;
@@ -12,8 +12,10 @@ export interface IStudent {
   Major: string;
   RECer: string;
   GPA: number;
-  GraduationTime: Date;
+  GraduationTime: string;
   ClassCode: string;
-  ClassStartDate: Date;
+  ClassStartDate: string;
   ImageUrl: string;
+  Class: string;
+  StudentClasses: Array<string>;
 }

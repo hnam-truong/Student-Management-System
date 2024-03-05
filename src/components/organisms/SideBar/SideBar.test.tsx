@@ -14,8 +14,8 @@ describe("Sidebar Component", () => {
         <SideBar />
       </MemoryRouter>
     );
-    // Find element containing content "Scores"
-    const scoresLink = await screen.findByText("Scores");
+    // Find element containing content "Class"
+    const scoresLink = await screen.findByText("Class");
     // eslint-disable-next-line testing-library/no-node-access
     const scoresLiEL = scoresLink.closest("li");
     // Click to navigate
@@ -34,7 +34,7 @@ describe("Sidebar Component", () => {
         <SideBar />
       </MemoryRouter>
     );
-    // Find element containing content "Scores"
+    // Find element containing content "Students"
     const studentsLink = await screen.findByText("Students");
     // eslint-disable-next-line testing-library/no-node-access
     const studentLiEle = studentsLink.closest("li");

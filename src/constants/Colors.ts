@@ -25,7 +25,11 @@ enum Colors {
   LightRed = "#e74a3b",
   BrightRed = "#f2212c",
   Red = "#ff0000",
+  DarkRed = "#ff4d4f",
   LightOrange = "#ff7568",
+  HoverTable = "#e9eef3",
+  LightDark = "#2363a3",
+  DisableColor = "#f0f0f0",
 }
 
 export default Colors;

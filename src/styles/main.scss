@@ -1,5 +1,6 @@
 //EXTERNAL IMPORT
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;$fw-medium;$fw-semi-bold;$fw-bold;800;900&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;$fw-medium;$fw-semi-bold;$fw-bold;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:slnt@0&display=swap");
 
 //INTERNAL IMPORT
 //ABSTRACTS
@@ -9,9 +10,6 @@
 @import "./abstracts/font-weight";
 @import "./abstracts/sizes";
 @import "./abstracts/z-index";
-
-//BASES
-@import "./base/typography";
 
 //CLASSES
 .subtitle1 {
@@ -23,6 +21,11 @@
 .subtitle2 {
   font-size: $font-size-xs-medium;
   font-weight: $fw-semi-bold;
+  line-height: $medium;
+}
+.subtitle2-bold {
+  font-size: $font-size-lg-medium;
+  font-weight: $fw-bold;
   line-height: $medium;
 }
 
@@ -58,8 +61,15 @@
   line-height: $sm-large;
   letter-spacing: $md-small;
 }
+.headingh5 {
+  font-size: $font-size-larger;
+  font-weight: $fw-semi-bold;
+  line-height: $sm-large;
+  letter-spacing: $md-small;
+}
+
 .body1 {
-  font-size: 1rem;
+  font-size: $font-size-normal;
   font-weight: $fw-medium;
   line-height: $lg-medium;
 }
@@ -83,6 +93,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.align-right {
+  display: flex;
+  justify-content: flex-end;
 }
 
 //COMMONS
@@ -116,7 +131,147 @@ body {
   height: 100vh;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+// code {
+//   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+//     monospace;
+// }
+
+// tables styles
+.table-container {
+  margin-top: $xs-small;
+  &__content {
+    padding: 0 $md-medium $md-medium $md-medium;
+  }
+  &__class {
+    padding-top: $md-medium;
+  }
+}
+
+// search styles
+.search-input-container {
+  .ant-input-group-addon .ant-input-search-button {
+    background-color: $primary-color !important;
+    display: flex;
+    align-items: center;
+    border-radius: $small !important;
+    margin-left: $small;
+  }
+  :where(.css-dev-only-do-not-override-1hj96b2).ant-input-group
+    .ant-input-affix-wrapper:not(:last-child) {
+    border-start-end-radius: $xs-small !important;
+    border-end-end-radius: $xs-small !important;
+  }
+}
+.search-input {
+  width: $xx-md-large;
+}
+
+// //tablet
+// @media screen and (max-width: 1000px) {
+//   .table-student {
+//     // max-width: 800px;
+//     overflow: auto;
+//   }
+// }
+
+// @media screen and (max-width: 600px) {
+//   .table-student {
+//     max-width: 400px;
+//     overflow: auto;
+//   }
+// }
+
+.ant-table-container {
+  .ant-table
+    .ant-table-container
+    .ant-table-content
+    table
+    thead.ant-table-thead
+    .ant-table-cell {
+    background-color: $primary-color;
+    color: $white;
+  }
+
+  .ant-table-column-sorter {
+    color: $white !important;
+
+    &:hover {
+      color: $white;
+    }
+  }
+
+  .ant-table-wrapper .ant-table-filter-trigger {
+    color: $white !important;
+
+    &:hover {
+      color: $white !important;
+      opacity: 0.8 !important;
+    }
+  }
+  .ant-select-dropdown {
+    .rc_virtual-list-holder,
+    .ant-select-item-option-selected {
+      background-color: $fifth-color;
+    }
+  }
+}
+
+.ant-table-filter-dropdown {
+  .ant-tree-node-content-wrapper,
+  .ant-tree-node-content-wrapper-normal {
+    background-color: $white !important  ;
+  }
+}
+
+.form-detail-container {
+  background-color: $bg-grey;
+  height: 100%;
+  .ant-tabs .ant-tabs-tab {
+    font-size: $medium;
+    font-weight: bold;
+    padding: 0;
+  }
+}
+@media screen and (max-width: $xl) {
+  .body {
+    font-size: $font-size-normal;
+  }
+}
+
+// custom modal ant
+.modal-content-custom {
+  padding: $small $lg-medium 0 $lg-medium;
+  margin-top: $md-small;
+}
+.modal-header-custom {
+  background-color: $primary-color;
+  color: $white;
+  border-radius: $xs-small $xs-small 0 0;
+  padding: $small 0;
+}
+
+//scroll bar
+::-webkit-scrollbar {
+  width: 100%;
+  height: $lg-small;
+}
+::-webkit-scrollbar-thumb {
+  background-color: $blur-black;
+  border-radius: $md-medium;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: $primary-color;
+}
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+::-webkit-scrollbar-button {
+  display: none;
+}
+// main content in Layout
+#layout {
+  .ant-row {
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+  }
 }

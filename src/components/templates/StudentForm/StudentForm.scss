@@ -1,0 +1,42 @@
+@import "../../../styles/main.scss";
+
+.input {
+  width: 100%;
+}
+
+.container-infor {
+  display: flex;
+  width: 100%;
+  margin-top: 1rem;
+}
+.col {
+  flex: 1;
+  margin-right: 10rem;
+}
+
+label {
+  padding-right: 17rem;
+}
+.custom-label-id {
+  margin-left: $xs-medium;
+}
+.Title {
+  width: 100%;
+  margin-top: 0.2rem;
+  background-color: $grey;
+  color: $white;
+  padding: $sm-medium;
+  font-size: $font-size-md-medium;
+  font-weight: bold;
+}
+
+.Info-Input {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: $medium;
+}
+
+.button-sc {
+  text-align: right;
+}
