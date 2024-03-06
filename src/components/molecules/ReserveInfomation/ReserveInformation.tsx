@@ -19,19 +19,19 @@ const ReserveInformation = ({ data }: ReserveInformationProps) => {
   const { fetchReservingCondition, reservingCondition } =
     useReservingCondition();
   const { getClassByID, aClass } = useSingleClassStore();
-  const { getClassesByStatus, classes } = useClassStore();
+  const { getClassesByName, classes } = useClassStore();
   const { aScore, getStudentScoreByID } = useSingleScoreStore();
 
   useEffect(() => {
     getClassByID(data?.ClassID);
     fetchReservingCondition();
-    getClassesByStatus("Opening");
+    getClassesByName("Opening");
     getStudentScoreByID("1");
   }, [
     fetchReservingCondition,
     data?.ClassID,
     getClassByID,
-    getClassesByStatus,
+    getClassesByName,
     getStudentScoreByID,
     data?.ID,
   ]);
