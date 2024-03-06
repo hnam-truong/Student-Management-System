@@ -24,19 +24,19 @@ const AvailableTag: React.FC<StatusProps> = ({ status, customWidth }) => {
 
   switch (status) {
     case "Active":
-      backgroundColor = Colors.Primary;
-      content = "active";
+      backgroundColor = Colors.Green;
+      content = "Active";
       fontWeight = FontWeights.Normal;
       textColor = Colors.LightWhite;
       break;
     case "Inactive":
-      backgroundColor = Colors.SlateGray;
+      backgroundColor = Colors.Fourth;
       content = "Inactive";
       fontWeight = FontWeights.Normal;
       textColor = Colors.LightWhite;
       break;
     default:
-      backgroundColor = Colors.Grey;
+      backgroundColor = Colors.SlateGray;
       content = "Disable";
       fontWeight = FontWeights.Normal;
       textColor = Colors.LightWhite;

@@ -65,7 +65,7 @@ export const ImportFromExcel = () => {
 
       if (successfulRequests === totalStudents) {
         successNotify("Data added successfully.");
-        location.reload();
+        window.location.reload();
       }
     } catch (error) {
       errorNotify("Data add failed.");

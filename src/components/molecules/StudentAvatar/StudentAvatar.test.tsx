@@ -24,6 +24,7 @@ describe("StudentAvatar Component", () => {
       "https://th.bing.com/th/id/OIP.iAhcp6m_91O-ClK79h8EQQHaFj?rs=1&pid=ImgDetMain",
     Class: "Class 12",
     StudentClasses: [],
+    AttendingStatus: "In class",
   };
 
   test("should render user avatar with image", () => {

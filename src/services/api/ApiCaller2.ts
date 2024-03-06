@@ -112,14 +112,14 @@ export const getClassByID = async ({
 };
 
 // get class by status
-type GetClassesByStatusProps = {
-  status: string;
+type GetClassesByNameProps = {
+  className: string;
 };
-export const getClassesByStatus = async ({
-  status,
-}: GetClassesByStatusProps): Promise<IClass[]> => {
+export const getClassesByName = async ({
+  className,
+}: GetClassesByNameProps): Promise<IClass[]> => {
   try {
-    const response = await get<IClass[]>(`classes?Status=${status}`);
+    const response = await get<IClass[]>(`classes?ClassName=${className}`);
     if (response.status === 200) {
       return response.data;
     }

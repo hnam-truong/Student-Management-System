@@ -5,7 +5,6 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { generateFilters } from "../../../utils/GenerateFilter";
 import CustomDropdown from "../../molecules/CustomDropdown/CustomDropdown";
 import { IClass } from "../../../interfaces/class.interface";
-import formatDate from "../../../utils/DateFormatting";
 import ClassStatus from "../../atoms/ClassStatus/ClassStatus";
 
 interface ClassTableProps {
@@ -59,7 +58,7 @@ const ClassTable: React.FC<ClassTableProps> = ({ classes, loading }) => {
       filterMode: "tree",
       onFilter: (value: boolean | React.Key, record) =>
         record.CreatedDate.toString().indexOf(value as string) === 0,
-      render: (CreatedDate: string) => formatDate(CreatedDate),
+      render: (CreatedDate: string) => CreatedDate,
     },
 
     {

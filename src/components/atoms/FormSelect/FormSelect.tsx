@@ -9,6 +9,7 @@ interface FormSelectProps {
   text: string;
   list: { id: string; value: string; option: string }[];
   label?: string;
+  isDisable?: boolean;
 }
 
 const FormSelect: React.FC<FormSelectProps> = ({
@@ -16,10 +17,11 @@ const FormSelect: React.FC<FormSelectProps> = ({
   name,
   rules,
   text,
+  isDisable,
   list,
 }) => (
   <Form.Item name={name} rules={rules} label={label}>
-    <Select placeholder={text}>
+    <Select placeholder={text} disabled={isDisable}>
       {list.map((item) => (
         <Option key={item.id} value={item.value}>
           {item.option}
@@ -31,6 +33,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
 
 FormSelect.defaultProps = {
   label: "",
+  isDisable: false,
 };
 
 export default FormSelect;

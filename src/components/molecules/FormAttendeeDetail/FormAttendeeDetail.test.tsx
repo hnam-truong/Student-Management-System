@@ -1,8 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import FormAttendeeDetail from "./FormAttendeeDetail";
+import { IStudent } from "../../../interfaces/student.interface";
+import { IClass } from "../../../interfaces/class.interface";
 
 describe("FormAttendeeDetail Component", () => {
-  const studentDetailMock = {
+  const studentDetailMock: IStudent = {
     Name: "Jerald Murazik",
     Gender: false,
     DateOfBirth: "1963-03-09",
@@ -23,16 +25,17 @@ describe("FormAttendeeDetail Component", () => {
       "https://th.bing.com/th/id/OIP.iAhcp6m_91O-ClK79h8EQQHaFj?rs=1&pid=ImgDetMain",
     Class: "Class 12",
     StudentClasses: ["Class 12", "Class 12", "Class 12"],
+    AttendingStatus: "In class",
   };
 
-  const classDetailMock = [
+  const classDetailMock: IClass[] = [
     {
       ClassName: "ClassName 2",
-      StartDate: new Date("2036-04-13"),
-      EndDate: new Date("2081-12-18"),
-      CreatedDate: new Date("2024-02-28"),
+      StartDate: "2036-04-13",
+      EndDate: "2081-12-18",
+      CreatedDate: "2024-02-28",
       CreatedBy: "Cristina Cronin IV",
-      UpdatedDate: new Date("2013-03-18"),
+      UpdatedDate: "2013-03-18",
       UpdatedBy: "Mrs. Maureen Gutkowski",
       Duration: 9,
       Location: "Apt. 638",

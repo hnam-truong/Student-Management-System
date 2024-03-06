@@ -2,7 +2,6 @@ import React from "react";
 import { IStudent } from "../../../interfaces/student.interface";
 import DetailGeneralInfo from "../../atoms/DetailGeneralInfo/DetailGeneralInfo";
 import generateGender from "../../../utils/GenerateGender";
-import formatDate from "../../../utils/DateFormatting";
 
 interface StudentDetailGeneralInfoProps {
   studentDetail: IStudent;
@@ -33,7 +32,7 @@ const StudentDetailGeneralInfo: React.FC<StudentDetailGeneralInfoProps> = ({
             { key: "3", name: gender },
             {
               key: "4",
-              name: formatDate(studentDetail?.DateOfBirth.toString()),
+              name: studentDetail?.DateOfBirth,
             },
           ],
         },

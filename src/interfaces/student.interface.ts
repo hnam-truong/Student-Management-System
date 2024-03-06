@@ -18,4 +18,5 @@ export interface IStudent {
   ImageUrl: string;
   Class: string;
   StudentClasses: Array<string>;
+  AttendingStatus: string;
 }

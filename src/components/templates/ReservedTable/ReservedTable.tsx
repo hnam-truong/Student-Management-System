@@ -11,7 +11,6 @@ import {
   getDataFromCache,
   storeDataToCache,
 } from "../../../utils/StoreDataToCache";
-import formatDate from "../../../utils/DateFormatting";
 import Gender from "../../atoms/Gender/Gender";
 import FontSizes from "../../../constants/FontSizes";
 import StatusTagStuReserve from "../../atoms/StatusTagStuReserve/StatusTagStuReserve";
@@ -149,7 +148,7 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
         value: boolean | React.Key,
         record: { DateOfBirth: { toString: () => string | string[] } }
       ) => record.DateOfBirth.toString().indexOf(value as string) === 0,
-      render: (dateOfBirth: string) => formatDate(dateOfBirth),
+      render: (dateOfBirth: string) => dateOfBirth,
     },
     {
       title: "Hometown",
@@ -238,7 +237,7 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
         const stringValue = record.ReservedStartDate?.toString() || "";
         return stringValue.includes(value as string);
       },
-      render: (reservedStartDate: string) => formatDate(reservedStartDate),
+      render: (reservedStartDate: string) => reservedStartDate,
     },
     {
       title: "Reserve end date",
@@ -255,7 +254,7 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
         const stringValue = record.ReservedEndDate?.toString() || "";
         return stringValue.includes(value as string);
       },
-      render: (ReservedEndDate: string) => formatDate(ReservedEndDate),
+      render: (ReservedEndDate: string) => ReservedEndDate,
     },
     {
       title: "Status",

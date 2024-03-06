@@ -21,6 +21,7 @@ interface UserFormProps {
   initialValues?: object;
   formName: string;
   isEdit?: boolean;
+  isAdmin?: boolean;
 }
 
 const UserForm: React.FC<UserFormProps> = ({
@@ -29,6 +30,7 @@ const UserForm: React.FC<UserFormProps> = ({
   initialValues,
   formName,
   isEdit,
+  isAdmin,
 }) => {
   const stringFields = [
     {
@@ -107,6 +109,7 @@ const UserForm: React.FC<UserFormProps> = ({
         rules={rolesRules}
         text="Please select user's role"
         label="User role"
+        isDisable={isEdit && isAdmin}
       />
       {stringFields.map((item) => (
         <Form.Item
@@ -146,6 +149,7 @@ const UserForm: React.FC<UserFormProps> = ({
 UserForm.defaultProps = {
   initialValues: {},
   isEdit: false,
+  isAdmin: false,
 };
 
 export default UserForm;

@@ -1,14 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import ClassDetailInfo from "../../atoms/ClassDetailInfo/ClassDetailInfo";
+import { IClass } from "../../../interfaces/class.interface";
 
 describe("FormClassDetail Component", () => {
-  const classDetail = {
+  const classDetail: IClass = {
     ClassName: "ClassName 2",
-    StartDate: new Date("2036-04-13"),
-    EndDate: new Date("2081-12-18"),
-    CreatedDate: new Date("2024-02-28"),
+    StartDate: "2036-04-13",
+    EndDate: "2081-12-18",
+    CreatedDate: "2024-02-28",
     CreatedBy: "Cristina Cronin IV",
-    UpdatedDate: new Date("2013-03-18"),
+    UpdatedDate: "2013-03-18",
     UpdatedBy: "Mrs. Maureen Gutkowski",
     Duration: 9,
     Location: "Apt. 638",

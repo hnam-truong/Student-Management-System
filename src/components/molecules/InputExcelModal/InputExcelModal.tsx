@@ -1,5 +1,6 @@
-import { Button, Modal } from "antd";
+import { Modal } from "antd";
 import FileUpload from "../../atoms/FileUpload/FileUpload";
+import FormFooter from "../FormFooter/FormFooter";
 
 interface InputExcelModalProps {
   isModalOpen: boolean;
@@ -11,26 +12,26 @@ const InputExcelModal = ({
   handleCancel,
 }: InputExcelModalProps) => (
   <Modal
-    title="Import file"
+    title={<div className="modal-header-custom centered">Import file</div>}
     open={isModalOpen}
     onCancel={handleCancel}
-    footer={[
-      <Button key="cancelButton" onClick={handleCancel}>
-        Cancel
-      </Button>,
-
-      <Button
-        key="downloadButton"
-        href="../../../../public/assets/files/StudentImportTemplate.xlsx"
-        download="Student Import Template"
-        type="primary"
-      >
-        Download Template
-      </Button>,
-    ]}
+    footer={
+      <div className="centered">
+        <FormFooter
+          handleCancel={handleCancel}
+          formName="ImportFile"
+          text="Download Template"
+          isDownload
+          href="../../../../public/assets/files/StudentImportTemplate.xlsx"
+          download="Student Import Template"
+        />
+      </div>
+    }
     className="custom-modal-content"
   >
-    <FileUpload />
+    <div className="modal-content-custom">
+      <FileUpload />
+    </div>
   </Modal>
 );
 

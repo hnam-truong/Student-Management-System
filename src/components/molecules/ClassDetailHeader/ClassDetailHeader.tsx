@@ -1,5 +1,4 @@
 import { IClass } from "../../../interfaces/class.interface";
-import formatDate from "../../../utils/DateFormatting";
 import ClassStatus from "../../atoms/ClassStatus/ClassStatus";
 import "./ClassDetailHeader.scss";
 
@@ -16,8 +15,7 @@ const ClassDetailHeader = ({ classDetail }: ClassDetailHeaderProps) => (
       </div>
     </div>
     <div className="date">
-      <span>{formatDate(classDetail.StartDate.toString())}</span> -{" "}
-      <span>{formatDate(classDetail.EndDate.toString())}</span>
+      <span>{classDetail.StartDate}</span> - <span>{classDetail.EndDate}</span>
     </div>
   </div>
 );

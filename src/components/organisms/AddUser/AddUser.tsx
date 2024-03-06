@@ -97,7 +97,7 @@ const AddUser: React.FC<AddUserProps> = ({ handleDataChange }) => {
             <FormFooter
               handleCancel={handleCancel}
               formName="AddUser"
-              submitText="Create"
+              text="Create"
             />
           </div>
         }

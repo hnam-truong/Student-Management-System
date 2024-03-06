@@ -86,7 +86,7 @@ const AddReservingStudent: React.FC<AddReservingStudentProps> = ({
             <FormFooter
               handleCancel={handleCancel}
               formName="AddReserving"
-              submitText="Create"
+              text="Create"
             />
           </div>
         }

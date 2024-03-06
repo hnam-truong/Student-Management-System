@@ -21,7 +21,6 @@ const Content: React.FC<ContentProps> = ({
   handleDataChange,
 }) => {
   const [status, setStatus] = useState<string>(data.Status);
-  const [loandingRe, setLoadingRe] = useState<boolean>(false);
   const [loadingDrop, setLoadingDrop] = useState<boolean>(false);
   const [openRemind, setOpenRemind] = useState<boolean>(false);
   const [openReservingModal, setOpenReservingModal] = useState<boolean>(false);
@@ -40,12 +39,15 @@ const Content: React.FC<ContentProps> = ({
     // });
     // setStatus("In class");
     // handleDataChange();
-    setLoadingRe(true);
-    setTimeout(() => {
-      setLoadingRe(false);
-      closeFn();
-    }, 500);
+    // setLoadingRe(true);
+    // setTimeout(() => {
+    //   setLoadingRe(false);
+    //   closeFn();
+    // }, 500);
   };
+  const updateStatusInClass = useCallback(() => {
+    setStatus("In class");
+  }, []);
   const handleDrop = () => {
     putReservedStudent(data?.ID, {
       ...data,
@@ -63,6 +65,9 @@ const Content: React.FC<ContentProps> = ({
     handleOpenRemind();
     closeFn();
   };
+  const handleCloseModalFindClass = useCallback(() => {
+    setOpenReservingModal(false);
+  }, []);
 
   return (
     <div className="wrapper">
@@ -70,7 +75,7 @@ const Content: React.FC<ContentProps> = ({
         <Button
           className="item-pop"
           onClick={handleReClass}
-          loading={loandingRe}
+          // loading={loandingRe}
         >
           <div className="icon">
             <FaRegHandPaper size={Sizes.LgMedium} />
@@ -104,7 +109,9 @@ const Content: React.FC<ContentProps> = ({
         <ModalFindClass
           data={data}
           open={openReservingModal}
-          close={() => setOpenReservingModal(false)}
+          close={handleCloseModalFindClass}
+          handleDataChange={handleDataChange}
+          updateStatusInClass={updateStatusInClass}
         />
       )}
     </div>

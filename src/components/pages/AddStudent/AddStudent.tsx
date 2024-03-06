@@ -50,7 +50,7 @@ const AddStudent: React.FC = () => {
         await form.validateFields();
         await postSingleStudent(studentData);
         successNotify("Student added successfully");
-        form.resetFields();
+        // form.resetFields();
       } catch (error) {
         errorNotify("An error occurred while adding the student");
         console.error("Error adding student:", error);

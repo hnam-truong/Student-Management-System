@@ -1,23 +1,22 @@
 @import "../../../styles/main.scss";
 
-.classinfomodal {
+.class-info-modal {
   .ant-card-body {
     border: 1px solid $white !important;
     box-shadow: 0px 0px $lg-small rgba(0, 0, 0, 0.1);
     border-radius: $small !important;
     box-shadow: $small !important;
-    max-width: $xx-sm-large;
-    // width: fit-content;
-    min-width: $x-sm-lager;
+    min-width: $xx-large;
   }
 
   .first-line {
     display: flex;
     margin-bottom: $lg-small;
     justify-content: space-between;
-    .headingh4 {
-      margin: 0;
-    }
+    gap: $small;
+     .class-title{
+      text-overflow: ellipsis;
+     }
   }
   .second-line {
     display: flex;
@@ -33,7 +32,7 @@
     content: "-";
     margin: 0 $md-small;
   }
-  .classstatus {
+  .class-status {
     margin-top: -$md-small;
   }
 }

@@ -3,7 +3,6 @@ import { Card } from "antd";
 import { IClass } from "../../../interfaces/class.interface";
 // import { IStudent } from "../../../interfaces/student.interface";
 import ClassStatus from "../ClassStatus/ClassStatus";
-import formatDate from "../../../utils/DateFormatting";
 import "./ClassDetailInfoModal.scss";
 
 interface ClassDetailInfoModalProps {
@@ -15,17 +14,17 @@ const ClassDetailInfoModal: React.FC<ClassDetailInfoModalProps> = ({
   classDetail,
   // studentDetail,
 }) => (
-  <Card className="classinfomodal">
+  <Card className="class-info-modal">
     <div className="first-line">
-      <div className="subtitle2-bold">{classDetail.ClassName}</div>
-      <div className="classstatus">
+      <div className="subtitle2-bold ">{classDetail.ClassName}</div>
+      <div className="class-status">
         <ClassStatus status={classDetail.Status} />
       </div>
     </div>
     <div className="second-line">
       <div className="class">{classDetail.ClassID}</div>
-      <div className="st">{formatDate(classDetail.StartDate.toString())}</div>
-      <div className="end">{formatDate(classDetail.EndDate.toString())}</div>
+      <div className="st">{classDetail.StartDate}</div>
+      <div className="end">{classDetail.EndDate}</div>
     </div>
   </Card>
 );

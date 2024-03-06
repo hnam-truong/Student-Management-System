@@ -10,33 +10,47 @@
 import { Form, Space } from "antd";
 import {
   CancelButton,
+  DownloadButton,
   SubmitButton,
 } from "../../atoms/CustomButton/CustomButton";
 
 interface FormFooterProps {
   handleCancel: () => void;
-  formName?: string;
-  submitText?: string;
   handleOk?: () => void;
+  formName?: string;
+  text?: string;
+  href?: string;
+  isDownload?: boolean;
+  download?: string;
 }
 
 const FormFooter = ({
   handleCancel,
-  formName,
-  submitText,
   handleOk,
+  formName,
+  text,
+  href,
+  isDownload,
+  download,
 }: FormFooterProps) => (
   <Form.Item key={1}>
     <Space>
       <CancelButton text="Cancel" onClick={handleCancel} />
-      <SubmitButton formName={formName} text={submitText} onClick={handleOk} />
+      {!isDownload ? (
+        <SubmitButton formName={formName} text={text} onClick={handleOk} />
+      ) : (
+        <DownloadButton text={text} href={href} download={download} />
+      )}
     </Space>
   </Form.Item>
 );
 
 FormFooter.defaultProps = {
-  submitText: "Save",
+  text: "Save",
   formName: "",
   handleOk: () => {},
+  href: null,
+  isDownload: false,
+  download: null,
 };
 export default FormFooter;

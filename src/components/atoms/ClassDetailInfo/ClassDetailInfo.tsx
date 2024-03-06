@@ -2,7 +2,6 @@ import React from "react";
 import { Tabs } from "antd";
 import type { TabsProps } from "antd";
 import { IClass } from "../../../interfaces/class.interface";
-import formatDate from "../../../utils/DateFormatting";
 import StudentScoresManagement from "../../pages/ScoresManagement/ScoresManagement";
 import StudentsClassManagement from "../../pages/StudentsClassManagement/StudentsClassManagement";
 import ClassDetailHeader from "../../molecules/ClassDetailHeader/ClassDetailHeader";
@@ -40,16 +39,12 @@ const ClassDetailInfo: React.FC<ClassDetailInfoProps> = ({ classDetail }) => {
         </div>
         <div className="createdate">
           <div className="classtitle"> Created on</div>
-          <div className="data">
-            {formatDate(classDetail.CreatedDate.toString())}
-          </div>
+          <div className="data">{classDetail.CreatedDate}</div>
           <div className="bywho">by {classDetail.CreatedBy}</div>
         </div>
         <div className="updatedate">
           <div className="classtitle"> Updated on</div>
-          <div className="data">
-            {formatDate(classDetail.UpdatedDate.toString())}
-          </div>
+          <div className="data">{classDetail.UpdatedDate}</div>
           <div className="bywho">by {classDetail.UpdatedBy}</div>
         </div>
       </div>

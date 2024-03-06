@@ -1,8 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import StudentDetailScoreInfo from "./StudentDetailScoreInfo";
+import { IStudent } from "../../../interfaces/student.interface";
 
 describe("FormStudentDetail Component", () => {
-  const studentDetail = {
+  const studentDetail: IStudent = {
     Name: "Jerald Murazik",
     Gender: false,
     DateOfBirth: "1963-03-09",
@@ -23,6 +24,7 @@ describe("FormStudentDetail Component", () => {
       "https://th.bing.com/th/id/OIP.iAhcp6m_91O-ClK79h8EQQHaFj?rs=1&pid=ImgDetMain",
     Class: "Class 12",
     StudentClasses: ["Class 12", "Class 12", "Class 12"],
+    AttendingStatus: "In class",
   };
   const studentScore = {
     FullName: "Angie Carter",

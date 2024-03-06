@@ -1,11 +1,11 @@
 export interface IClass {
   ClassID: string;
   ClassName: string;
-  StartDate: Date;
-  EndDate: Date;
-  CreatedDate: Date;
+  StartDate: string;
+  EndDate: string;
+  CreatedDate: string;
   CreatedBy: string;
-  UpdatedDate: Date;
+  UpdatedDate: string;
   UpdatedBy: string;
   Duration: number;
   Location: string;

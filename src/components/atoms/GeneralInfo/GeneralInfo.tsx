@@ -82,7 +82,7 @@ const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit }) => {
         </Form.Item>
         <Form.Item
           label="Status"
-          name="Status"
+          name="AttendingStatus"
           rules={[{ required: true, message: "Please select the status" }]}
         >
           <Select

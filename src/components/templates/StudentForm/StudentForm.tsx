@@ -47,7 +47,7 @@ const StudentForm: React.FC<StudentFormProps> = ({
       <div className="button-sc">
         <FormFooter formName={formName} handleCancel={handleCancel} />
       </div>
-      <div className="Title">Class Information</div>
+      {/* <div className="Title">Class Information</div> */}
     </Form>
   );
 };

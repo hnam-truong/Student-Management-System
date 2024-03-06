@@ -1,7 +1,6 @@
 import React from "react";
 import "./StudentDetailAcademicInfo.scss";
 import { IStudent } from "../../../interfaces/student.interface";
-import formatDate from "../../../utils/DateFormatting";
 
 interface StudentDetailAcademicInfoProps {
   studentDetail: IStudent;
@@ -54,11 +53,11 @@ const StudentDetailAcademicInfo: React.FC<StudentDetailAcademicInfoProps> = ({
             },
             {
               key: "2",
-              name: formatDate(studentDetail.GraduationTime.toString()),
+              name: studentDetail.GraduationTime,
             },
             {
               key: "3",
-              name: formatDate(studentDetail.ClassStartDate.toString()),
+              name: studentDetail.ClassStartDate,
             },
           ],
         },

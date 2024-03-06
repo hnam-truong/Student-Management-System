@@ -208,12 +208,15 @@ body {
       opacity: 0.8 !important;
     }
   }
-  .ant-select-dropdown {
-    .rc_virtual-list-holder,
-    .ant-select-item-option-selected {
-      background-color: $fifth-color;
-    }
-  }
+  // .ant-select-dropdown {
+  //   .rc_virtual-list-holder,
+  //   .ant-select-item-option-selected {
+  //     background-color: $fifth-color;
+  //   }
+  // }
+}
+.ant-select-item-option-selected {
+  background-color: $fifth-color !important; 
 }
 
 .ant-table-filter-dropdown {

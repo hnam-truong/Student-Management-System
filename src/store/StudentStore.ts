@@ -14,6 +14,7 @@ import {
   putSingleStudent,
 } from "../services/api/ApiCaller";
 import { errorNotify, successNotify } from "../components/atoms/Notify/Notify";
+import { generateSuccessMessage } from "../utils/GenerateErrorMessage";
 
 // STUDENT STORE
 interface IStudentStore {
@@ -118,6 +119,9 @@ export const useSingleStudentStore = create<ISingleStudentStore>((set) => ({
     set((state) => ({ ...state, loading: true }));
     try {
       await putSingleStudent({ data, id });
+      successNotify(
+        generateSuccessMessage("has been saved", "Student information")
+      );
     } catch (err) {
       // Catch & log error
       console.log("API Error:", err);

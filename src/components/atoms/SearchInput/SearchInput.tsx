@@ -5,7 +5,7 @@
  * The search suggestions are generated randomly using the `searchResult` function, and each
  * suggestion includes a link to Taobao for further details.
  *
- * Usage:
+ * Usage::
  * <SearchInput />
  *
  * Features:
@@ -78,6 +78,7 @@ const SearchInput: React.FC = () => {
       onSelect={onSelect}
       onSearch={handleSearch}
       className="search-input-container"
+      data-testid="search-input-autocomplete"
     >
       <Input.Search
         placeholder="Search"

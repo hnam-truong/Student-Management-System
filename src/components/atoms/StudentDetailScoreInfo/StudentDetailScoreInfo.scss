@@ -13,15 +13,6 @@
     text-transform: uppercase;
   }
 
-  // .ant-table
-  //   .ant-table-container
-  //   .ant-table-content
-  //   table
-  //   thead.ant-table-thead
-  //   .ant-table-cell {
-  //   background: $light-white !important;
-  //   color: $black !important;
-  // }
 
   .table-status {
     display: flex;
@@ -37,11 +28,6 @@
     overflow-x: auto;
     margin-bottom: $medium;
 
-    scrollbar-width: thin;
-    scrollbar-color: $primary-color $white;
-    -webkit-scrollbar-button {
-      display: none;
-    }
   }
 
   .quiz-table,
@@ -62,10 +48,5 @@
   .mock-table {
     display: flex;
     overflow-x: auto;
-    scrollbar-width: thin;
-    scrollbar-color: $primary-color $white;
-    -webkit-scrollbar-button {
-      display: none;
-    }
   }
 }

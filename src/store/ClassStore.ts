@@ -9,7 +9,7 @@ import { IClass } from "../interfaces/class.interface";
 import {
   getClass,
   getClassByID,
-  getClassesByStatus,
+  getClassesByName,
 } from "../services/api/ApiCaller2";
 
 // CLASS STORE
@@ -17,7 +17,7 @@ interface IClassStore {
   classes: IClass[] | null;
   loading: boolean;
   fetchClass: () => void;
-  getClassesByStatus: (status: string) => void;
+  getClassesByName: (className: string) => void;
 }
 
 export const useClassStore = create<IClassStore>((set) => ({
@@ -38,10 +38,14 @@ export const useClassStore = create<IClassStore>((set) => ({
       set((state) => ({ ...state, loading: false }));
     }
   },
-  getClassesByStatus: async (status) => {
+  getClassesByName: async (className) => {
     set((state) => ({ ...state, loading: true }));
     try {
-      const data = await getClassesByStatus({ status });
+      const response: IClass[] = await getClassesByName({ className });
+      const data: IClass[] = response.filter(
+        (classItem) =>
+          classItem.Status === "Opening" || classItem.Status === "Planning"
+      );
       set((state) => ({ ...state, classes: data }));
     } catch (error) {
       console.log("API Error:", error);

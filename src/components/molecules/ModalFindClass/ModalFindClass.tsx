@@ -4,7 +4,7 @@ import { VscError } from "react-icons/vsc";
 import Breakpoints from "../../../constants/Breakpoints";
 import Sizes from "../../../constants/Sizes";
 import { IReservedStudent } from "../../../interfaces/reserved-student.interface";
-import ReserveInformation from "../ReserveInfomation/ReserveInformation";
+import ReserveInformation from "../ReserveInformation/ReserveInformation";
 import Colors from "../../../constants/Colors";
 // import FormFooter from "../FormFooter/FormFooter";
 
@@ -12,9 +12,17 @@ type ModalFindClassProps = {
   data: IReservedStudent;
   open: boolean;
   close: () => void;
+  handleDataChange: () => void;
+  updateStatusInClass: () => void;
 };
 
-const ModalFindClass = ({ data, open, close }: ModalFindClassProps) => {
+const ModalFindClass = ({
+  data,
+  open,
+  close,
+  handleDataChange,
+  updateStatusInClass,
+}: ModalFindClassProps) => {
   const handleOk = () => {
     console.log(data);
   };
@@ -36,7 +44,12 @@ const ModalFindClass = ({ data, open, close }: ModalFindClassProps) => {
       closeIcon={<VscError size={Sizes.LgMedium} color={Colors.White} />}
     >
       <div className="model-reserve-content">
-        <ReserveInformation data={data} />
+        <ReserveInformation
+          data={data}
+          close={close}
+          handleDataChange={handleDataChange}
+          updateStatusInClass={updateStatusInClass}
+        />
       </div>
     </Modal>
   );

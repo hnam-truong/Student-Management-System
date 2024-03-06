@@ -38,7 +38,7 @@ const EditUser: React.FC<EditUserProps> = ({ id, handleDataChange }) => {
       DateOfBirth: dayjs(aUser?.DateOfBirth, "DD/MM/YYYY"),
       Phone: aUser?.Phone,
       Status: aUser?.Status,
-      UserType: "Trainer",
+      UserType: aUser?.UserType,
       ImageUrl: aUser?.ImageUrl,
     });
   };
@@ -124,6 +124,7 @@ const EditUser: React.FC<EditUserProps> = ({ id, handleDataChange }) => {
                 onFinish={onFinish}
                 formName={`EditUser_${id}`}
                 isEdit
+                isAdmin={aUser?.UserType === "Admin"}
               />
             </div>
           </div>

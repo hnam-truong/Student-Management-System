@@ -34,6 +34,7 @@ const EditStudent: React.FC<EditStudentProps> = ({ handleDataChange }) => {
       DateOfBirth: dayjs(aStudent?.DateOfBirth, "DD/MM/YYYY"),
       Phone: aStudent?.Phone,
       Status: aStudent?.Status,
+      AttendingStatus: aStudent?.AttendingStatus,
       ImageUrl: aStudent?.ImageUrl,
       PermanentResidence: aStudent?.PermanentResidence,
       Location: aStudent?.Location,
@@ -59,13 +60,13 @@ const EditStudent: React.FC<EditStudentProps> = ({ handleDataChange }) => {
   }, [aStudent, form]);
 
   // Reset form values
-  const resetFormValue = () => {
-    form.resetFields();
-  };
+  // const resetFormValue = () => {
+  //   form.resetFields();
+  // };
 
   const handleOk = () => {
     handleDataChange();
-    resetFormValue();
+    // resetFormValue();
   };
 
   // Function handles form submit, get value and send this to api,
@@ -91,6 +92,7 @@ const EditStudent: React.FC<EditStudentProps> = ({ handleDataChange }) => {
       ClassStartDate: formatDate(values.ClassStartDate),
       Class: values.Class,
       StudentClasses: values.StudentClasses,
+      AttendingStatus: values.AttendingStatus,
     };
     putSingleStudent(userData, id || "");
     handleOk();
@@ -98,7 +100,7 @@ const EditStudent: React.FC<EditStudentProps> = ({ handleDataChange }) => {
 
   return (
     <div className="table-container">
-      <TableHeader isHeaderBottom={false} title="Add Student" />
+      <TableHeader isHeaderBottom={false} title="Edit Student" />
       <div className="table-container__content table-container__class">
         {loading ? (
           <div className="spin-container">

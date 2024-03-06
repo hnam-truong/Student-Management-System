@@ -27,6 +27,12 @@ interface SubmitButtonProps extends ButtonProps {
   formName?: string;
 }
 
+interface DownloadButtonProps {
+  text?: string;
+  href?: string;
+  download?: string;
+}
+
 const defaultProps: Partial<ButtonProps> = {
   onClick: () => {},
 };
@@ -34,6 +40,12 @@ const defaultProps: Partial<ButtonProps> = {
 const submitButtonProps: Partial<SubmitButtonProps> = {
   onClick: () => {},
   formName: "",
+};
+
+const downloadButtonProps: Partial<DownloadButtonProps> = {
+  text: "Download",
+  href: "",
+  download: "",
 };
 
 export const CommonButton = ({ onClick, text }: ButtonProps) => (
@@ -143,6 +155,16 @@ export const MoreButton = ({ onClick }: MoreButtonProps) => (
   </Button>
 );
 
+export const DownloadButton = ({
+  text,
+  href,
+  download,
+}: DownloadButtonProps) => (
+  <Button type="primary" href={href} download={download}>
+    {text}
+  </Button>
+);
+
 AddButton.defaultProps = defaultProps;
 DeleteButton.defaultProps = defaultProps;
 DefaultDeleteButton.defaultProps = defaultProps;
@@ -150,8 +172,8 @@ ActionButton.defaultProps = defaultProps;
 ImportButton.defaultProps = defaultProps;
 ExportButton.defaultProps = defaultProps;
 FilterButton.defaultProps = defaultProps;
-SubmitButton.defaultProps = submitButtonProps;
-SubmitButton.defaultProps = submitButtonProps;
 CancelButton.defaultProps = defaultProps;
 CommonButton.defaultProps = defaultProps;
 MoreButton.defaultProps = defaultProps;
+SubmitButton.defaultProps = submitButtonProps;
+DownloadButton.defaultProps = downloadButtonProps;
