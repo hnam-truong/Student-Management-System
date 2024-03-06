@@ -20,7 +20,7 @@ describe("Form Footer Component", () => {
       <FormFooter
         handleCancel={handleCancel}
         formName={formName}
-        submitText="Create"
+        text="Create"
       />
     );
     await screen.findByRole("button", { name: /Cancel/i });
@@ -36,7 +36,7 @@ describe("Form Footer Component", () => {
       <FormFooter
         handleCancel={handleCancel}
         formName={formName}
-        submitText="Create"
+        text="Create"
       />
     );
     const cancelButton = screen.getByRole("button", { name: /Cancel/i });
@@ -55,7 +55,7 @@ describe("Form Footer Component", () => {
       <FormFooter
         handleCancel={handleCancel}
         formName={formName}
-        submitText="Create"
+        text="Create"
       />
     );
     const submitButton = screen.getByRole("button", { name: /Create/i });

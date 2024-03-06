@@ -162,7 +162,7 @@ const ReserveInformation = ({
             <FormFooter
               handleCancel={handleCloseReclass}
               handleOk={handleReclass}
-              submitText="Re-class"
+              text="Re-class"
             />
           </div>
         }

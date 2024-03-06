@@ -22,7 +22,7 @@ const InputExcelModal = ({
           formName="ImportFile"
           text="Download Template"
           isDownload
-          href="../../../../public/assets/files/StudentImportTemplate.xlsx"
+          href="../../../../public/assets/files/StudentTemplate.xlsx"
           download="Student Import Template"
         />
       </div>
