@@ -4,8 +4,11 @@ import useClassStudentStore from "../../../store/StudentClassStore";
 import StudentClassTable from "../../templates/StudentClassTable/StudentClassTable";
 import TableHeader from "../../organisms/TableHeader/TableHeader";
 import "../../../styles/main.scss";
+import { ImportFromExcel } from "../../../utils/ImportFromExcel";
+import ExcelTemplates from "../../../constants/ExcelTemplates";
 
 const StudentsClassManagement: React.FC = () => {
+  const { handleExcelStudentClass } = ImportFromExcel();
   const { fetchClassStudent, classStudent, loading } = useClassStudentStore();
   // const [isImport, setIsImport] = useState<boolean>(false);
   // const [isExport, setIsExport] = useState<boolean>(false);
@@ -45,6 +48,9 @@ const StudentsClassManagement: React.FC = () => {
     <div className="table-container">
       <TableHeader
         title="Student Class List"
+        href={ExcelTemplates.StudentClass}
+        fileDownload="Student Class Import Template"
+        excelUpload={handleExcelStudentClass}
         // importData={importData}
         // exportData={exportData}
         isAddStudentClass

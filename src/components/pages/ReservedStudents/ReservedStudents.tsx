@@ -3,8 +3,11 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useReservedStudentStore } from "../../../store/ReservedStudentStore";
 import TableHeader from "../../organisms/TableHeader/TableHeader";
 import ReservedTable from "../../templates/ReservedTable/ReservedTable";
+import { ImportFromExcel } from "../../../utils/ImportFromExcel";
+import ExcelTemplates from "../../../constants/ExcelTemplates";
 
 const ReservedStudents: React.FC = () => {
+  const { handleExcelReservedStudent } = ImportFromExcel();
   const { fetchReservedStudent, reservedStudent } = useReservedStudentStore();
   const [isImport, setIsImport] = useState<boolean>(false);
   const [isExport, setIsExport] = useState<boolean>(false);
@@ -19,7 +22,7 @@ const ReservedStudents: React.FC = () => {
     setIsExport(true);
   }, []);
   const completedExport = useCallback(() => {
-    setIsImport(false);
+    setIsExport(false);
   }, []);
 
   useEffect(() => {
@@ -38,6 +41,9 @@ const ReservedStudents: React.FC = () => {
     <div className="table-container">
       <TableHeader
         title="Reserve List"
+        href={ExcelTemplates.ReservedStudent}
+        fileDownload="Reserved Student Import Template"
+        excelUpload={handleExcelReservedStudent}
         importData={importData}
         exportData={exportData}
         showAddModal

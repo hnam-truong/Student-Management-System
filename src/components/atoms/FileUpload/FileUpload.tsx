@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react/jsx-props-no-spreading */
 import type { UploadProps } from "antd";
 import { Button, Upload } from "antd";
@@ -7,11 +8,15 @@ import { ImportFromExcel } from "../../../utils/ImportFromExcel";
 import { errorNotify, successNotify } from "../Notify/Notify";
 import "./FileUpload.scss";
 
-const FileUpload: React.FC = () => {
+interface FileUploadProps {
+  excelUpload: (excelData: any) => void;
+}
+
+const FileUpload = ({ excelUpload }: FileUploadProps) => {
   const [uploadedData, setUploadedData] = useState([]);
 
   const { Dragger } = Upload;
-  const { readExcelFile, handleExcelUpload } = ImportFromExcel();
+  const { readExcelFile } = ImportFromExcel();
 
   const props: UploadProps = {
     name: "file",
@@ -55,7 +60,7 @@ const FileUpload: React.FC = () => {
       </Dragger>
 
       <Button
-        onClick={() => handleExcelUpload(uploadedData)}
+        onClick={() => excelUpload(uploadedData)}
         className="upload-btn"
         type="primary"
         // loading={}

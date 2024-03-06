@@ -4,8 +4,11 @@ import React, { useEffect, useState } from "react";
 import TableHeader from "../../organisms/TableHeader/TableHeader";
 import { useUserStore } from "../../../store/UserStore";
 import UserTable from "../../templates/UserTable/UserTable";
+import { ImportFromExcel } from "../../../utils/ImportFromExcel";
+import ExcelTemplates from "../../../constants/ExcelTemplates";
 
 const UserManagement: React.FC = () => {
+  const { handleExcelUser } = ImportFromExcel();
   const { fetchUser, user, loading } = useUserStore();
   const [isChangeData, setIsChangeData] = useState<boolean>(false);
   const handleDataChange = () => {
@@ -26,6 +29,9 @@ const UserManagement: React.FC = () => {
     <div className="table-container">
       <TableHeader
         title="User Management"
+        href={ExcelTemplates.User}
+        fileDownload="User Import Template"
+        excelUpload={handleExcelUser}
         isAddUser
         isSearch
         handleDataChange={handleDataChange}

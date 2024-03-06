@@ -2,8 +2,11 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useScoreStore } from "../../../store/ScoreStore";
 import TableHeader from "../../organisms/TableHeader/TableHeader";
 import ScoresTable from "../../templates/ScoresTable/ScoresTable";
+import { ImportFromExcel } from "../../../utils/ImportFromExcel";
+import ExcelTemplates from "../../../constants/ExcelTemplates";
 
 const StudentScoresManagement: React.FC = () => {
+  const { handleExcelStudentScore } = ImportFromExcel();
   const { fetchScore, score } = useScoreStore();
   useEffect(() => {
     fetchScore();
@@ -28,7 +31,13 @@ const StudentScoresManagement: React.FC = () => {
   const loading = !score || !score.length;
   return (
     <div className="table-container">
-      <TableHeader exportData={exportData} title="Score List" />
+      <TableHeader
+        title="Score List"
+        href={ExcelTemplates.StudentScore}
+        fileDownload="Student Score Import Template"
+        excelUpload={handleExcelStudentScore}
+        exportData={exportData}
+      />
       <div className="table-container__content">
         <ScoresTable
           scores={score ?? []}

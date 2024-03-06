@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Modal } from "antd";
 import FileUpload from "../../atoms/FileUpload/FileUpload";
 import FormFooter from "../FormFooter/FormFooter";
@@ -5,11 +6,17 @@ import FormFooter from "../FormFooter/FormFooter";
 interface InputExcelModalProps {
   isModalOpen: boolean;
   handleCancel: () => void;
+  excelUpload: (excelData: any) => void;
+  href: string;
+  fileDownload: string;
 }
 
 const InputExcelModal = ({
   isModalOpen,
   handleCancel,
+  excelUpload,
+  href,
+  fileDownload,
 }: InputExcelModalProps) => (
   <Modal
     title={<div className="modal-header-custom centered">Import file</div>}
@@ -22,15 +29,15 @@ const InputExcelModal = ({
           formName="ImportFile"
           text="Download Template"
           isDownload
-          href="../../../../public/assets/files/StudentTemplate.xlsx"
-          download="Student Import Template"
+          href={href}
+          download={fileDownload}
         />
       </div>
     }
     className="custom-modal-content"
   >
     <div className="modal-content-custom">
-      <FileUpload />
+      <FileUpload excelUpload={excelUpload} />
     </div>
   </Modal>
 );

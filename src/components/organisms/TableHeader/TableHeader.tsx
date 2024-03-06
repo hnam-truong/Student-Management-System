@@ -1,3 +1,6 @@
+/* eslint-disable react/require-default-props */
+/* eslint-disable react/default-props-match-prop-types */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import "./TableHeader.scss";
 import { Link } from "react-router-dom";
 import { useState } from "react";
@@ -32,6 +35,9 @@ interface TableHeaderProps {
   isAddStudent?: boolean;
   isAddUser?: boolean;
   isAddStudentClass?: boolean;
+  excelUpload: (excelData: any) => void;
+  href?: string;
+  fileDownload?: string;
 }
 
 const TableHeader = ({
@@ -51,6 +57,9 @@ const TableHeader = ({
   isAddUser,
   handleDataChange,
   isAddStudentClass,
+  excelUpload,
+  href = "",
+  fileDownload = "",
 }: TableHeaderProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
@@ -72,8 +81,11 @@ const TableHeader = ({
                 <div>
                   <ImportButton onClick={showModal} text="Import" />
                   <InputExcelModal
+                    excelUpload={excelUpload}
                     handleCancel={handleCancel}
                     isModalOpen={isModalOpen}
+                    href={href}
+                    fileDownload={fileDownload}
                   />
                 </div>
               )}
@@ -154,6 +166,7 @@ TableHeader.defaultProps = {
   isAddStudentClass: false,
   isAddUser: false,
   handleDataChange: () => {},
+  excelUpload: () => {},
 };
 
 export default TableHeader;

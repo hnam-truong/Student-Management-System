@@ -5,8 +5,11 @@ import { useStudentStore } from "../../../store/StudentStore";
 import StudentTable from "../../templates/StudentTable/StudentTable";
 import TableHeader from "../../organisms/TableHeader/TableHeader";
 import { IStudent } from "../../../interfaces/student.interface";
+import { ImportFromExcel } from "../../../utils/ImportFromExcel";
+import ExcelTemplates from "../../../constants/ExcelTemplates";
 
 const StudentsManagement: React.FC = () => {
+  const { handleExcelStudent } = ImportFromExcel();
   const { fetchStudent, student } = useStudentStore();
   const [isChangeData, setIsChangeData] = useState<boolean>(false);
   const handleDataChange = () => {
@@ -37,6 +40,9 @@ const StudentsManagement: React.FC = () => {
     <div className="table-container">
       <TableHeader
         title="Student List"
+        href={ExcelTemplates.Student}
+        fileDownload="Student Import Template"
+        excelUpload={handleExcelStudent}
         exportData={exportData}
         isSelectedStudent={!studentSelect.length}
         studentSelect={studentSelect}
