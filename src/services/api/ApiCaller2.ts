@@ -16,6 +16,25 @@ export const getReservedStudent = async (): Promise<IReservedStudent[]> => {
   return [];
 };
 
+// post reserved students
+interface PostReservedStudentProps {
+  data: IReservedStudent[];
+}
+export const postReservedStudent = async ({
+  data,
+}: PostReservedStudentProps): Promise<IReservedStudent[]> => {
+  try {
+    const response = await post<IReservedStudent[]>(`reserved-students/`, data);
+    if (response.status === 201) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+  return [];
+};
+
 // get reserved student by id
 interface GetReservedStudentByIDProps {
   id: string;
@@ -55,19 +74,6 @@ export const postReservedStudentByID = async ({
     throw error;
   }
 };
-// get all class
-export const getClass = async (): Promise<IClass[]> => {
-  try {
-    const response = await get<IClass[]>("classes");
-    if (response.status === 200) {
-      return response.data;
-    }
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-  return [];
-};
 interface PutSingleReservedStudentProps {
   id: string;
   data: IReservedStudent;
@@ -92,15 +98,50 @@ export const putSingleReserveStudent = async ({
   return [];
 };
 
+// get all class
+export const getClass = async (): Promise<IClass[]> => {
+  try {
+    const response = await get<IClass[]>("classes");
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+  return [];
+};
+
 // get class by id
 interface GetClassByIDProps {
   id: string;
 }
 export const getClassByID = async ({
   id,
-}: GetClassByIDProps): Promise<IClass[]> => {
+}: GetClassByIDProps): Promise<IClass | null> => {
   try {
-    const response = await get<IClass[]>(`classes/${id}`);
+    const response = await get<IClass>(`classes/${id}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+  return null;
+};
+
+// put class by id
+interface PutSingleClassProps {
+  id: string;
+  classdata: IClass;
+}
+export const putClassByID = async ({
+  id,
+  classdata,
+}: PutSingleClassProps): Promise<IClass[]> => {
+  try {
+    const response = await put<IClass[]>(`classes/${id}`, classdata);
     if (response.status === 200) {
       return response.data;
     }

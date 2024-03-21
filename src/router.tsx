@@ -24,6 +24,9 @@ import ClassDetail from "./components/pages/ClassDetail/ClassDetail";
 import UserPermission from "./components/pages/UserPermission/UserPermission";
 import UserDetail from "./components/pages/UserDetail/UserDetail";
 import SubLayout from "./components/templates/SubLayout/SubLayout";
+import EmailDetail from "./components/pages/EmailDetail/EmailDetail";
+import AddEmail from "./components/pages/AddEmail/AddEmail";
+import EditEmail from "./components/pages/EditEmail/EditEmail";
 
 const router = createBrowserRouter([
   {
@@ -108,6 +111,18 @@ const router = createBrowserRouter([
       {
         path: RouterEndpoints.EmailsManagement,
         element: <EmailsManagement />,
+      },
+      {
+        path: RouterEndpoints.EmailDetail,
+        element: <EmailDetail />,
+      },
+      {
+        path: RouterEndpoints.AddEmail,
+        element: <AddEmail />,
+      },
+      {
+        path: RouterEndpoints.EditEmail,
+        element: <EditEmail />,
       },
       // USER MANAGEMENT
       { path: RouterEndpoints.UsersManagement, element: <UserManagement /> },

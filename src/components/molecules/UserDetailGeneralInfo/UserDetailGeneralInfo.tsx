@@ -2,6 +2,8 @@ import React from "react";
 import DetailGeneralInfo from "../../atoms/DetailGeneralInfo/DetailGeneralInfo";
 import generateGender from "../../../utils/GenerateGender";
 import { IUser } from "../../../interfaces/user.interface";
+import StatusTag from "../../atoms/StatusTag/StatusTag";
+import { getUserStatus } from "../../../utils/GenerateStatus";
 
 interface UserDetailGeneralInfoProps {
   userDetail: IUser;
@@ -54,7 +56,12 @@ const UserDetailGeneralInfo: React.FC<UserDetailGeneralInfoProps> = ({
             },
             {
               key: "2",
-              name: userDetail.Status ? "Active" : "Inactive",
+              name: (
+                <StatusTag
+                  status={getUserStatus(userDetail.Status)}
+                  content={getUserStatus(userDetail.Status)}
+                />
+              ),
             },
           ],
         },

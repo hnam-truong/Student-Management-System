@@ -5,6 +5,7 @@ import FormStudentDetail from "../../molecules/FormStudentDetail/FormStudentDeta
 import { useSingleScoreStore } from "../../../store/ScoreStore";
 import { useSingleStudentStore } from "../../../store/StudentStore";
 import "../../molecules/FormClassDetail/FormClassDetail.scss";
+import { BackButton } from "../../atoms/CustomButton/CustomButton";
 
 const StudentDetail: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
@@ -38,6 +39,9 @@ const StudentDetail: React.FC = () => {
 
   return (
     <div className="student-detail">
+      <div className="back-btn">
+        <BackButton />
+      </div>
       <FormStudentDetail studentDetail={aStudent} studentScore={aScore} />
     </div>
   );

@@ -10,14 +10,21 @@ import {
   getScoreByID,
   getScores,
   postScore,
+  postStudentScore,
   putScore,
 } from "../services/api/ApiCaller";
+import {
+  generateErrorMessage,
+  generateSuccessMessage,
+} from "../utils/GenerateErrorMessage";
+import { errorNotify, successNotify } from "../components/atoms/Notify/Notify";
 
 // SCORE STORE
 interface IScoreStore {
   score: IScore[] | null;
   loading: boolean;
   fetchScore: () => void;
+  postScore: (data: IScore[]) => Promise<void>;
 }
 
 export const useScoreStore = create<IScoreStore>((set) => ({
@@ -33,6 +40,24 @@ export const useScoreStore = create<IScoreStore>((set) => ({
     } catch (err) {
       // Catch & log error
       console.log("API Error:", err);
+      errorNotify(generateErrorMessage("get", "list of score"));
+    } finally {
+      // Set loading false
+      set((state) => ({ ...state, loading: false }));
+    }
+  },
+  postScore: async (data: IScore[]) => {
+    // Set Loading true
+    set((state) => ({ ...state, loading: true }));
+    try {
+      await postScore({ data });
+      successNotify(
+        generateSuccessMessage("has been created", "Score information")
+      );
+    } catch (err) {
+      // Catch & log error
+      console.log("API Error:", err);
+      errorNotify(generateErrorMessage("create", "new score"));
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));
@@ -63,6 +88,7 @@ export const useSingleScoreStore = create<ISingleScoreStore>((set) => ({
     } catch (err) {
       // Catch & log error
       console.log("API Error:", err);
+      errorNotify(generateErrorMessage("get", "score information"));
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));
@@ -73,10 +99,14 @@ export const useSingleScoreStore = create<ISingleScoreStore>((set) => ({
     // Set Loading true
     set((state) => ({ ...state, loading: true }));
     try {
-      await postScore({ data });
+      await postStudentScore({ data });
+      successNotify(
+        generateSuccessMessage("has been created", "Score information")
+      );
     } catch (err) {
       // Catch & log error
       console.log("API Error:", err);
+      errorNotify(generateErrorMessage("create", "a new score"));
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));
@@ -87,9 +117,11 @@ export const useSingleScoreStore = create<ISingleScoreStore>((set) => ({
     set((state) => ({ ...state, loading: true }));
     try {
       await putScore({ data, id });
+      generateSuccessMessage("has been changed", "Score information");
     } catch (err) {
       // Catch & log error
       console.log("API Error:", err);
+      errorNotify(generateErrorMessage("edit", "the score"));
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));

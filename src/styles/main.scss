@@ -18,12 +18,32 @@
   line-height: $lg-medium;
 }
 
+.subtitle1-bold {
+  font-size: $font-size-lg-medium;
+  font-weight: $fw-semi-bold;
+  line-height: $lg-medium;
+}
+
 .subtitle2 {
   font-size: $font-size-xs-medium;
   font-weight: $fw-semi-bold;
   line-height: $medium;
 }
+
 .subtitle2-bold {
+  font-size: $font-size-lg-medium;
+  font-weight: $fw-bold;
+  line-height: $medium;
+}
+
+.subtitle3 {
+  font-size: $font-size-md-large;
+  font-weight: $fw-medium;
+  line-height: $lg-medium;
+  letter-spacing: $md-small;
+}
+
+.subtitle3-bold {
   font-size: $font-size-lg-medium;
   font-weight: $fw-bold;
   line-height: $medium;
@@ -40,12 +60,6 @@
   font-weight: $fw-semi-bold;
   line-height: $sm-large;
   letter-spacing: $md-small;
-}
-
-.subtitle1-bold {
-  font-size: $font-size-lg-medium;
-  font-weight: $fw-semi-bold;
-  line-height: $lg-medium;
 }
 
 .headerh3 {
@@ -146,6 +160,9 @@ body {
     padding-top: $md-medium;
   }
 }
+.content-container {
+  flex-wrap: nowrap;
+}
 
 // search styles
 .search-input-container {
@@ -216,7 +233,7 @@ body {
   // }
 }
 .ant-select-item-option-selected {
-  background-color: $fifth-color !important; 
+  background-color: $fifth-color !important;
 }
 
 .ant-table-filter-dropdown {
@@ -233,11 +250,6 @@ body {
     font-size: $medium;
     font-weight: bold;
     padding: 0;
-  }
-}
-@media screen and (max-width: $xl) {
-  .body {
-    font-size: $font-size-normal;
   }
 }
 
@@ -277,4 +289,35 @@ body {
     flex-direction: row !important;
     flex-wrap: nowrap !important;
   }
+}
+
+.btn-disable {
+  opacity: 0.6;
+  &:hover {
+    opacity: 0.6;
+  }
+}
+
+.back-btn {
+  margin: $small;
+}
+
+@media screen and (max-width: $md) {
+  .back-btn {
+    margin-left: $md-larger;
+  }
+}
+
+@media screen and (max-width: $xl) {
+  .body {
+    font-size: $font-size-normal;
+  }
+}
+
+.mt-2 {
+  margin-top: $xs-large;
+}
+
+.btn-save{
+  text-align: right;
 }

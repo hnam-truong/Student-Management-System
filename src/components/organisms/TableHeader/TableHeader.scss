@@ -49,16 +49,32 @@
     }
   }
 }
+.ant-select-selector {
+  width: $xxl-sm-lager;
+}
 
-@media screen and (max-width: $xxl) {
-  .edit-button-container {
+@media screen and (max-width: $lg) {
+  .ant-select-selector {
+    width: $xxl-sm-lager;
+  }
+  .edit-container__content__top {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: $medium;
   }
 }
-
+@media screen and (max-width: $md) {
+  .ant-select-selector {
+    width: $xx-large;
+  }
+  .edit-container__content__top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $medium;
+  }
+}
 .button-export-add {
   display: flex;
   align-items: center;

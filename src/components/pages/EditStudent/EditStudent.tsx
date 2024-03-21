@@ -12,6 +12,7 @@ import formatDate from "../../../utils/DateFormatting";
 import TableHeader from "../../organisms/TableHeader/TableHeader";
 import { useSingleStudentStore } from "../../../store/StudentStore";
 import StudentForm from "../../templates/StudentForm/StudentForm";
+import { BackButton } from "../../atoms/CustomButton/CustomButton";
 
 interface EditStudentProps {
   handleDataChange: () => void;
@@ -100,6 +101,9 @@ const EditStudent: React.FC<EditStudentProps> = ({ handleDataChange }) => {
 
   return (
     <div className="table-container">
+      <div className="back-btn">
+        <BackButton />
+      </div>
       <TableHeader isHeaderBottom={false} title="Edit Student" />
       <div className="table-container__content table-container__class">
         {loading ? (
@@ -112,6 +116,8 @@ const EditStudent: React.FC<EditStudentProps> = ({ handleDataChange }) => {
             onFinish={onFinish}
             formName={`EditStudent_${id}`}
             isEdit
+            data={aStudent || null}
+            onAttendingStatusChange={() => {}}
           />
         )}
       </div>

@@ -37,7 +37,7 @@ const Account: React.FC = () => {
       placement="bottom"
     >
       <div className="avatar centered">
-        <Avatar src="/assets/images/avatar.png" size={50} />
+        <Avatar src="/assets/images/avatar.png" alt="user-avatar" size={50} />
         <div className="user-name centered">
           <p> Warrior Tran</p>
           <MdKeyboardArrowDown size={20} />

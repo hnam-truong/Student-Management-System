@@ -20,6 +20,8 @@ import ReservingCondition from "../../atoms/ReservingCondition/ReservingConditio
 import ReservingReason from "../../atoms/ReservingReason/ReservingReason";
 import ReservingPeriod from "../../atoms/ReservingPeriod/ReservingPeriod";
 import ReservingStudentSearch from "../../atoms/ReservingStudentSearch/ReservingStudentSearch";
+import { useSingleStudentStore } from "../../../store/StudentStore";
+import { IStudent } from "../../../interfaces/student.interface";
 
 type ReservingFormType = {
   ID: string;
@@ -37,12 +39,16 @@ interface AddReservingStudentProps {
   form: FormInstance<any>;
   handleOk: () => void;
   id?: string;
+  isAddNew?: boolean;
+  onAttendingStatusChange: () => void;
 }
 
 const AddReservingStudentForm: React.FC<AddReservingStudentProps> = ({
   id,
   handleOk,
   form,
+  isAddNew,
+  onAttendingStatusChange,
 }) => {
   // USE STATE
   const [isTextAreaHidden, setIsTextAreaHidden] = useState(true);
@@ -53,8 +59,11 @@ const AddReservingStudentForm: React.FC<AddReservingStudentProps> = ({
   const { fetchReservingCondition, reservingCondition } =
     useReservingCondition();
   const { fetchReservingReason, reservingReason } = useReservingReason();
+  const { aStudent, putSingleStudent } = useSingleStudentStore();
+
   useEffect(() => {
-    id !== undefined &&
+    isAddNew &&
+      id !== undefined &&
       id !== "" &&
       id === null &&
       fetchReservedStudentByID(id);
@@ -65,7 +74,11 @@ const AddReservingStudentForm: React.FC<AddReservingStudentProps> = ({
     fetchReservingCondition,
     fetchReservingReason,
     id,
+    isAddNew,
   ]);
+  useEffect(() => {
+    id && fetchReservedStudentByID(id);
+  }, [fetchReservedStudentByID]);
 
   /** Function handles selecting reserved reason,
    *  if user do not select available option but choose others
@@ -114,6 +127,35 @@ const AddReservingStudentForm: React.FC<AddReservingStudentProps> = ({
       ReservedModule: (aReservedStudent as IReservedStudent)?.ReservedModule,
     };
     postReservedStudent(reservationData);
+    const studentID = (aReservedStudent as IReservedStudent)?.StudentID;
+
+    // Update the student status to "Reserve"
+    if (studentID) {
+      const updatedStudent: IStudent = {
+        Status: aStudent?.Status || "",
+        ID: aStudent?.ID || "",
+        Name: aStudent?.Name || "",
+        Gender: aStudent?.Gender || true,
+        DateOfBirth: aStudent?.DateOfBirth || "",
+        Phone: aStudent?.Phone || "",
+        Email: aStudent?.Email || "",
+        PermanentResidence: aStudent?.PermanentResidence || "",
+        Location: aStudent?.Location || "",
+        University: aStudent?.University || "",
+        Major: aStudent?.Major || "",
+        RECer: aStudent?.RECer || "",
+        GPA: aStudent?.GPA || 0,
+        GraduationTime: aStudent?.GraduationTime || "",
+        ClassCode: aStudent?.ClassCode || "",
+        ClassStartDate: aStudent?.ClassStartDate || "",
+        ImageUrl: aStudent?.ImageUrl || "",
+        Class: aStudent?.Class || "",
+        StudentClasses: aStudent?.StudentClasses || [],
+        AttendingStatus: "Reserve",
+      };
+      putSingleStudent(updatedStudent, studentID);
+      onAttendingStatusChange();
+    }
     handleOk();
   };
 
@@ -123,6 +165,7 @@ const AddReservingStudentForm: React.FC<AddReservingStudentProps> = ({
    */
 
   useEffect(() => {
+    console.log("aReservedStudent:", aReservedStudent);
     form.setFieldsValue({
       ID: (aReservedStudent as IReservedStudent)?.ID || "",
       Class: (aReservedStudent as IReservedStudent)?.Class || "",
@@ -130,7 +173,7 @@ const AddReservingStudentForm: React.FC<AddReservingStudentProps> = ({
       CurrentModules:
         (aReservedStudent as IReservedStudent)?.CurrentModules || "",
     });
-  }, [aReservedStudent, form]);
+  }, [aReservedStudent, form, id]);
 
   return (
     <Form
@@ -180,5 +223,6 @@ const AddReservingStudentForm: React.FC<AddReservingStudentProps> = ({
 
 AddReservingStudentForm.defaultProps = {
   id: "",
+  isAddNew: true,
 };
 export default AddReservingStudentForm;

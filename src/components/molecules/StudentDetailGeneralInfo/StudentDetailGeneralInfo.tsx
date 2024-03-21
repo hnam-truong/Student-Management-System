@@ -2,6 +2,7 @@ import React from "react";
 import { IStudent } from "../../../interfaces/student.interface";
 import DetailGeneralInfo from "../../atoms/DetailGeneralInfo/DetailGeneralInfo";
 import generateGender from "../../../utils/GenerateGender";
+import StatusTag from "../../atoms/StatusTag/StatusTag";
 
 interface StudentDetailGeneralInfoProps {
   studentDetail: IStudent;
@@ -62,15 +63,20 @@ const StudentDetailGeneralInfo: React.FC<StudentDetailGeneralInfoProps> = ({
             },
             {
               key: "3",
-              name: studentDetail?.Status,
+              name: (
+                <StatusTag
+                  status={studentDetail?.Status}
+                  content={studentDetail?.Status}
+                />
+              ),
             },
           ],
         },
       ],
     },
   ];
-  console.log(studentDetail);
-  console.log(infos);
+  // console.log(studentDetail);
+  // console.log(infos);
 
   return <DetailGeneralInfo infos={infos} />;
 };

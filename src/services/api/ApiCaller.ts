@@ -16,6 +16,25 @@ export const getStudents = async (): Promise<IStudent[]> => {
   return [];
 };
 
+// post students
+interface PostStudentProps {
+  data: IStudent[];
+}
+export const postStudent = async ({
+  data,
+}: PostStudentProps): Promise<IStudent[]> => {
+  try {
+    const response = await post<IStudent[]>(`students/`, data);
+    if (response.status === 201) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+  return [];
+};
+
 // get one student
 interface GetStudentByIDProps {
   id: string;
@@ -26,24 +45,6 @@ export const getStudentByID = async ({
   try {
     const response = await get<IStudent[]>(`students/${id}`);
     if (response.status === 200) {
-      return response.data;
-    }
-  } catch (error) {
-    console.log(error);
-    throw error;
-  }
-  return [];
-};
-
-interface PostStudentProps {
-  data: IStudent[];
-}
-export const postStudent = async ({
-  data,
-}: PostStudentProps): Promise<IStudent[]> => {
-  try {
-    const response = await post<IStudent[]>(`students/`, data);
-    if (response.status === 201) {
       return response.data;
     }
   } catch (error) {
@@ -126,6 +127,25 @@ export const getScores = async (): Promise<IScore[]> => {
   return [];
 };
 
+// post scores
+interface PostScoreProps {
+  data: IScore[];
+}
+export const postScore = async ({
+  data,
+}: PostScoreProps): Promise<IScore[]> => {
+  try {
+    const response = await post<IScore[]>(`scores/`, data);
+    if (response.status === 201) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+  return [];
+};
+
 // get all scores of 1 students
 interface GetScoreByIDProps {
   id: string;
@@ -146,10 +166,12 @@ export const getScoreByID = async ({
 };
 
 // post new scores of student
-interface PostScoreProps {
+interface PostStudentScoreProps {
   data: IScore;
 }
-export const postScore = async ({ data }: PostScoreProps): Promise<IScore> => {
+export const postStudentScore = async ({
+  data,
+}: PostStudentScoreProps): Promise<IScore> => {
   try {
     const response = await post<IScore>(`scores/`, data);
     if (response.status === 201) {

@@ -39,10 +39,18 @@ const DisableModal: React.FC<DisableStudentProps> = ({
         onOk={handleOk}
         onCancel={handleCancel}
         open={isModalOpen}
-        okText={buttonText}
         centered
         className="disable-modal"
-        footer={<FormFooter handleCancel={handleCancel} handleOk={handleOk} />}
+        footer={
+          <FormFooter
+            text={buttonText}
+            handleCancel={handleCancel}
+            handleOk={() => {
+              handleOk();
+              handleCancel();
+            }}
+          />
+        }
       >
         <span>Are you sure to {modalTitle.toLowerCase()}?</span>
       </Modal>

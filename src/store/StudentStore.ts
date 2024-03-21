@@ -14,7 +14,10 @@ import {
   putSingleStudent,
 } from "../services/api/ApiCaller";
 import { errorNotify, successNotify } from "../components/atoms/Notify/Notify";
-import { generateSuccessMessage } from "../utils/GenerateErrorMessage";
+import {
+  generateErrorMessage,
+  generateSuccessMessage,
+} from "../utils/GenerateErrorMessage";
 
 // STUDENT STORE
 interface IStudentStore {
@@ -22,7 +25,6 @@ interface IStudentStore {
   loading: boolean;
   fetchStudent: () => void;
   postStudent: (data: IStudent[]) => Promise<void>;
-  updateStudent: (data: IStudent) => void;
 }
 
 export const useStudentStore = create<IStudentStore>((set) => ({
@@ -38,6 +40,7 @@ export const useStudentStore = create<IStudentStore>((set) => ({
     } catch (err) {
       // Catch & log error
       console.log("API Error:", err);
+      errorNotify(generateErrorMessage("get", "list of student"));
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));
@@ -48,32 +51,24 @@ export const useStudentStore = create<IStudentStore>((set) => ({
     set((state) => ({ ...state, loading: true }));
     try {
       await postStudent({ data });
+      successNotify(
+        generateSuccessMessage("has been created", "Student information")
+      );
     } catch (err) {
       // Catch & log error
       console.log("API Error:", err);
+      errorNotify(generateErrorMessage("create", "new student"));
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));
     }
-  },
-  updateStudent: (data: IStudent) => {
-    set((state) => {
-      const updatedStudents =
-        state.student?.map((student) =>
-          student.ID === data.ID ? { ...student, ...data } : student
-        ) ?? [];
-
-      return {
-        ...state,
-        student: updatedStudents,
-      };
-    });
   },
 }));
 
 // SINGLE STUDENT STORE
 interface ISingleStudentStore {
   aStudent: IStudent | null;
+  newStudent: IStudent | null;
   loading: boolean;
   getStudentByID: (id: string) => void;
   postSingleStudent: (data: IStudent) => Promise<void>;
@@ -83,6 +78,7 @@ interface ISingleStudentStore {
 
 export const useSingleStudentStore = create<ISingleStudentStore>((set) => ({
   aStudent: null,
+  newStudent: null,
   loading: false,
   getStudentByID: async (id: string) => {
     // Set Loading true
@@ -95,6 +91,9 @@ export const useSingleStudentStore = create<ISingleStudentStore>((set) => ({
     } catch (err) {
       // Catch & log error
       console.log("API Error:", err);
+      errorNotify(generateErrorMessage("get", "student information"));
+
+      set((state) => ({ ...state, aStudent: null }));
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));
@@ -105,10 +104,18 @@ export const useSingleStudentStore = create<ISingleStudentStore>((set) => ({
     // Set Loading true
     set((state) => ({ ...state, loading: true }));
     try {
-      await postSingleStudent({ data });
+      const response = await postSingleStudent({ data });
+      const validData: IStudent | null = Array.isArray(response)
+        ? response[0]
+        : response;
+      set((state) => ({ ...state, newStudent: validData }));
+      successNotify(
+        generateSuccessMessage("has been created", "Student information")
+      );
     } catch (err) {
       // Catch & log error
       console.log("API Error:", err);
+      errorNotify(generateErrorMessage("create", "a new student"));
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));
@@ -125,6 +132,7 @@ export const useSingleStudentStore = create<ISingleStudentStore>((set) => ({
     } catch (err) {
       // Catch & log error
       console.log("API Error:", err);
+      errorNotify(generateErrorMessage("edit", "the student"));
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));
@@ -135,11 +143,11 @@ export const useSingleStudentStore = create<ISingleStudentStore>((set) => ({
     set((state) => ({ ...state, loading: true }));
     try {
       await deleteSingleStudent({ id });
-      successNotify("Student deleted successfully!");
+      successNotify(generateSuccessMessage("deleted", "The student was"));
     } catch (err) {
       // Catch & log error
       console.log("API Error:", err);
-      errorNotify("Failed to delete the student. Please try again later.");
+      errorNotify(generateErrorMessage("delete", "the student"));
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));

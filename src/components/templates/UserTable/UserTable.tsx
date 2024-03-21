@@ -5,7 +5,7 @@ import { generateFilters } from "../../../utils/GenerateFilter";
 import CustomDropdown from "../../molecules/CustomDropdown/CustomDropdown";
 import { IUser } from "../../../interfaces/user.interface";
 import Gender from "../../atoms/Gender/Gender";
-import RoleTag from "../../atoms/RoleTag/RoleTag";
+import StatusTag from "../../atoms/StatusTag/StatusTag";
 
 interface UserTableProps {
   user: IUser[];
@@ -90,7 +90,7 @@ const UserTable: React.FC<UserTableProps> = ({
         record.UserType.toString().indexOf(value as string) === 0,
       render: (role) => (
         <div className="centered">
-          <RoleTag type={role} />
+          <StatusTag status={role} content={role} />
         </div>
       ),
     },

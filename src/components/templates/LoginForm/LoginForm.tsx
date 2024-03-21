@@ -28,6 +28,7 @@ const LoginForm: React.FC = () => (
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         autoComplete="on"
+        colon={false}
       >
         <Form.Item<FieldType>
           label="Username"

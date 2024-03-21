@@ -18,6 +18,8 @@ import StatusTag from "../../atoms/StatusTag/StatusTag";
 import { IScore } from "../../../interfaces/score.interface";
 import "./EditScore.scss";
 import RouterEndpoints from "../../../constants/RouterEndpoints";
+import { getCourseStatus } from "../../../utils/GenerateStatus";
+import { BackButton } from "../../atoms/CustomButton/CustomButton";
 
 const EditScore: React.FC = () => {
   const id = useParams();
@@ -124,13 +126,20 @@ const EditScore: React.FC = () => {
       autoComplete="off"
       name="EditScore"
     >
+      <div className="back-btn">
+        <BackButton />
+      </div>
       <div className="form-wrapper">
         {formTables.map((item) => (
           <div key={item.key} className="form-wrapper__container">
             <div className="form-header">
               <h2>{item.title}</h2>
               <div>
-                <StatusTag status={item.status || null} isBorder />
+                <StatusTag
+                  status={item.status || null}
+                  content={getCourseStatus(item.status)}
+                  isBorder
+                />
               </div>
             </div>
             {item.children.map((child) => (

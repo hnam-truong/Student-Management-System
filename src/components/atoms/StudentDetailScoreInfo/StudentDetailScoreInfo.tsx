@@ -5,6 +5,7 @@ import { IStudent } from "../../../interfaces/student.interface";
 import { IScore } from "../../../interfaces/score.interface";
 import "../../../styles/main.scss";
 import StatusTag from "../StatusTag/StatusTag";
+import { getCourseStatus } from "../../../utils/GenerateStatus";
 
 interface StudentDetailScoreInfoProps {
   studentDetail: IStudent;
@@ -82,7 +83,10 @@ const StudentDetailScoreInfo: React.FC<StudentDetailScoreInfoProps> = ({
         <div>
           <div className="table-status">
             <div className="subtitle1-bold table-status-name">FEE</div>
-            <StatusTag status={studentScore.Status} />
+            <StatusTag
+              status={studentScore.Status}
+              content={getCourseStatus(studentScore.Status)}
+            />
           </div>
           <div className="fee-tables">
             {feeTables.map((table) => (
@@ -109,7 +113,10 @@ const StudentDetailScoreInfo: React.FC<StudentDetailScoreInfoProps> = ({
         <div>
           <div className="table-status">
             <div className="subtitle1-bold table-status-name">MOCK</div>
-            <StatusTag status={studentScore.MockStatus} />
+            <StatusTag
+              status={studentScore.MockStatus}
+              content={getCourseStatus(studentScore.MockStatus)}
+            />
           </div>
           <div className="mock-table">
             {mockTable.map((table) => (

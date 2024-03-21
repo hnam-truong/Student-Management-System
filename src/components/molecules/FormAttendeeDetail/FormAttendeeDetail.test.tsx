@@ -1,86 +1,82 @@
+import React from "react";
 import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import FormAttendeeDetail from "./FormAttendeeDetail";
-import { IStudent } from "../../../interfaces/student.interface";
 import { IClass } from "../../../interfaces/class.interface";
+import { IStudent } from "../../../interfaces/student.interface";
+
+const mockStudentDetail: IStudent = {
+  ID: "1",
+  Name: "John Doe",
+  Gender: true,
+  DateOfBirth: "1990-01-01",
+  Status: "Active",
+  Phone: "123-456-7890",
+  Email: "john.doe@example.com",
+  PermanentResidence: "City, Country",
+  Location: "City, Country",
+  University: "University of Something",
+  Major: "Computer Science",
+  RECer: "REC123",
+  GPA: 3.8,
+  GraduationTime: "2022-05-01",
+  ClassCode: "CS101",
+  ClassStartDate: "2021-09-01",
+  ImageUrl: "https://example.com/avatar.jpg",
+  Class: "Computer Science",
+  StudentClasses: ["1"],
+  AttendingStatus: "Active",
+};
+
+const mockClassDetail: IClass[] = [
+  {
+    ClassID: "1",
+    ClassName: "Math 101",
+    StartDate: "2022-01-01",
+    EndDate: "2022-05-01",
+    CreatedDate: "2022-01-01",
+    CreatedBy: "John Doe",
+    UpdatedDate: "2022-01-02",
+    UpdatedBy: "Jane Doe",
+    Duration: 16,
+    Location: "Room 101",
+    Status: "Active",
+    ProgramID: "P1",
+  },
+  // Add more class instances if needed
+];
 
 describe("FormAttendeeDetail Component", () => {
-  const studentDetailMock: IStudent = {
-    Name: "Jerald Murazik",
-    Gender: false,
-    DateOfBirth: "1963-03-09",
-    Status: "Status 12",
-    Phone: "(928) 912-6561 x79342",
-    Email: "Quincy_Gulgowski@yahoo.com",
-    PermanentResidence: "Suite 425",
-    Location: "070",
-    University: "University 12",
-    Major: "Global Identity Specialist",
-    RECer: "Stanley O'Conner IV",
-    GPA: 39,
-    GraduationTime: "2064-10-02",
-    ClassCode: "ClassCode 12",
-    ClassStartDate: "2050-02-07",
-    ID: "12",
-    ImageUrl:
-      "https://th.bing.com/th/id/OIP.iAhcp6m_91O-ClK79h8EQQHaFj?rs=1&pid=ImgDetMain",
-    Class: "Class 12",
-    StudentClasses: ["Class 12", "Class 12", "Class 12"],
-    AttendingStatus: "In class",
-  };
-
-  const classDetailMock: IClass[] = [
-    {
-      ClassName: "ClassName 2",
-      StartDate: "2036-04-13",
-      EndDate: "2081-12-18",
-      CreatedDate: "2024-02-28",
-      CreatedBy: "Cristina Cronin IV",
-      UpdatedDate: "2013-03-18",
-      UpdatedBy: "Mrs. Maureen Gutkowski",
-      Duration: 9,
-      Location: "Apt. 638",
-      Status: "Opening",
-      ProgramID: "fb2c7d03-f3c6-4dbe-8931-4755b5025621",
-      ClassID: "2",
-    },
-  ];
-
-  it("renders without crashing", () => {
+  it("should render correctly", () => {
     render(
-      <FormAttendeeDetail
-        studentDetail={studentDetailMock}
-        classDetail={classDetailMock}
-      />
-    );
-  });
-
-  it("renders general and academic tabs", () => {
-    render(
-      <FormAttendeeDetail
-        studentDetail={studentDetailMock}
-        classDetail={classDetailMock}
-      />
+      <MemoryRouter>
+        <FormAttendeeDetail
+          studentDetail={mockStudentDetail}
+          classDetail={mockClassDetail}
+        />
+      </MemoryRouter>
     );
 
-    expect(screen.getByText("General Information")).toBeInTheDocument();
-    expect(screen.getByText("Academic Info")).toBeInTheDocument();
-  });
+    // Assertions for the initial render
+    const generalInfoTab = screen.getByText("General information");
+    const academicInfoTab = screen.getByText("Academic infomation");
+    const classInfoTitle = screen.getByText("Class information");
+    const reservingTitle = screen.getByText("Reserving");
+    const scoreTitle = screen.getByText("Score in all class information");
 
-  it("renders class information", () => {
-    const studentDetailWithClass = {
-      ...studentDetailMock,
-      StudentClasses: ["Class 12"],
-    };
+    expect(generalInfoTab).toBeInTheDocument();
+    expect(academicInfoTab).toBeInTheDocument();
+    expect(classInfoTitle).toBeInTheDocument();
+    expect(reservingTitle).toBeInTheDocument();
+    expect(scoreTitle).toBeInTheDocument();
 
-    const classDetailMockWithAssociatedClass = classDetailMock;
+    // Add more specific assertions based on your component content
+    const studentName = screen.getByText("John Doe");
+    const studentEmail = screen.getByText("john.doe@example.com");
+    const classLink = screen.getByRole("link", { name: /Math 101/i });
 
-    render(
-      <FormAttendeeDetail
-        studentDetail={studentDetailWithClass}
-        classDetail={classDetailMockWithAssociatedClass}
-      />
-    );
-
-    expect(screen.getByText("Class Information")).toBeInTheDocument();
+    expect(studentName).toBeInTheDocument();
+    expect(studentEmail).toBeInTheDocument();
+    expect(classLink).toBeInTheDocument();
   });
 });

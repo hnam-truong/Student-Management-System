@@ -47,12 +47,21 @@
     }
   }
 
+  .class-general-calendar {
+    width: 100%;
+    padding: 0 $medium;
+    .class-general-calendar__card {
+      width: 32%;
+    }
+  }
+
   .classtab {
     // padding: $medium;
     .ant-tabs-tab {
       font-weight: bold;
       padding: 0;
       margin: 0;
+      margin-right: $xs-small;
       .ant-tabs-tab-btn {
         padding: $lg-small $md-large;
         color: $white;

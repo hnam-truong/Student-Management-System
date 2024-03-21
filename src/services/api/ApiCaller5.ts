@@ -1,3 +1,4 @@
+import { IModuleScore } from "../../interfaces/module-score";
 import { IUser } from "../../interfaces/user.interface";
 import { get, post, del, put } from "./api5";
 
@@ -6,6 +7,23 @@ export const getUsers = async (): Promise<IUser[]> => {
   try {
     const response = await get<IUser[]>("users");
     if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+  return [];
+};
+
+// post users
+interface PostUserProps {
+  data: IUser[];
+}
+export const postUser = async ({ data }: PostUserProps): Promise<IUser[]> => {
+  try {
+    const response = await post<IUser[]>(`users/`, data);
+    if (response.status === 201) {
       return response.data;
     }
   } catch (error) {
@@ -104,6 +122,20 @@ export const deleteSingleUser = async ({
 }: DeleteSingleUserProps): Promise<IUser[]> => {
   try {
     const response = await del<IUser[]>(`users/${id}`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+  return [];
+};
+
+// get all modules score
+export const getModuleScores = async (): Promise<IModuleScore[]> => {
+  try {
+    const response = await get<IModuleScore[]>("module-scores");
     if (response.status === 200) {
       return response.data;
     }

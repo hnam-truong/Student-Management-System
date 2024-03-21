@@ -5,32 +5,81 @@
 // 4: use set(newState) to update state value
 
 import { create } from "zustand";
-import { getClassStudent } from "../services/api/ApiCaller3";
-import { IClassStudent } from "../interfaces/class-student.interface";
+import {
+  deleteSingleStudenInClass,
+  getStudentClass,
+  postStudentClass,
+} from "../services/api/ApiCaller3";
+import { IStudentClass } from "../interfaces/student-class.interface";
+import {
+  generateErrorMessage,
+  generateSuccessMessage,
+} from "../utils/GenerateErrorMessage";
+import { errorNotify, successNotify } from "../components/atoms/Notify/Notify";
 // STUDENT IN CLASS STORE
-interface IClassStudentStore {
-  classStudent: IClassStudent[] | null;
+interface IStudentClassStore {
+  classStudent: IStudentClass[] | null;
   loading: boolean;
-  fetchClassStudent: () => void;
+  fetchStudentClass: () => void;
+  postStudentClass: (data: IStudentClass[]) => Promise<void>;
 }
 
-const useClassStudentStore = create<IClassStudentStore>((set) => ({
+export const useStudentClassStore = create<IStudentClassStore>((set) => ({
   classStudent: [],
   loading: false,
-  fetchClassStudent: async () => {
+  fetchStudentClass: async () => {
     // Set Loading true
     set((state) => ({ ...state, loading: true }));
     try {
-      const data = await getClassStudent();
+      const data = await getStudentClass();
       // Update student when fetch successfully
       set((state) => ({ ...state, classStudent: data }));
     } catch (err) {
       // Catch & log error
       console.log("API Error:", err);
+      errorNotify(generateErrorMessage("get", "list of student in class"));
+    } finally {
+      // Set loading false
+      set((state) => ({ ...state, loading: false }));
+    }
+  },
+  postStudentClass: async (data: IStudentClass[]) => {
+    // Set Loading true
+    set((state) => ({ ...state, loading: true }));
+    try {
+      await postStudentClass({ data });
+      successNotify(
+        generateSuccessMessage("has been created", "Student information")
+      );
+    } catch (err) {
+      // Catch & log error
+      console.log("API Error:", err);
+      errorNotify(generateErrorMessage("create", "new student"));
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));
     }
   },
 }));
-export default useClassStudentStore;
+
+interface ISingleClassStore {
+  classStudent: IStudentClass | null;
+  loading: boolean;
+  deleteSingleStudentInClass: (id: string) => void;
+}
+
+export const useSingleClassStore = create<ISingleClassStore>((set) => ({
+  classStudent: null,
+  loading: false,
+  deleteSingleStudentInClass: async (id: string) => {
+    set((state) => ({ ...state, loading: true }));
+    try {
+      await deleteSingleStudenInClass({ id });
+      successNotify(generateSuccessMessage("deleted", "The student"));
+    } catch (error) {
+      errorNotify(generateErrorMessage("delete", "the student"));
+    } finally {
+      set((state) => ({ ...state, loading: false }));
+    }
+  },
+}));

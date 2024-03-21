@@ -5,7 +5,7 @@ import { IoSettingsOutline } from "react-icons/io5";
 import { generateFilters } from "../../../utils/GenerateFilter";
 import CustomDropdown from "../../molecules/CustomDropdown/CustomDropdown";
 import { IClass } from "../../../interfaces/class.interface";
-import ClassStatus from "../../atoms/ClassStatus/ClassStatus";
+import StatusTag from "../../atoms/StatusTag/StatusTag";
 
 interface ClassTableProps {
   classes: IClass[];
@@ -102,7 +102,7 @@ const ClassTable: React.FC<ClassTableProps> = ({ classes, loading }) => {
       filterMode: "tree",
       onFilter: (value, record) => record.Status === value,
       render: (_value, record) => (
-        <ClassStatus status={record.Status} isBorder={false} />
+        <StatusTag status={record.Status} content={record.Status} />
       ),
     },
     {

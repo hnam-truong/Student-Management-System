@@ -11,4 +11,13 @@ export interface IClass {
   Location: string;
   Status: string;
   ProgramID: string;
+  StartTime: string;
+  EndTime: string;
+  Trainers: [];
+  FSU: string;
+  SpecificLocation: { ID: string; Name: string }[];
+  Reviewer: string;
+  Approver: string;
+  ReviewDate: string;
+  ApproveDate: string;
 }

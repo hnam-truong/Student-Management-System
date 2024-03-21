@@ -19,6 +19,7 @@ const Gender: React.FC<GenderProps> = ({ gender, customFontSize }) => (
   <div>
     {(gender !== undefined || gender !== null) && gender ? (
       <IoManSharp
+        data-testid="male-icon"
         style={{
           color: Colors.LighterBlack,
           width: "100%",
@@ -28,6 +29,7 @@ const Gender: React.FC<GenderProps> = ({ gender, customFontSize }) => (
       />
     ) : (
       <IoWomanSharp
+        data-testid="female-icon"
         style={{
           color: Colors.Red,
           width: "100%",

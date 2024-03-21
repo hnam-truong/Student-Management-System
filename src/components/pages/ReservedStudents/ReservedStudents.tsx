@@ -46,6 +46,7 @@ const ReservedStudents: React.FC = () => {
         excelUpload={handleExcelReservedStudent}
         importData={importData}
         exportData={exportData}
+        handleDataChange={handleDataChange}
         showAddModal
       />
       <div className="table-container__content">

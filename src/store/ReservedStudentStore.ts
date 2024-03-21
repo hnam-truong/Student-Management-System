@@ -9,16 +9,22 @@ import { IReservedStudent } from "../interfaces/reserved-student.interface";
 import {
   getReservedStudent,
   getReservedStudentByID,
+  postReservedStudent,
   postReservedStudentByID,
   putSingleReserveStudent,
 } from "../services/api/ApiCaller2";
+import { errorNotify, successNotify } from "../components/atoms/Notify/Notify";
+import {
+  generateErrorMessage,
+  generateSuccessMessage,
+} from "../utils/GenerateErrorMessage";
 
 // RESERVED STUDENT STORE
 interface IReservedStudentStore {
   reservedStudent: IReservedStudent[] | null;
   loading: boolean;
   fetchReservedStudent: () => void;
-  postReservedStudent: (data: IReservedStudent) => Promise<void>;
+  postReservedStudent: (data: IReservedStudent[]) => Promise<void>;
 }
 
 export const useReservedStudentStore = create<IReservedStudentStore>((set) => ({
@@ -34,19 +40,27 @@ export const useReservedStudentStore = create<IReservedStudentStore>((set) => ({
     } catch (err) {
       // Catch & log error
       console.log("API Error:", err);
+      errorNotify(generateErrorMessage("get", "list of reserved student"));
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));
     }
   },
-  postReservedStudent: async (data: IReservedStudent) => {
+  postReservedStudent: async (data: IReservedStudent[]) => {
     // Set Loading true
     set((state) => ({ ...state, loading: true }));
     try {
-      await postReservedStudentByID({ data });
+      await postReservedStudent({ data });
+      successNotify(
+        generateSuccessMessage(
+          "has been created",
+          "Reserved Student information"
+        )
+      );
     } catch (err) {
       // Catch & log error
       console.log("API Error:", err);
+      errorNotify(generateErrorMessage("create", "new student"));
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));
@@ -80,6 +94,9 @@ export const useReservedStudentSingleStore =
       } catch (err) {
         // Catch & log error
         console.log("API Error:", err);
+        errorNotify(
+          generateErrorMessage("get", "reserved student information")
+        );
       } finally {
         // Set loading false
         set((state) => ({ ...state, loading: false }));
@@ -90,9 +107,16 @@ export const useReservedStudentSingleStore =
       set((state) => ({ ...state, loading: true }));
       try {
         await postReservedStudentByID({ data });
+        successNotify(
+          generateSuccessMessage(
+            "has been created",
+            "Reserved student information"
+          )
+        );
       } catch (err) {
         // Catch & log error
         console.log("API Error:", err);
+        errorNotify(generateErrorMessage("create", "a new reserved student"));
       } finally {
         // Set loading false
         set((state) => ({ ...state, loading: false }));
@@ -102,9 +126,16 @@ export const useReservedStudentSingleStore =
       set((state) => ({ ...state, loading: true }));
       try {
         await putSingleReserveStudent({ id, data });
+        successNotify(
+          generateSuccessMessage(
+            "has been changed",
+            "Reserved student information"
+          )
+        );
       } catch (err) {
         // Catch & log error
         console.log("API Error:", err);
+        errorNotify(generateErrorMessage("edit", "the reserved student"));
       } finally {
         // Set loading false
         set((state) => ({ ...state, loading: false }));

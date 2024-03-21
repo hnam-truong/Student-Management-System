@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/prefer-default-export */
-import { IClassStudent } from "../interfaces/class-student.interface";
+import { IActivityLog } from "../interfaces/activity-log.inteface";
+import { IStudentClass } from "../interfaces/student-class.interface";
 import { IClass } from "../interfaces/class.interface";
+import { IEmail } from "../interfaces/email.interface";
 import { IReservedStudent } from "../interfaces/reserved-student.interface";
 import { IScore } from "../interfaces/score.interface";
 import { IStudent } from "../interfaces/student.interface";
@@ -13,9 +15,11 @@ export const generateFilters = (
     | IStudent[]
     | IScore[]
     | IReservedStudent[]
-    | IClassStudent[]
+    | IStudentClass[]
     | IClass[]
-    | IUser[],
+    | IUser[]
+    | IEmail[]
+    | IActivityLog[],
   dataIndex: string
 ): { text: string; value: string }[] => {
   const filters: { text: string; value: string }[] = [];

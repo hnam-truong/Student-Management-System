@@ -2,9 +2,10 @@ import { useState } from "react";
 import UpdateStudentStatusDropdown from "../../molecules/UpdateStudentStatusDropdown/UpdateStudentStatusDropdown";
 import UpdateStudentStatusModal from "../../molecules/UpdateStudentStatusModal/UpdateStudentStatusModal";
 import { IStudent } from "../../../interfaces/student.interface";
+import { IStudentClass } from "../../../interfaces/student-class.interface";
 
 interface UpdateStudentStatusProps {
-  studentSelect: IStudent[];
+  studentSelect: IStudent[] | IStudentClass[];
   isSelectedStudent?: boolean;
 }
 
@@ -13,11 +14,14 @@ const UpdateStudentClassStatus = ({
   isSelectedStudent,
 }: UpdateStudentStatusProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [statusStudent, setStatusStudent] = useState("Finish");
 
   const showModal = () => {
     setIsModalOpen(true);
   };
   const handleOk = () => {
+    console.log("Stuent in class:", studentSelect);
+    console.log("Status is:", statusStudent);
     setIsModalOpen(false);
   };
 
@@ -36,6 +40,7 @@ const UpdateStudentClassStatus = ({
         handleOk={handleOk}
         handleCancel={handleCancel}
         isModalOpen={isModalOpen}
+        setStatusStudent={setStatusStudent}
       />
     </div>
   );

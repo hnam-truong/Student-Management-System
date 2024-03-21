@@ -29,3 +29,12 @@
 .useinfo-card {
   width: $x-large;
 }
+
+.userinfo-content {
+  display: flex;
+  align-items: center;
+}
+
+.userinfo-label{
+  margin-right: $small;
+}

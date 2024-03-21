@@ -13,7 +13,7 @@ import {
 } from "../../../utils/StoreDataToCache";
 import Gender from "../../atoms/Gender/Gender";
 import FontSizes from "../../../constants/FontSizes";
-import StatusTagStuReserve from "../../atoms/StatusTagStuReserve/StatusTagStuReserve";
+import StatusTag from "../../atoms/StatusTag/StatusTag";
 
 interface ReservedTableProps {
   reservedStudent: IReservedStudent[] | null;
@@ -269,7 +269,9 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
         value: boolean | React.Key,
         record: { Status: string | string[] }
       ) => record.Status.indexOf(value as string) === 0,
-      render: (status: string) => <StatusTagStuReserve status={status} />,
+      render: (status: string) => (
+        <StatusTag status={status} content={status} />
+      ),
     },
     {
       title: (

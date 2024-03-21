@@ -4,11 +4,11 @@ import { Button, Popover } from "antd";
 import { FaRegHandPaper } from "react-icons/fa";
 import { MdOutlineMail, MdOutlinePauseCircle } from "react-icons/md";
 import "./TerminalReservation.scss";
-import EmailTemplate from "../../molecules/EmailTemplate/EmailTemplate";
 import { useReservedStudentSingleStore } from "../../../store/ReservedStudentStore";
 import { IReservedStudent } from "../../../interfaces/reserved-student.interface";
 import Sizes from "../../../constants/Sizes";
 import ModalFindClass from "../../molecules/ModalFindClass/ModalFindClass";
+import EmailTemplate from "../../molecules/EmailTemplate/EmailTemplate";
 
 interface ContentProps {
   closeFn: () => void;
@@ -103,6 +103,8 @@ const Content: React.FC<ContentProps> = ({
           handleOpenRemind={handleOpenRemind}
           handleCloseRemind={handleCloseRemind}
           data={data}
+          modalTitle="Send remind email"
+          type="Student"
         />
       )}
       {openReservingModal && (

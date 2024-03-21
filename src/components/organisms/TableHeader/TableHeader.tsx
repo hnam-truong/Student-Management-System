@@ -17,6 +17,7 @@ import AddUser from "../AddUser/AddUser";
 import InputExcelModal from "../../molecules/InputExcelModal/InputExcelModal";
 import AddStudentsClass from "../AddStudentsClass/AddStudentsClass";
 import UpdateStudentClassStatus from "../UpdateStudentClassStatus/UpdateStudentClassStatus";
+import { IStudentClass } from "../../../interfaces/student-class.interface";
 
 interface TableHeaderProps {
   title?: string;
@@ -25,6 +26,7 @@ interface TableHeaderProps {
   handleDataChange?: () => void;
   showAddModal?: boolean;
   studentSelect?: IStudent[];
+  studentClassSelect?: IStudentClass[];
   isUpdateStudentStatus?: boolean;
   isUpdateStudentClassStatus?: boolean;
   isSelectedStudent?: boolean;
@@ -35,6 +37,7 @@ interface TableHeaderProps {
   isAddStudent?: boolean;
   isAddUser?: boolean;
   isAddStudentClass?: boolean;
+  isAddEmail?: boolean;
   excelUpload: (excelData: any) => void;
   href?: string;
   fileDownload?: string;
@@ -46,6 +49,7 @@ const TableHeader = ({
   importData,
   showAddModal,
   studentSelect,
+  studentClassSelect,
   isUpdateStudentStatus,
   isUpdateStudentClassStatus,
   isSelectedStudent,
@@ -55,8 +59,9 @@ const TableHeader = ({
   isHeaderBottom,
   isAddStudent,
   isAddUser,
-  handleDataChange,
   isAddStudentClass,
+  isAddEmail,
+  handleDataChange,
   excelUpload,
   href = "",
   fileDownload = "",
@@ -74,8 +79,9 @@ const TableHeader = ({
       {isHeaderBottom && (
         <div className="edit-container__content">
           <div className="edit-container__content__top">
-            {isSearch && <SearchInput />}
-
+            <div className="edit-button-search">
+              {isSearch && <SearchInput />}
+            </div>
             <div className="button-export-add">
               {isImport && importData && (
                 <div>
@@ -101,6 +107,7 @@ const TableHeader = ({
                   <AddReservingStudent
                     id=""
                     handleDataChange={handleDataChange || (() => {})}
+                    onAttendingStatusChange={() => {}}
                   />
                 </div>
               )}
@@ -121,6 +128,13 @@ const TableHeader = ({
                   <AddUser handleDataChange={handleDataChange || (() => {})} />
                 </div>
               )}
+              {isAddEmail && (
+                <div className="edit-container__content__top__btn--right">
+                  <Link to="/email/add">
+                    <AddButton text="Add new" />
+                  </Link>
+                </div>
+              )}
             </div>
           </div>
           <div>
@@ -137,7 +151,7 @@ const TableHeader = ({
             {isUpdateStudentClassStatus && (
               <div className="align-right">
                 <UpdateStudentClassStatus
-                  studentSelect={studentSelect || []}
+                  studentSelect={studentClassSelect || []}
                   isSelectedStudent={isSelectedStudent}
                 />
               </div>
@@ -155,6 +169,7 @@ TableHeader.defaultProps = {
   exportData: () => {},
   importData: () => {},
   studentSelect: [],
+  studentClassSelect: [],
   isUpdateStudentStatus: false,
   isUpdateStudentClassStatus: false,
   isSelectedStudent: false,
@@ -165,6 +180,7 @@ TableHeader.defaultProps = {
   isAddStudent: false,
   isAddStudentClass: false,
   isAddUser: false,
+  isAddEmail: false,
   handleDataChange: () => {},
   excelUpload: () => {},
 };

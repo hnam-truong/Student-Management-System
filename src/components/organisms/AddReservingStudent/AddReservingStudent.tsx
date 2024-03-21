@@ -22,11 +22,15 @@ import Colors from "../../../constants/Colors";
 interface AddReservingStudentProps {
   id?: string;
   handleDataChange: () => void;
+  isAddNew?: boolean;
+  onAttendingStatusChange: () => void;
 }
 
 const AddReservingStudent: React.FC<AddReservingStudentProps> = ({
   id,
   handleDataChange,
+  isAddNew,
+  onAttendingStatusChange,
 }) => {
   const [form] = Form.useForm();
   // USE STATE
@@ -35,12 +39,13 @@ const AddReservingStudent: React.FC<AddReservingStudentProps> = ({
   // Reset form values
   const resetFormValue = () => {
     form.resetFields();
-    form.setFieldsValue({
-      ID: "",
-      Class: "",
-      ClassID: "",
-      CurrentModules: "",
-    });
+    isAddNew &&
+      form.setFieldsValue({
+        ID: "",
+        Class: "",
+        ClassID: "",
+        CurrentModules: "",
+      });
   };
 
   // Functions handles modals and form reset fields
@@ -95,7 +100,13 @@ const AddReservingStudent: React.FC<AddReservingStudentProps> = ({
         closeIcon={<VscError size={Sizes.LgMedium} color={Colors.White} />}
       >
         <div className="add-reserving-modal-content modal-content-custom">
-          <AddReservingStudentForm id={id} form={form} handleOk={handleOk} />
+          <AddReservingStudentForm
+            id={id}
+            form={form}
+            handleOk={handleOk}
+            isAddNew={isAddNew}
+            onAttendingStatusChange={onAttendingStatusChange}
+          />
         </div>
       </Modal>
     </>
@@ -104,5 +115,6 @@ const AddReservingStudent: React.FC<AddReservingStudentProps> = ({
 
 AddReservingStudent.defaultProps = {
   id: "",
+  isAddNew: true,
 };
 export default AddReservingStudent;

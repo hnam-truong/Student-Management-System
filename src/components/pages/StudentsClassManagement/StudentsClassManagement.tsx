@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-
-import useClassStudentStore from "../../../store/StudentClassStore";
+import { useStudentClassStore } from "../../../store/StudentClassStore";
 import StudentClassTable from "../../templates/StudentClassTable/StudentClassTable";
 import TableHeader from "../../organisms/TableHeader/TableHeader";
 import "../../../styles/main.scss";
+import { IStudentClass } from "../../../interfaces/student-class.interface";
 import { ImportFromExcel } from "../../../utils/ImportFromExcel";
 import ExcelTemplates from "../../../constants/ExcelTemplates";
 
 const StudentsClassManagement: React.FC = () => {
   const { handleExcelStudentClass } = ImportFromExcel();
-  const { fetchClassStudent, classStudent, loading } = useClassStudentStore();
+  const { fetchStudentClass, classStudent, loading } = useStudentClassStore();
   // const [isImport, setIsImport] = useState<boolean>(false);
   // const [isExport, setIsExport] = useState<boolean>(false);
   const [isChangeData, setIsChangeData] = useState<boolean>(false);
@@ -24,25 +24,27 @@ const StudentsClassManagement: React.FC = () => {
   //   setIsExport(false);
   // }, []);
   // useEffect(() => {
-  //   fetchClassStudent();
+  //   fetchStudentClass();
   // }, []);
   // const importData = useCallback(() => {
   //   setIsImport(true);
   // }, []);
   useEffect(() => {
-    setTimeout(() => fetchClassStudent(), 1000);
-  }, [fetchClassStudent, isChangeData]);
+    setTimeout(() => fetchStudentClass(), 1000);
+  }, [fetchStudentClass, isChangeData]);
+
+  const [studentSelect, setStudentSelect] = useState<IStudentClass[]>([]);
 
   useEffect(() => {
     const handleBeforeUnload = () => {
       sessionStorage.clear();
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
-    fetchClassStudent();
+    fetchStudentClass();
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [fetchClassStudent]);
+  }, [fetchStudentClass]);
 
   return (
     <div className="table-container">
@@ -53,6 +55,8 @@ const StudentsClassManagement: React.FC = () => {
         excelUpload={handleExcelStudentClass}
         // importData={importData}
         // exportData={exportData}
+        isSelectedStudent={!studentSelect.length}
+        studentClassSelect={studentSelect}
         isAddStudentClass
         handleDataChange={handleDataChange}
         isUpdateStudentClassStatus
@@ -61,6 +65,8 @@ const StudentsClassManagement: React.FC = () => {
         <StudentClassTable
           classStudent={classStudent ?? []}
           loading={loading}
+          handleDataChange={handleDataChange}
+          setStudentSelect={setStudentSelect}
         />
       </div>
     </div>

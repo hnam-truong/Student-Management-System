@@ -14,4 +14,5 @@ export interface IReservedStudent {
   ReservedStartDate?: Date | undefined;
   ReservedEndDate?: Date | undefined;
   Status: string;
+  Email: string;
 }

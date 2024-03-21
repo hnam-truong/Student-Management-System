@@ -4,6 +4,7 @@ import { Spin } from "antd";
 import FormClassDetail from "../../molecules/FormClassDetail/FormClassDetail";
 import { useSingleClassStore } from "../../../store/ClassStore";
 import "../../molecules/FormClassDetail/FormClassDetail.scss";
+import { BackButton } from "../../atoms/CustomButton/CustomButton";
 
 const ClassDetail: React.FC = () => {
   const { id } = useParams<{ id?: string }>();
@@ -39,6 +40,9 @@ const ClassDetail: React.FC = () => {
 
   return (
     <div className="class-detail">
+      <div className="back-btn">
+        <BackButton />
+      </div>
       <FormClassDetail classDetail={aClass} />
     </div>
   );

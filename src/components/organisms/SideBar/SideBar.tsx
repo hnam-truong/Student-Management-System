@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
 import { Button, Drawer, Menu, MenuProps } from "antd";
-import { RiCalendar2Fill, RiMenu2Line } from "react-icons/ri";
+import { RiMenu2Line } from "react-icons/ri";
 import {
   MdOutlineGroup,
-  MdOutlineSnippetFolder,
-  MdOutlineHome,
   MdOutlineSchool,
+  MdOutlineEmail,
+  MdOutlineSpaceDashboard,
 } from "react-icons/md";
-import { LuSettings } from "react-icons/lu";
 import { FaRegUser } from "react-icons/fa";
 
 import "./SideBar.scss";
@@ -35,35 +34,26 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem("Home", RouterEndpoints.Home, <MdOutlineHome />),
-  getItem("Students", "students", <MdOutlineGroup />, [
+  getItem("Dashboard", RouterEndpoints.Home, <MdOutlineSpaceDashboard />),
+  getItem("Student management", "students", <MdOutlineGroup />, [
     getItem("Student list", RouterEndpoints.StudentsManagement),
     getItem("Reserve list", RouterEndpoints.ReservedStudents),
   ]),
+  getItem(
+    "Class management",
+    RouterEndpoints.ClassesManagement,
+    <MdOutlineSchool size={23} />
+  ),
+  getItem(
+    "Email management",
+    RouterEndpoints.EmailsManagement,
+    <MdOutlineEmail size={23} />
+  ),
   getItem(
     "User management",
     RouterEndpoints.UsersManagement,
     <FaRegUser size={20} />
   ),
-  getItem(
-    "Class",
-    RouterEndpoints.ClassesManagement,
-    <MdOutlineSchool size={23} />
-  ),
-  getItem(
-    "Training calendar",
-    RouterEndpoints.TrainingCalendarManagement,
-    <RiCalendar2Fill />
-  ),
-  getItem(
-    "Learning materials",
-    RouterEndpoints.LearningMaterialsManagement,
-    <MdOutlineSnippetFolder />
-  ),
-  getItem("Settings", "settings", <LuSettings />, [
-    getItem("Calendar", RouterEndpoints.CalendarManagement),
-    getItem("Email configuration", RouterEndpoints.EmailConfiguration),
-  ]),
 ];
 const SideBar = () => {
   const navigate = useNavigate();

@@ -55,4 +55,20 @@
       font-weight: $fw-bold;
     }
   }
+  &--add-cirle {
+    background-color: $white;
+    color: $primary-color;
+    padding: 0;
+    &:hover {
+      background-color: $white !important;
+      color: $primary-color !important;
+      opacity: 0.8;
+    }
+  }
+  &--send-email {
+    background-color: $blur-light;
+    &:hover {
+      background-color: $dark-blur-light !important;
+    }
+  }
 }

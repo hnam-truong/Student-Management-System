@@ -6,6 +6,7 @@ import StudentAvatar from "../../molecules/StudentAvatar/StudentAvatar";
 import { useSingleUserStore } from "../../../store/UserStore";
 import "../../../styles/main.scss";
 import UserDetailGeneralInfo from "../../molecules/UserDetailGeneralInfo/UserDetailGeneralInfo";
+import { BackButton } from "../../atoms/CustomButton/CustomButton";
 
 const UserDetail: React.FC = () => {
   const { aUser, getUserByID, loading } = useSingleUserStore();
@@ -20,6 +21,9 @@ const UserDetail: React.FC = () => {
     </Flex>
   ) : (
     <div>
+      <div className="back-btn">
+        <BackButton />
+      </div>
       <Layout className="form-detail-container">
         {/* First frame for basic information */}
         <Content className="basic-info-frame">

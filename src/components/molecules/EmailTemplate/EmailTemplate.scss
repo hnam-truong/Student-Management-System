@@ -72,21 +72,27 @@
   background-color: $grey;
 }
 
-.email-form {
+.email-template {
   padding: $lg-small;
   display: flex;
   flex-direction: column;
-  gap: $font-size-xs-large;
+  label {
+    padding-right: 0 !important;
+    width: $x-ex-md-larger;
+    font-weight: $fw-bold;
+  }
 }
 
 .email-input {
-  display: flex;
-  align-items: center;
-  p {
     width: $ex-lg-larger;
     font-weight: $fw-bold;
-  }
-  h4 {
-    width: $xx-sm-large;
+}
+.input-default {
+  display: flex;
+  align-items: center;
+  margin-bottom: $font-size-xs-large;
+  .input-title {
+    width: $x-ex-md-larger;
+    font-weight: $fw-bold;
   }
 }

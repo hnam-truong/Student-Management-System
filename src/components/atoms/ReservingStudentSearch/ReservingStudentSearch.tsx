@@ -13,6 +13,7 @@ const ReservingStudentSearch: React.FC<ReservingStudentSearchProps> = ({
   id,
   fetchReservedStudentByID,
 }) => {
+  console.log(id);
   const [isStudentIdEditable] = useState(id === "");
   const { Search } = Input;
   const onSearch: SearchProps["onSearch"] = async (value, _e, _info) => {

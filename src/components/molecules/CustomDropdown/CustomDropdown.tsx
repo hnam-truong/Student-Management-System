@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import type { MenuProps } from "antd";
 import { Dropdown } from "antd";
 import DisableStudent from "../DisableStudent/DisableStudent";
@@ -8,6 +9,8 @@ import {
   CommonButton,
   MoreButton,
 } from "../../atoms/CustomButton/CustomButton";
+import DisableStudentInClass from "../../atoms/DisableStudentInClass/DisableStudentInClass";
+import DeleteEmail from "../../atoms/DeleteEmail/DeleteEmail";
 
 interface CustomDropdownProps {
   handleDataChange: () => void;
@@ -20,6 +23,8 @@ interface CustomDropdownProps {
   isEditUser?: boolean;
   isDeleteUser?: boolean;
   isEdit?: boolean;
+  isDeleteStudentInClass?: boolean;
+  isDeleteEmail?: boolean;
 }
 const CustomDropdown: React.FC<CustomDropdownProps> = ({
   id,
@@ -32,17 +37,19 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
   isEditUser,
   isDeleteUser,
   isEdit,
+  isDeleteStudentInClass,
+  isDeleteEmail,
 }) => {
   let items: MenuProps["items"] = [
     {
       key: "1",
       label: id ? (
-        <a
+        <Link
+          to={viewLink === "/class100" ? `${viewLink}` : `${viewLink}/${id}`}
           rel="noopener noreferrer"
-          href={viewLink === "/class100" ? `${viewLink}` : `${viewLink}/${id}`}
         >
           <CommonButton text={textView || "View"} />
-        </a>
+        </Link>
       ) : (
         <CommonButton text={textView || "View"} />
       ),
@@ -54,16 +61,16 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
       {
         key: "2",
         label: id ? (
-          <a
-            rel="noopener noreferrer"
-            href={
+          <Link
+            to={
               editLink === "/class100/scores"
                 ? `${editLink}`
                 : `${editLink}/${id}`
             }
+            rel="noopener noreferrer"
           >
             <CommonButton text={textEdit || "Edit"} />
-          </a>
+          </Link>
         ) : (
           <CommonButton text={textEdit || "Edit"} />
         ),
@@ -77,6 +84,20 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
         key: "3",
         label: (
           <DisableStudent
+            id={id !== undefined ? id : ""}
+            handleDataChange={handleDataChange}
+          />
+        ),
+      },
+    ];
+  }
+  if (isDeleteEmail) {
+    items = [
+      ...items,
+      {
+        key: "3",
+        label: (
+          <DeleteEmail
             id={id !== undefined ? id : ""}
             handleDataChange={handleDataChange}
           />
@@ -112,6 +133,20 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
       },
     ];
   }
+  if (isDeleteStudentInClass) {
+    items = [
+      ...items,
+      {
+        key: "6",
+        label: (
+          <DisableStudentInClass
+            id={id !== undefined ? id : ""}
+            handleDataChange={handleDataChange}
+          />
+        ),
+      },
+    ];
+  }
   const getPopupContainer = (triggerNode: HTMLElement) =>
     triggerNode.parentNode as HTMLElement;
   return (
@@ -139,5 +174,7 @@ CustomDropdown.defaultProps = {
   isEditUser: false,
   isDeleteUser: false,
   isEdit: true,
+  isDeleteStudentInClass: false,
+  isDeleteEmail: false,
 };
 export default CustomDropdown;

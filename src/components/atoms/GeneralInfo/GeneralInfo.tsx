@@ -35,32 +35,30 @@ const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit }) => {
       <Spin />
     </div>
   ) : (
-    <div className="container-infor">
-      <div className="col">
+    <div className="container-info">
+      <div className="col-content">
         {isEdit && (
           <Form.Item
             label={<span className="custom-label-id">ID</span>}
             name="ID"
           >
-            <Input className="input" disabled />
+            <Input className="input-content" disabled />
           </Form.Item>
         )}
         <Form.Item
+          className="enter-name"
           label="Name"
           name="Name"
           rules={[{ required: true, message: "Please enter the name" }]}
         >
-          <Input className="input" placeholder="Enter Name" />
+          <Input className="input-content" placeholder="Enter Name" />
         </Form.Item>
         <Form.Item
           label="Gender"
           name="Gender"
           rules={[{ required: true, message: "Please select the gender" }]}
         >
-          <Select
-            style={{ width: "100%", textAlign: "left" }}
-            placeholder="Select Gender"
-          >
+          <Select placeholder="Select Gender" className="select-content">
             <Option value={false}>Male</Option>
             <Option value>Female</Option>
           </Select>
@@ -73,7 +71,7 @@ const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit }) => {
           ]}
         >
           <DatePicker
-            className="input"
+            className="input-content"
             format="DD/MM/YYYY"
             onChange={handleDobChange}
             value={dob}
@@ -85,10 +83,7 @@ const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit }) => {
           name="AttendingStatus"
           rules={[{ required: true, message: "Please select the status" }]}
         >
-          <Select
-            style={{ width: "100%", textAlign: "left" }}
-            placeholder="Select Status"
-          >
+          <Select placeholder="Select Status" className="select-content">
             {StatusOptions.map((option) => (
               <Option key={option} value={option}>
                 {option}
@@ -97,7 +92,7 @@ const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit }) => {
           </Select>
         </Form.Item>
       </div>
-      <div className="col">
+      <div className="col-content">
         <Form.Item
           label="Phone"
           name="Phone"
@@ -111,7 +106,7 @@ const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit }) => {
             },
           ]}
         >
-          <Input className="input" placeholder="Enter Phone" />
+          <Input className="input-content" placeholder="Enter Phone" />
         </Form.Item>
 
         <Form.Item
@@ -128,7 +123,7 @@ const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit }) => {
           ]}
         >
           <Input
-            className="input"
+            className="input-content"
             placeholder="Enter Email"
             disabled={isEdit}
           />
@@ -144,8 +139,8 @@ const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit }) => {
           ]}
         >
           <Select
-            style={{ width: "100%" }}
             placeholder="Select Permanent Residence"
+            className="select-content"
           >
             {province?.map((option) => (
               <Option key={option.id} value={option.name}>
@@ -159,10 +154,7 @@ const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit }) => {
           name="Location"
           rules={[{ required: true, message: "Please select the location" }]}
         >
-          <Select
-            style={{ width: "100%", textAlign: "left" }}
-            placeholder="Select Location"
-          >
+          <Select placeholder="Select Location" className="select-content">
             {province?.map((option) => (
               <Option key={option.id} value={option.name}>
                 {option.name}

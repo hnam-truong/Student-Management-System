@@ -21,9 +21,17 @@ const DetailGeneralInfo: React.FC<StudentDetailGeneralInfoProps> = ({
     {/* General Information content */}
     <div className="info-container">
       {infos?.map((info) => (
-        <div key={info.key} className={`info-container-${info.key}`}>
+        <div
+          key={info.key}
+          data-testid={`info-container-${info.key}`}
+          className={`info-container-${info.key}`}
+        >
           {info.children.map((child) => (
-            <div key={child.key} className={`column-${child.key}`}>
+            <div
+              key={child.key}
+              data-testid={`column-${child.key}`}
+              className={`column-${child.key}`}
+            >
               {child.children.map((item) => (
                 <div key={item.key} className="info-item">
                   {item.name}

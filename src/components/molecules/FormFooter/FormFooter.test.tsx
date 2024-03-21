@@ -51,14 +51,8 @@ describe("Form Footer Component", () => {
   // Test case: Ensure the form attribute is set to formName when Submit button is clicked
   test("should set the form attribute to formName when Submit button is clicked", () => {
     // Arrange
-    render(
-      <FormFooter
-        handleCancel={handleCancel}
-        formName={formName}
-        text="Create"
-      />
-    );
-    const submitButton = screen.getByRole("button", { name: /Create/i });
+    render(<FormFooter handleCancel={handleCancel} formName={formName} />);
+    const submitButton = screen.getByRole("button", { name: /Save/i });
 
     // Act: Simulate a click on the Submit button
     fireEvent.click(submitButton);

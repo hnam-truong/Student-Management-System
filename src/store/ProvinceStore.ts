@@ -37,6 +37,8 @@
 import { create } from "zustand";
 import { IProvince } from "../interfaces/province.interface";
 import getLocationProvinces from "../services/api/ApiCaller6";
+import { generateErrorMessage } from "../utils/GenerateErrorMessage";
+import { errorNotify } from "../components/atoms/Notify/Notify";
 
 // STUDENT STORE
 interface IProvinceStore {
@@ -58,6 +60,7 @@ export const useProvinceStore = create<IProvinceStore>((set) => ({
     } catch (err) {
       // Catch & log error
       console.log("API Error:", err);
+      errorNotify(generateErrorMessage("get", "list of province"));
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));

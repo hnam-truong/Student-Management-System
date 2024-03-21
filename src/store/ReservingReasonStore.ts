@@ -7,6 +7,8 @@
 import { create } from "zustand";
 import { IReservingReason } from "../interfaces/reserving-reason.interface";
 import { getReservingReasons } from "../services/api/ApiCaller4";
+import { errorNotify } from "../components/atoms/Notify/Notify";
+import { generateErrorMessage } from "../utils/GenerateErrorMessage";
 
 // RESERVING REASONS
 interface IReservingReasonStore {
@@ -28,6 +30,7 @@ const useReservingReason = create<IReservingReasonStore>((set) => ({
     } catch (err) {
       // Catch & log error
       console.log("API Error:", err);
+      errorNotify(generateErrorMessage("get", "reserving reason"));
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));

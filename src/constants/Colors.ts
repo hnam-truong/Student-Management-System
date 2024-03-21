@@ -12,6 +12,7 @@ enum Colors {
   LighterBlue = "#31a0ff",
   LightBlue = "#108ee9",
   Blue = "#1890ff",
+  DarkBlue = "#0b213",
   Pink = "#eb2f96",
   LightGreen = "#52c41a",
   BrightGreen = "#00ff33",
@@ -35,6 +36,9 @@ enum Colors {
   LightCoral = "#f08080",
   Tomato = "#ff8c00",
   DisableColor = "#f0f0f0",
+  LinkColor = "#79808a",
+  BlurLight = "rgba(255, 255, 255, 0.1)",
+  DarkBlurLight = "rgba(255, 255, 255, 0.2)",
 }
 
 export default Colors;

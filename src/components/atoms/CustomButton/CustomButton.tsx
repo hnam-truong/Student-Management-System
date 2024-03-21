@@ -6,16 +6,19 @@ import {
   MdOutlineKeyboardArrowDown,
   MdAddCircleOutline,
   MdMoreHoriz,
+  MdOutlineMailOutline,
 } from "react-icons/md";
+import { FaPlusCircle } from "react-icons/fa";
 import { RiDownloadCloud2Line } from "react-icons/ri";
 import { CiExport } from "react-icons/ci";
-import { IoMdFunnel } from "react-icons/io";
+import { IoMdFunnel, IoMdArrowBack } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 import "./CustomButton.scss";
 import Sizes from "../../../constants/Sizes";
 
 type ClickHandler = (event: React.MouseEvent<HTMLButtonElement>) => void;
 interface ButtonProps {
-  text: string;
+  text: string | React.ReactNode;
   onClick?: ClickHandler;
 }
 
@@ -24,28 +27,38 @@ interface MoreButtonProps {
 }
 
 interface SubmitButtonProps extends ButtonProps {
+  loading?: boolean;
   formName?: string;
 }
 
 interface DownloadButtonProps {
-  text?: string;
+  text?: string | React.ReactNode;
   href?: string;
   download?: string;
+}
+
+interface BackButtonProps {
+  text?: string;
 }
 
 const defaultProps: Partial<ButtonProps> = {
   onClick: () => {},
 };
 
-const submitButtonProps: Partial<SubmitButtonProps> = {
+const submitDefaultProps: Partial<SubmitButtonProps> = {
+  loading: false,
   onClick: () => {},
   formName: "",
 };
 
-const downloadButtonProps: Partial<DownloadButtonProps> = {
+const downloadDefaultProps: Partial<DownloadButtonProps> = {
   text: "Download",
   href: "",
   download: "",
+};
+
+const backDefaultProps: Partial<BackButtonProps> = {
+  text: "Back",
 };
 
 export const CommonButton = ({ onClick, text }: ButtonProps) => (
@@ -61,6 +74,13 @@ export const CommonButton = ({ onClick, text }: ButtonProps) => (
 export const AddButton = ({ onClick, text }: ButtonProps) => (
   <Button className="btn btn--add" onClick={onClick}>
     <MdAddCircleOutline size={Sizes.LgMedium} />
+    <strong>{text}</strong>
+  </Button>
+);
+
+export const AddButtonWithCircle = ({ onClick, text }: ButtonProps) => (
+  <Button className="btn btn--add-cirle" onClick={onClick}>
+    <FaPlusCircle size={Sizes.LgMedium} />
     <strong>{text}</strong>
   </Button>
 );
@@ -120,11 +140,13 @@ export const FilterButton = ({ onClick, text }: ButtonProps) => (
 );
 
 export const SubmitButton = ({
+  loading,
   text,
   formName,
   onClick,
 }: SubmitButtonProps) => (
   <Button
+    loading={loading}
     className="btn btn--filter"
     type="primary"
     onClick={onClick}
@@ -165,6 +187,30 @@ export const DownloadButton = ({
   </Button>
 );
 
+export const BackButton = ({ text }: BackButtonProps) => {
+  const navigate = useNavigate();
+  const handleBack = () => {
+    navigate(-1);
+  };
+  return (
+    <Button
+      className="btn btn--back"
+      onClick={handleBack}
+      icon={<IoMdArrowBack size={Sizes.LgMedium} />}
+      type="text"
+    >
+      {text}
+    </Button>
+  );
+};
+
+export const SendEmailButton = ({ onClick, text }: ButtonProps) => (
+  <Button className="btn btn--send-email" onClick={onClick}>
+    <MdOutlineMailOutline size={Sizes.LgMedium} />
+    <strong>{text}</strong>
+  </Button>
+);
+
 AddButton.defaultProps = defaultProps;
 DeleteButton.defaultProps = defaultProps;
 DefaultDeleteButton.defaultProps = defaultProps;
@@ -175,5 +221,8 @@ FilterButton.defaultProps = defaultProps;
 CancelButton.defaultProps = defaultProps;
 CommonButton.defaultProps = defaultProps;
 MoreButton.defaultProps = defaultProps;
-SubmitButton.defaultProps = submitButtonProps;
-DownloadButton.defaultProps = downloadButtonProps;
+AddButtonWithCircle.defaultProps = defaultProps;
+SubmitButton.defaultProps = submitDefaultProps;
+DownloadButton.defaultProps = downloadDefaultProps;
+BackButton.defaultProps = backDefaultProps;
+SendEmailButton.defaultProps = defaultProps;

@@ -15,16 +15,18 @@ import {
 } from "../../atoms/CustomButton/CustomButton";
 
 interface FormFooterProps {
+  loading?: boolean;
   handleCancel: () => void;
   handleOk?: () => void;
   formName?: string;
-  text?: string;
+  text?: string | React.ReactNode;
   href?: string;
   isDownload?: boolean;
   download?: string;
 }
 
 const FormFooter = ({
+  loading,
   handleCancel,
   handleOk,
   formName,
@@ -37,7 +39,12 @@ const FormFooter = ({
     <Space>
       <CancelButton text="Cancel" onClick={handleCancel} />
       {!isDownload ? (
-        <SubmitButton formName={formName} text={text} onClick={handleOk} />
+        <SubmitButton
+          loading={loading}
+          formName={formName}
+          text={text}
+          onClick={handleOk}
+        />
       ) : (
         <DownloadButton text={text} href={href} download={download} />
       )}
@@ -46,6 +53,7 @@ const FormFooter = ({
 );
 
 FormFooter.defaultProps = {
+  loading: false,
   text: "Save",
   formName: "",
   handleOk: () => {},

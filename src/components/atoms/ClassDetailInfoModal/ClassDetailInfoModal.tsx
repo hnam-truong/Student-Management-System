@@ -2,8 +2,8 @@ import React from "react";
 import { Card } from "antd";
 import { IClass } from "../../../interfaces/class.interface";
 // import { IStudent } from "../../../interfaces/student.interface";
-import ClassStatus from "../ClassStatus/ClassStatus";
 import "./ClassDetailInfoModal.scss";
+import StatusTag from "../StatusTag/StatusTag";
 
 interface ClassDetailInfoModalProps {
   classDetail: IClass;
@@ -18,7 +18,7 @@ const ClassDetailInfoModal: React.FC<ClassDetailInfoModalProps> = ({
     <div className="first-line">
       <div className="subtitle2-bold ">{classDetail.ClassName}</div>
       <div className="class-status">
-        <ClassStatus status={classDetail.Status} />
+        <StatusTag status={classDetail.Status} content={classDetail.Status} />
       </div>
     </div>
     <div className="second-line">

@@ -26,9 +26,13 @@
     grid-column: span 2;
     white-space: nowrap;
   }
-  .column-4,
+  // .column-4,
+  // .column-2 {
+  //   margin-left: $lg-large;
+  // }
   .column-2 {
-    margin-left: $lg-large;
+    grid-column: span 3;
+    white-space: nowrap;
   }
 }
 @media screen and (max-width: $sm) {
@@ -57,7 +61,7 @@
     .column-3,
     .column-4 {
       grid-column: auto;
-      font-size: $font-size-small;
+      // font-size: $font-size-small;
     }
     .column-4,
     .column-2 {

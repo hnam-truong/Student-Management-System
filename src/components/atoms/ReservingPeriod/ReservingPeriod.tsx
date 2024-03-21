@@ -59,10 +59,10 @@ const ReservingPeriod: React.FC = () => {
       <RangePicker
         value={dates || value}
         disabledDate={disabledDate}
-        onCalendarChange={(val) => {
+        onCalendarChange={(val: React.SetStateAction<RangeValue>) => {
           setDates(val);
         }}
-        onChange={(val) => {
+        onChange={(val: React.SetStateAction<RangeValue>) => {
           setValue(val);
         }}
         onOpenChange={onOpenChange}

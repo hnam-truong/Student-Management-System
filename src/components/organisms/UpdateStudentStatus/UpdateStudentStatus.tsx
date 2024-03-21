@@ -13,8 +13,11 @@ const UpdateStudentStatus = ({
   isSelectedStudent,
 }: UpdateStudentStatusProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [statusStudent, setStatusStudent] = useState("Finish");
 
   const showModal = () => {
+    console.log("Student in class:", studentSelect);
+    console.log("Status is:", statusStudent);
     setIsModalOpen(true);
   };
   const handleOk = () => {
@@ -36,6 +39,7 @@ const UpdateStudentStatus = ({
         handleOk={handleOk}
         handleCancel={handleCancel}
         isModalOpen={isModalOpen}
+        setStatusStudent={setStatusStudent}
       />
     </div>
   );

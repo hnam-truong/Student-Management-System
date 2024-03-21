@@ -1,26 +1,44 @@
-import React, { useState } from "react";
-import { Button, Input, Modal, Select } from "antd";
+import React, { useEffect, useState } from "react";
+import { Button, Form, Modal, Select } from "antd";
 import "./EmailTemplate.scss"; // Import the styles
 import { VscError } from "react-icons/vsc";
+import dayjs from "dayjs";
 import { IReservedStudent } from "../../../interfaces/reserved-student.interface";
 import Sizes from "../../../constants/Sizes";
 import Colors from "../../../constants/Colors";
+import { useEmailStore } from "../../../store/EmailStore";
+import { IEmail } from "../../../interfaces/email.interface";
+import { useSingleActivityLogStore } from "../../../store/ActivityLogStore";
+import { IActivityLog } from "../../../interfaces/activity-log.inteface";
+import { errorNotify } from "../../atoms/Notify/Notify";
+import { IUser } from "../../../interfaces/user.interface";
+import formatDate from "../../../utils/DateFormatting";
 
 interface EmailTemplateProps {
-  data: IReservedStudent;
+  data: IReservedStudent | IUser;
   open: boolean;
   handleOpenRemind: () => void;
   handleCloseRemind: () => void;
+  modalTitle: string;
+  type?: string;
+  isIndividual?: boolean;
 }
 
+const { Option } = Select;
 const EmailTemplate: React.FC<EmailTemplateProps> = ({
   data,
   open,
   handleOpenRemind,
   handleCloseRemind,
+  modalTitle,
+  type,
+  isIndividual,
 }) => {
   const [previewModal, setPreviewModal] = useState<boolean>(false);
-
+  const { email, getEmail } = useEmailStore();
+  const { postActivityLog, loadingActivityLog } = useSingleActivityLogStore();
+  const [receiver, setReceiver] = useState<string>("All");
+  const [template, setTemplate] = useState<IEmail | null>(email && email[0]);
   const showPreviewModal = () => {
     setPreviewModal(true);
   };
@@ -28,19 +46,51 @@ const EmailTemplate: React.FC<EmailTemplateProps> = ({
   const hidePreviewModal = () => {
     setPreviewModal(false);
   };
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
+  const handleTemplateChange = (value: string) => {
+    const choosedTemplate = email?.find((item) => item.ID === value);
+    setTemplate(choosedTemplate ?? null);
+  };
+  const handleReceiverChange = (value: string) => {
+    setReceiver(value);
+  };
+  const handleSendRemind = () => {
+    const dataActivityLog: IActivityLog = {
+      ID: "",
+      TemplateID: template?.ID ?? "1",
+      Category: "Reservation",
+      DateTime: formatDate(dayjs(Date.now()).toString()),
+      Sender: "vivi@gmail.com",
+      Receiver: receiver?.toString() ?? "All",
+      Cc: "vivi@gmail.com",
+    };
+    try {
+      postActivityLog(dataActivityLog);
+
+      setTimeout(() => {
+        hidePreviewModal();
+        handleCloseRemind();
+      }, 1000);
+    } catch (error) {
+      errorNotify("An error occurred while send email remind student");
+      console.error("Error remind:", error);
+    }
   };
 
-  const handleSendRemind = () => {
-    hidePreviewModal();
-    console.log(data);
+  useEffect(() => {
+    getEmail();
+  }, [getEmail]);
+
+  const emailTemplateInitialValues = {
+    Receiver: isIndividual ? data?.Email : "All",
+    TemplateID: (email && email[0]?.Name) ?? "Select template name",
+    Applier: type,
   };
+
   return (
     <>
       <Modal
-        title={<div className="modal-title">Send remind email</div>}
-        visible={open}
+        title={<div className="modal-title">{modalTitle}</div>}
+        open={open}
         closeIcon={<VscError size={Sizes.LgMedium} color={Colors.White} />}
         onOk={handleOpenRemind}
         onCancel={handleCloseRemind}
@@ -50,55 +100,82 @@ const EmailTemplate: React.FC<EmailTemplateProps> = ({
         footer={[
           <div className="modal-footer" key="modalFooter">
             <Button
-              key="Send"
-              onClick={showPreviewModal}
+              key="preview"
+              onClick={() => {
+                showPreviewModal();
+              }}
               className="btn-preview-btn"
             >
               Preview
             </Button>
-            <Button onClick={handleSendRemind} className="btn-send-btn">
+            <Button
+              onClick={handleSendRemind}
+              className="btn-send-btn"
+              loading={loadingActivityLog}
+            >
               Send
             </Button>
           </div>,
         ]}
       >
-        {/* ... Your Form content ... */}
-        <div className="email-form">
-          <div className="email-input">
-            <p>Categories</p>
-            <Input placeholder="Reserve" />
+        <Form name="RemindForm" initialValues={emailTemplateInitialValues}>
+          <div className="email-template">
+            <div className="input-default">
+              <p className="input-title">Categories</p>
+              <p>Reservation</p>
+            </div>
+            <Form.Item label="Apply to" name="Applier">
+              <Select
+                style={{ width: 300 }}
+                placeholder="Select send to"
+                onChange={handleReceiverChange}
+                disabled={type !== ""}
+              >
+                {!isIndividual && (
+                  <>
+                    <Option value="Student">Student</Option>
+                    <Option value="Trainer">Trainer</Option>
+                  </>
+                )}
+              </Select>
+            </Form.Item>
+            <Form.Item label="Send to" name="Receiver">
+              <Select
+                style={{ width: 300 }}
+                placeholder="Select send to"
+                onChange={handleReceiverChange}
+                disabled={isIndividual}
+              >
+                {!isIndividual && <Option value="All">All</Option>}
+                {data?.Email !== "" && (
+                  <Option value={data?.Email}>{data?.Email}</Option>
+                )}
+              </Select>
+            </Form.Item>
+            <Form.Item label="Template name" name="TemplateID">
+              <Select
+                style={{ width: 300 }}
+                onChange={handleTemplateChange}
+                defaultActiveFirstOption
+              >
+                {email?.map((item) => (
+                  <Option value={item.ID} key={item.ID}>
+                    {item.Name}
+                  </Option>
+                ))}
+              </Select>
+            </Form.Item>
           </div>
-          <div className="email-input">
-            <p>Apply to</p>
-            <Input placeholder="Student" />
-          </div>
-          <div className="email-input">
-            <p>Send to</p>
-            <Input placeholder="All" />
-          </div>
-          <div className="email-input">
-            <p>Template name</p>
-            <Select
-              defaultValue="Select template"
-              style={{ width: 500 }}
-              onChange={handleChange}
-              options={[
-                { value: "jack", label: "Jack" },
-                { value: "Yiminghe", label: "yiminghe" },
-                { value: "disabled", label: "Disabled", disabled: true },
-              ]}
-            />
-          </div>
-        </div>
+        </Form>
       </Modal>
       {previewModal && (
         <Modal
           title={<div className="modal-title">Email Preview</div>}
-          visible={previewModal}
+          open={previewModal}
           closeIcon={
             <VscError
               style={{
-                color: "#ffffff",
+                color: Colors.White,
               }}
             />
           }
@@ -107,13 +184,20 @@ const EmailTemplate: React.FC<EmailTemplateProps> = ({
           className="email-modal"
           footer={[
             <div className="modal-footer" key="modalFooter">
-              <Button onClick={hidePreviewModal} className="btn-preview-btn">
+              <Button
+                onClick={() => {
+                  hidePreviewModal();
+                  handleOpenRemind();
+                }}
+                className="btn-preview-btn"
+              >
                 Back
               </Button>
               <Button
                 key="Send"
-                onClick={hidePreviewModal}
+                onClick={handleSendRemind}
                 className="ant-btn-primary"
+                loading={loadingActivityLog}
               >
                 Send
               </Button>
@@ -123,7 +207,7 @@ const EmailTemplate: React.FC<EmailTemplateProps> = ({
           <div className="email-form">
             <div className="email-input">
               <p>Template name</p>
-              <h4>Nhắc gởi điểm</h4>
+              <h4>{template?.Name}</h4>
             </div>
             <div className="email-input">
               <p>From</p>
@@ -131,7 +215,7 @@ const EmailTemplate: React.FC<EmailTemplateProps> = ({
             </div>
             <div className="email-input">
               <p>To</p>
-              <h4>All</h4>
+              <h4>{receiver}</h4>
             </div>
             <div className="email-input">
               <p>Cc</p>
@@ -143,19 +227,18 @@ const EmailTemplate: React.FC<EmailTemplateProps> = ({
             </div>
             <div className="email-input">
               <p>Body</p>
-              <h4>
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry standard dummy text
-                ever since the 1500s, when an unknown printer took a galley of
-                type and scrambled it to make a type specimen book. It has
-                survived not only five centuries
-              </h4>
+              <h4>{template?.Description}</h4>
             </div>
           </div>
         </Modal>
       )}
     </>
   );
+};
+
+EmailTemplate.defaultProps = {
+  isIndividual: false,
+  type: "",
 };
 
 export default EmailTemplate;

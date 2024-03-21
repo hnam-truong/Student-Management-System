@@ -1,20 +1,25 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import type { TableColumnsType } from "antd";
 import { IoSettingsOutline } from "react-icons/io5";
-import { IClassStudent } from "../../../interfaces/class-student.interface";
+import { IStudentClass } from "../../../interfaces/student-class.interface";
 import { generateFilters } from "../../../utils/GenerateFilter";
 import CustomDropdown from "../../molecules/CustomDropdown/CustomDropdown";
-import AvailableTag from "../../atoms/AvailableTag/AvailableTag";
+import StatusTag from "../../atoms/StatusTag/StatusTag";
 
 interface StudentClassTableProps {
-  classStudent: IClassStudent[];
+  classStudent: IStudentClass[];
   loading: boolean;
+  handleDataChange: () => void;
+  setStudentSelect: React.Dispatch<React.SetStateAction<IStudentClass[]>>;
 }
 
 const StudentClassTable: React.FC<StudentClassTableProps> = ({
   classStudent,
   loading,
+  handleDataChange,
+  setStudentSelect,
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const filters: { [key: string]: ReturnType<typeof generateFilters> } = {
@@ -27,7 +32,7 @@ const StudentClassTable: React.FC<StudentClassTableProps> = ({
     Status: generateFilters(classStudent, "Status"),
   };
 
-  const columns: TableColumnsType<IClassStudent> = [
+  const columns: TableColumnsType<IStudentClass> = [
     {
       title: "Full name",
       dataIndex: "FullName",
@@ -106,7 +111,7 @@ const StudentClassTable: React.FC<StudentClassTableProps> = ({
         record.Status.indexOf(value as string) === 0,
       render: (status) => (
         <div className="centered">
-          <AvailableTag status={status} />
+          <StatusTag status={status} content={status} />
         </div>
       ),
     },
@@ -124,7 +129,8 @@ const StudentClassTable: React.FC<StudentClassTableProps> = ({
             id={record?.ID}
             viewLink="/class100/student"
             editLink="/class100/student/edit"
-            handleDataChange={() => {}}
+            isDeleteStudentInClass
+            handleDataChange={handleDataChange}
           />
         </div>
       ),
@@ -145,6 +151,26 @@ const StudentClassTable: React.FC<StudentClassTableProps> = ({
     ...student,
     key: student.ID,
   }));
+
+  useEffect(() => {
+    // Map selectedRowKeys to actual IStudent objects
+    const selectedStudents = scoresWithKeys.filter((selectedStudent) =>
+      selectedRowKeys.includes(selectedStudent.key)
+    );
+
+    // Update the state using setStudentSelect
+    setStudentSelect(selectedStudents);
+  }, [selectedRowKeys, setStudentSelect]);
+
+  useEffect(() => {
+    // Map selectedRowKeys to actual IStudent objects
+    const selectedStudents = scoresWithKeys.filter((selectedStudent) =>
+      selectedRowKeys.includes(selectedStudent.key)
+    );
+
+    // Update the state using setStudentSelect
+    setStudentSelect(selectedStudents);
+  }, [selectedRowKeys, setStudentSelect]);
 
   return (
     <div className="ant-table-container">

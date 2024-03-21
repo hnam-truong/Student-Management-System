@@ -6,6 +6,7 @@ import StudentScoresManagement from "../../pages/ScoresManagement/ScoresManageme
 import StudentsClassManagement from "../../pages/StudentsClassManagement/StudentsClassManagement";
 import ClassDetailHeader from "../../molecules/ClassDetailHeader/ClassDetailHeader";
 import "./ClassDetailInfo.scss";
+import ClassGeneralCard from "../../templates/ClassGeneralCard/ClassGeneralCard";
 
 interface ClassDetailInfoProps {
   classDetail: IClass;
@@ -48,8 +49,18 @@ const ClassDetailInfo: React.FC<ClassDetailInfoProps> = ({ classDetail }) => {
           <div className="bywho">by {classDetail.UpdatedBy}</div>
         </div>
       </div>
+
+      <div className="class-general-calendar">
+        <div className="class-general-calendar__card">
+          <ClassGeneralCard classInfo={classDetail} />
+        </div>
+      </div>
       <div className="classtab">
-        <Tabs defaultActiveKey="student_class" items={tabsItems} />;
+        <Tabs
+          data-testid="class-tabs"
+          defaultActiveKey="student_class"
+          items={tabsItems}
+        />
       </div>
     </div>
   );

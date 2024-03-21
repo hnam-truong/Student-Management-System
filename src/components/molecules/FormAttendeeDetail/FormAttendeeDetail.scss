@@ -1,16 +1,11 @@
 @import "../../../styles/main";
 
 .basic-info-frame {
-  margin: $lg-small $lg-small;
-  padding: $medium;
   min-height: 100%;
-  background: $white;
-  border-radius: $lg-small;
   display: flex;
   flex-direction: column;
 }
-
-.tabs-frame {
+.wrapper-frame-custom {
   margin: $lg-small $lg-small;
   padding: $medium;
   background: $white;
@@ -18,18 +13,14 @@
 }
 
 .classes-frame {
-  margin: $lg-small $lg-small;
-  padding: $medium;
-  background: $white;
-  border-radius: $lg-small;
   margin-bottom: $medium;
-  .class-title {
-    margin-bottom: $lg-small;
-    font-size: $medium;
-    font-weight: $fw-bold;
-    padding: 0;
-    color: $primary-color;
-  }
+}
+.class-title {
+  margin-bottom: $lg-small;
+  font-size: $medium;
+  font-weight: $fw-bold;
+  padding: 0;
+  color: $primary-color;
 }
 .studentclass {
   display: flex;
@@ -44,7 +35,11 @@
     box-shadow: 0 0 $lg-small $dark-blur-black;
   }
 }
-
+.score-title {
+  cursor: default;
+  padding: $small;
+  border: transparent;
+}
 @media screen and (max-width: $md) {
   .student-detail-container,
   .academic-info-container {

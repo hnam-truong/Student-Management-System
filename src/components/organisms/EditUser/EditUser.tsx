@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /** This function component is Modal contain Form with response for add information for user
  * Usage:
- * <EditStudent id={userId} handleDataChange={handleDataChange}/>
+ * <EditUser id={userId} handleDataChange={handleDataChange}/>
  */
 import { Form, Modal, Spin } from "antd";
 import React, { useEffect, useState } from "react";

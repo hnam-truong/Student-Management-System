@@ -1,4 +1,4 @@
-import { Dropdown, message } from "antd";
+import { Dropdown, Tooltip } from "antd";
 import type { MenuProps } from "antd";
 import { HiOutlinePencil } from "react-icons/hi";
 import { ActionButton } from "../../atoms/CustomButton/CustomButton";
@@ -13,12 +13,17 @@ const UpdateStudentStatusDropdown = ({
   isSelectedStudent,
 }: UpdateStudentStatusDropdownProps) => {
   const handleMenuClick: MenuProps["onClick"] = (e) => {
-    message.info("Click on menu item.");
     console.log("click", e);
   };
   const items: MenuProps["items"] = [
     {
-      label: "Update status student",
+      label: isSelectedStudent ? (
+        <Tooltip title="You must choose students before update student status">
+          Update status student
+        </Tooltip>
+      ) : (
+        "Update status student"
+      ),
       key: "1",
       icon: <HiOutlinePencil />,
       onClick: showModal,

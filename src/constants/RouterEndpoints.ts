@@ -8,6 +8,7 @@ enum RouterEndpoints {
   // USERS MANAGEMENT
   UsersManagement = "/users",
   UserDetail = "/user/:id",
+  UserDetailGeneral = "/user/",
   AddUser = "/user/add",
   EditUser = "/user/edit",
   UserPermission = "/user/permission",
@@ -41,6 +42,9 @@ enum RouterEndpoints {
   // EMAILS ROUTES
   EmailsManagement = "/emails",
   EmailConfiguration = "/email-configuration",
+  EmailDetail = "/email-detail/:id",
+  AddEmail = "/email/add",
+  EditEmail = "/email/edit/:id",
 }
 
 export default RouterEndpoints;

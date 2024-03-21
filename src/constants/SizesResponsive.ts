@@ -19,6 +19,8 @@ enum SizesResponsive {
   MdLarger = "4rem",
   Larger = "4.5rem",
   LgLarger = "5rem",
+  XLarge = "5.5rem",
+  XXLarge = "6rem",
 }
 
 export default SizesResponsive;

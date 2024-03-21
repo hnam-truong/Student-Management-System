@@ -9,6 +9,7 @@ import { useSingleStudentStore } from "../../../store/StudentStore";
 import "./AddStudentForm.scss";
 import { IStudent } from "../../../interfaces/student.interface";
 import FormFooter from "../../molecules/FormFooter/FormFooter";
+import formatDate from "../../../utils/DateFormatting";
 
 const AddStudentForm: React.FC = () => {
   const [form] = Form.useForm();
@@ -23,8 +24,8 @@ const AddStudentForm: React.FC = () => {
       Gender: values.Gender,
       DateOfBirth: values.DateOfBirth,
       GPA: values.GPA,
-      GraduationTime: values.GraduationTime,
-      ClassStartDate: values.ClassStartDate,
+      GraduationTime: formatDate(values.GraduationTime),
+      ClassStartDate: formatDate(values.ClassStartDate),
       ImageUrl: "",
       Class: "",
     };

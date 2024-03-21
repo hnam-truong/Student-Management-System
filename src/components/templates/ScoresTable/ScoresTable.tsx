@@ -11,6 +11,7 @@ import {
   storeDataToCache,
 } from "../../../utils/StoreDataToCache";
 import { exportScoreToExcel } from "../../../utils/ExportToExcel";
+import { getCourseStatus } from "../../../utils/GenerateStatus";
 
 interface ScoresTableProps {
   scores: IScore[];
@@ -311,7 +312,10 @@ const ScoresTable: React.FC<ScoresTableProps> = ({
       filterMode: "tree",
       onFilter: (value, record) => record.Status === value,
       render: (_value, record) => (
-        <StatusTag status={record.Status} isBorder={false} />
+        <StatusTag
+          status={record.Status}
+          content={getCourseStatus(record.Status)}
+        />
       ),
     },
     // mock
@@ -382,7 +386,10 @@ const ScoresTable: React.FC<ScoresTableProps> = ({
       filterMode: "tree",
       onFilter: (value, record) => record.MockStatus === value,
       render: (_value, record) => (
-        <StatusTag status={record.MockStatus} isBorder={false} />
+        <StatusTag
+          status={record.MockStatus}
+          content={getCourseStatus(record.MockStatus)}
+        />
       ),
     },
     {

@@ -11,6 +11,8 @@ import {
   getClassByID,
   getClassesByName,
 } from "../services/api/ApiCaller2";
+import { errorNotify } from "../components/atoms/Notify/Notify";
+import { generateErrorMessage } from "../utils/GenerateErrorMessage";
 
 // CLASS STORE
 interface IClassStore {
@@ -33,6 +35,7 @@ export const useClassStore = create<IClassStore>((set) => ({
     } catch (err) {
       // Catch & log error
       console.log("API Error:", err);
+      errorNotify(generateErrorMessage("get", "list of class"));
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));
@@ -49,6 +52,7 @@ export const useClassStore = create<IClassStore>((set) => ({
       set((state) => ({ ...state, classes: data }));
     } catch (error) {
       console.log("API Error:", error);
+      errorNotify(generateErrorMessage("get", "class information"));
     } finally {
       set((state) => ({ ...state, loading: false }));
     }
@@ -75,6 +79,7 @@ export const useSingleClassStore = create<ISingleClassStore>((set) => ({
     } catch (err) {
       // Catch & log error
       console.log("API Error:", err);
+      errorNotify(generateErrorMessage("get", "class information"));
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));

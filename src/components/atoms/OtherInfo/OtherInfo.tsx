@@ -3,31 +3,31 @@ import { Form, Input, DatePicker, InputNumber } from "antd";
 import { validateGPA } from "../../../utils/Validations";
 
 const OtherInfo: React.FC = () => (
-  <div className="container-infor">
-    <div className="col">
+  <div className="container-info">
+    <div className="col-content">
       <Form.Item
         label="University"
         name="University"
         rules={[{ required: true, message: "Please enter the university" }]}
       >
-        <Input className="input" placeholder="Enter University" />
+        <Input className="input-content" placeholder="Enter University" />
       </Form.Item>
       <Form.Item
         label="Major"
         name="Major"
         rules={[{ required: true, message: "Please enter the major" }]}
       >
-        <Input className="input" placeholder="Enter Major" />
+        <Input className="input-content" placeholder="Enter Major" />
       </Form.Item>
       <Form.Item
         label="RECer"
         name="RECer"
         rules={[{ required: true, message: "Please enter the RECer" }]}
       >
-        <Input className="input" placeholder="Enter RECer" />
+        <Input className="input-content" placeholder="Enter RECer" />
       </Form.Item>
     </div>
-    <div className="col">
+    <div className="col-content">
       <Form.Item
         label="GPA"
         name="GPA"
@@ -48,9 +48,8 @@ const OtherInfo: React.FC = () => (
         <InputNumber
           type="number"
           step={0.1}
-          className="input"
+          className="input-content"
           placeholder="Enter GPA"
-          style={{ width: "100%" }}
         />
       </Form.Item>
       <Form.Item
@@ -61,7 +60,7 @@ const OtherInfo: React.FC = () => (
         ]}
       >
         <DatePicker
-          className="input"
+          className="input-content"
           picker="year"
           placeholder="Enter Graduation Time"
         />

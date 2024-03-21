@@ -73,7 +73,6 @@ const SearchInput: React.FC = () => {
   return (
     <AutoComplete
       popupMatchSelectWidth={Sizes.PopUpSearchLarge}
-      style={{ width: Sizes.SearchWidthLarge }}
       options={options}
       onSelect={onSelect}
       onSearch={handleSearch}

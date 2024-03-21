@@ -1,13 +1,19 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as XLSX from "xlsx";
-// import { useStudentStore } from "../store/StudentStore";
-import { BASE_URL, Endpoints } from "../constants/Api";
-import { errorNotify, successNotify } from "../components/atoms/Notify/Notify";
-// import { useStudentStore } from "../store/StudentStore";
+import { useStudentStore } from "../store/StudentStore";
+import { useReservedStudentStore } from "../store/ReservedStudentStore";
+import { useScoreStore } from "../store/ScoreStore";
+import { useStudentClassStore } from "../store/StudentClassStore";
+import { useUserStore } from "../store/UserStore";
 
 export const ImportFromExcel = () => {
-  // const { postStudent } = useStudentStore();
+  const { postStudent } = useStudentStore();
+  const { postReservedStudent } = useReservedStudentStore();
+  const { postScore } = useScoreStore();
+  const { postStudentClass } = useStudentClassStore();
+  const { postUser } = useUserStore();
+
   const readExcelFile = (file: any, setExcelFile: any) => {
     const reader = new FileReader();
 
@@ -44,235 +50,54 @@ export const ImportFromExcel = () => {
       };
     });
 
-    // postStudent(transformedData);
-
-    const totalStudents = transformedData.length;
-    let successfulRequests = 0;
-
-    try {
-      const response = await fetch(BASE_URL + Endpoints.Student, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(transformedData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to add student. Network response was not ok.");
-      }
-      successfulRequests += 1;
-
-      if (successfulRequests === totalStudents) {
-        successNotify("Data added successfully.");
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
-      }
-    } catch (error) {
-      errorNotify("Data add failed.");
-      console.error("Failed to add student", error);
-    }
+    postStudent(transformedData);
   };
-
   const handleExcelReservedStudent = async (excelData: any) => {
     const transformedData = excelData.map((item: any) => {
-      const { StudentClasses, ...rest } = item;
-      let studentClassesArray = [];
+      const { Conditions, ...rest } = item;
+      let conditionsArray = [];
 
-      if (Array.isArray(StudentClasses)) {
-        studentClassesArray = StudentClasses;
-      } else if (typeof StudentClasses === "string") {
-        studentClassesArray = StudentClasses.split(",").map((aClass: string) =>
+      if (Array.isArray(Conditions)) {
+        conditionsArray = Conditions;
+      } else if (typeof Conditions === "string") {
+        conditionsArray = Conditions.split(",").map((aClass: string) =>
           aClass.trim()
         );
       }
 
       return {
         ...rest,
-        StudentClasses: studentClassesArray,
+        Conditions: conditionsArray,
       };
     });
-
-    // postStudent(transformedData);
-
-    const totalStudents = transformedData.length;
-    let successfulRequests = 0;
-
-    try {
-      const response = await fetch(BASE_URL + Endpoints.Student, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(transformedData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to add student. Network response was not ok.");
-      }
-      successfulRequests += 1;
-
-      if (successfulRequests === totalStudents) {
-        successNotify("Data added successfully.");
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
-      }
-    } catch (error) {
-      errorNotify("Data add failed.");
-      console.error("Failed to add student", error);
-    }
+    postReservedStudent(transformedData);
   };
-
   const handleExcelStudentScore = async (excelData: any) => {
     const transformedData = excelData.map((item: any) => {
-      const { StudentClasses, ...rest } = item;
-      let studentClassesArray = [];
-
-      if (Array.isArray(StudentClasses)) {
-        studentClassesArray = StudentClasses;
-      } else if (typeof StudentClasses === "string") {
-        studentClassesArray = StudentClasses.split(",").map((aClass: string) =>
-          aClass.trim()
-        );
-      }
-
+      const { ...rest } = item;
       return {
         ...rest,
-        StudentClasses: studentClassesArray,
       };
     });
-
-    // postStudent(transformedData);
-
-    const totalStudents = transformedData.length;
-    let successfulRequests = 0;
-
-    try {
-      const response = await fetch(BASE_URL + Endpoints.Student, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(transformedData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to add student. Network response was not ok.");
-      }
-      successfulRequests += 1;
-
-      if (successfulRequests === totalStudents) {
-        successNotify("Data added successfully.");
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
-      }
-    } catch (error) {
-      errorNotify("Data add failed.");
-      console.error("Failed to add student", error);
-    }
+    postScore(transformedData);
   };
-
   const handleExcelStudentClass = async (excelData: any) => {
     const transformedData = excelData.map((item: any) => {
-      const { StudentClasses, ...rest } = item;
-      let studentClassesArray = [];
-
-      if (Array.isArray(StudentClasses)) {
-        studentClassesArray = StudentClasses;
-      } else if (typeof StudentClasses === "string") {
-        studentClassesArray = StudentClasses.split(",").map((aClass: string) =>
-          aClass.trim()
-        );
-      }
-
+      const { ...rest } = item;
       return {
         ...rest,
-        StudentClasses: studentClassesArray,
       };
     });
-
-    // postStudent(transformedData);
-
-    const totalStudents = transformedData.length;
-    let successfulRequests = 0;
-
-    try {
-      const response = await fetch(BASE_URL + Endpoints.Student, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(transformedData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to add student. Network response was not ok.");
-      }
-      successfulRequests += 1;
-
-      if (successfulRequests === totalStudents) {
-        successNotify("Data added successfully.");
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
-      }
-    } catch (error) {
-      errorNotify("Data add failed.");
-      console.error("Failed to add student", error);
-    }
+    postStudentClass(transformedData);
   };
-
   const handleExcelUser = async (excelData: any) => {
     const transformedData = excelData.map((item: any) => {
-      const { StudentClasses, ...rest } = item;
-      let studentClassesArray = [];
-
-      if (Array.isArray(StudentClasses)) {
-        studentClassesArray = StudentClasses;
-      } else if (typeof StudentClasses === "string") {
-        studentClassesArray = StudentClasses.split(",").map((aClass: string) =>
-          aClass.trim()
-        );
-      }
-
+      const { ...rest } = item;
       return {
         ...rest,
-        StudentClasses: studentClassesArray,
       };
     });
-
-    // postStudent(transformedData);
-
-    const totalStudents = transformedData.length;
-    let successfulRequests = 0;
-
-    try {
-      const response = await fetch(BASE_URL + Endpoints.Student, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(transformedData),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to add student. Network response was not ok.");
-      }
-      successfulRequests += 1;
-
-      if (successfulRequests === totalStudents) {
-        successNotify("Data added successfully.");
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
-      }
-    } catch (error) {
-      errorNotify("Data add failed.");
-      console.error("Failed to add student", error);
-    }
+    postUser(transformedData);
   };
 
   return {

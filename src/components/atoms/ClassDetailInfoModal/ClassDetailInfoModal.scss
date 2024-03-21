@@ -1,12 +1,14 @@
 @import "../../../styles/main.scss";
 
 .class-info-modal {
+  height: 100%;
   .ant-card-body {
     border: 1px solid $white !important;
-    box-shadow: 0px 0px $lg-small rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0px $lg-small $blur-black;
     border-radius: $small !important;
     box-shadow: $small !important;
     min-width: $xx-large;
+    height: 100%;
   }
 
   .first-line {
@@ -14,9 +16,9 @@
     margin-bottom: $lg-small;
     justify-content: space-between;
     gap: $small;
-     .class-title{
+    .class-title {
       text-overflow: ellipsis;
-     }
+    }
   }
   .second-line {
     display: flex;
