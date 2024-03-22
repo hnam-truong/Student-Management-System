@@ -2,6 +2,7 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import ModalReservation from "./TerminalReservation";
 import { useReservedStudentSingleStore } from "../../../store/ReservedStudentStore";
+import { IReservedStudent } from "../../../interfaces/reserved-student.interface";
 
 // Manually create a mock implementation for useReservedStudentSingleStore
 const mockUseReservedStudentSingleStore = {
@@ -10,22 +11,23 @@ const mockUseReservedStudentSingleStore = {
 
 describe("ModalReservation Component", () => {
   it("renders ModalReservation correctly", async () => {
-    const mockData = {
-      ID: "1",
-      StudentID: "1",
-      FullName: "Thi",
+    const mockData: IReservedStudent = {
+      FullName: "Hàn Quốc Hoàng",
       Gender: true,
-      DateOfBirth: new Date("2002-10-20"),
-      Hometown: "HCM",
-      Class: "React-04",
-      ClassID: "1",
-      CurrentModules: "Test",
-      ReservedModule: "Test",
-      Reason: "Test",
-      Conditions: ["Test"], // Update to an array of strings
-      ReservedStartDate: new Date("2003-10-20"),
-      ReservedEndDate: new Date("1992-10-20"),
-      Status: "Test",
+      DateOfBirth: "01/01/2003",
+      Hometown: "Hồ Chí Minh",
+      Class: "Fresher Developer Operation",
+      ReservedModule: "ReservedModule 1",
+      Reason: "Reserve to study again",
+      ReservedStartDate: "15/10/2023",
+      Status: "Reserve",
+      ReservedEndDate: "06/01/2050",
+      StudentID: "1",
+      ClassID: "HCM_24_FR_DAO_03",
+      CurrentModules: "CurrentModules 1",
+      Conditions: ["1", "3"],
+      ID: "1",
+      Email: "test@example.com",
     };
 
     // Mock the implementation of useReservedStudentSingleStore

@@ -5,21 +5,22 @@ import { IReservedStudent } from "../../../interfaces/reserved-student.interface
 describe("EmailTemplate Component", () => {
   it("should render correctly", () => {
     const mockData: IReservedStudent = {
-      ID: "123",
-      StudentID: "456",
-      FullName: "John Doe",
-      Gender: true, // Assuming boolean for Gender
-      DateOfBirth: new Date("1990-01-01"),
-      Hometown: "City",
-      Class: "Class A",
-      ClassID: "789",
-      CurrentModules: "Module A",
-      ReservedModule: "Module B",
-      Reason: "Some reason",
-      Conditions: ["Condition 1", "Condition 2"],
-      ReservedStartDate: new Date("2022-03-01"),
-      ReservedEndDate: new Date("2022-03-15"),
-      Status: "Reserved",
+      FullName: "Hàn Quốc Hoàng",
+      Gender: true,
+      DateOfBirth: "01/01/2003",
+      Hometown: "Hồ Chí Minh",
+      Class: "Fresher Developer Operation",
+      ReservedModule: "ReservedModule 1",
+      Reason: "Reserve to study again",
+      ReservedStartDate: "15/10/2023",
+      Status: "Reserve",
+      ReservedEndDate: "06/01/2050",
+      StudentID: "1",
+      ClassID: "HCM_24_FR_DAO_03",
+      CurrentModules: "CurrentModules 1",
+      Conditions: ["1", "3"],
+      ID: "1",
+      Email: "",
     };
 
     render(
@@ -28,6 +29,7 @@ describe("EmailTemplate Component", () => {
         open
         handleOpenRemind={() => {}}
         handleCloseRemind={() => {}}
+        modalTitle="Send email"
       />
     );
 

@@ -13,7 +13,7 @@ export interface IClass {
   ProgramID: string;
   StartTime: string;
   EndTime: string;
-  Trainers: [];
+  Trainers: string[];
   FSU: string;
   SpecificLocation: { ID: string; Name: string }[];
   Reviewer: string;

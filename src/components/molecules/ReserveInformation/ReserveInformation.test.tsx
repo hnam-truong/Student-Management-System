@@ -1,25 +1,27 @@
 import { render, screen, waitFor } from "@testing-library/react";
 // import userEvent from "@testing-library/user-event";
 import ReserveInformation from "./ReserveInformation";
+import { IReservedStudent } from "../../../interfaces/reserved-student.interface";
 
 describe("ReserveInformation component", () => {
   // Mock necessary dependencies and props
-  const mockData = {
-    FullName: "Chu Thiện Phước",
+  const mockData: IReservedStudent = {
+    FullName: "Hàn Quốc Hoàng",
     Gender: true,
-    DateOfBirth: new Date("2004-08-14"),
-    Hometown: "Hà Nội",
-    Class: "Fresher Developer UI/UX Designer",
-    ReservedModule: "ReservedModule 2",
-    Reason: "Disadvantaged",
-    ReservedStartDate: new Date("2098-12-19"),
-    Status: "Drop out",
-    ReservedEndDate: new Date("2018-07-12"),
-    StudentID: "2",
-    ClassID: "HCM_24_FR_DAO_01",
-    CurrentModules: "CurrentModules 2",
-    Conditions: ["1", "2"],
-    ID: "2",
+    DateOfBirth: "01/01/2003",
+    Hometown: "Hồ Chí Minh",
+    Class: "Fresher Developer Operation",
+    ReservedModule: "ReservedModule 1",
+    Reason: "Reserve to study again",
+    ReservedStartDate: "15/10/2023",
+    Status: "Reserve",
+    ReservedEndDate: "06/01/2050",
+    StudentID: "1",
+    ClassID: "HCM_24_FR_DAO_03",
+    CurrentModules: "CurrentModules 1",
+    Conditions: ["1", "3"],
+    ID: "1",
+    Email: "test@gmail.com",
   };
 
   const mockClose = vi.fn();

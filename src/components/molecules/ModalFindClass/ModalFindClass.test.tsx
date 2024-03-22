@@ -5,21 +5,22 @@ import { IReservedStudent } from "../../../interfaces/reserved-student.interface
 describe("ModalFindClass Component", () => {
   it("renders ModalFindClass component", () => {
     const mockData: IReservedStudent = {
-      ID: "1",
-      StudentID: "S1",
-      FullName: "John Doe",
+      FullName: "Hàn Quốc Hoàng",
       Gender: true,
-      DateOfBirth: new Date(),
-      Hometown: "Cityville",
-      Class: "Class A",
-      ClassID: "C1",
-      CurrentModules: "Module A",
-      ReservedModule: "Module B",
-      Reason: "Some reason",
-      Conditions: ["Condition 1", "Condition 2"],
-      ReservedStartDate: new Date(),
-      ReservedEndDate: new Date(),
-      Status: "Reserved",
+      DateOfBirth: "01/01/2003",
+      Hometown: "Hồ Chí Minh",
+      Class: "Fresher Developer Operation",
+      ReservedModule: "ReservedModule 1",
+      Reason: "Reserve to study again",
+      ReservedStartDate: "15/10/2023",
+      Status: "Reserve",
+      ReservedEndDate: "06/01/2050",
+      StudentID: "1",
+      ClassID: "HCM_24_FR_DAO_03",
+      CurrentModules: "CurrentModules 1",
+      Conditions: ["1", "3"],
+      ID: "1",
+      Email: "test@gmail.com",
     };
 
     const mockProps = {

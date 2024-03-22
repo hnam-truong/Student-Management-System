@@ -1,11 +1,12 @@
 import { render, screen } from "@testing-library/react";
 import ReclassInformation from "./ReclassInformation";
+import { IClass } from "../../../interfaces/class.interface";
 
 describe("ReclassInformation component", () => {
-  const classInfo = {
+  const classInfo: IClass = {
     ClassName: "Fresher Developer Legacy Security Developer",
-    StartDate: "2024-03-15",
-    EndDate: "2024-06-10",
+    StartDate: "01/03/2023",
+    EndDate: "10/04/2023",
     CreatedDate: "15/02/2023",
     CreatedBy: "Ngư Hữu Khanh",
     UpdatedDate: "25/04/2023",
@@ -14,6 +15,24 @@ describe("ReclassInformation component", () => {
     Location: "Hồ Chí Minh",
     Status: "Closed",
     ProgramID: "91ab0aab-fc7c-4ada-9c37-38c76e8c116c",
+    StartTime: "09:00",
+    EndTime: "12:00",
+    Trainers: ["3", "5"],
+    FSU: "FHM",
+    SpecificLocation: [
+      {
+        ID: "1",
+        Name: "FTown 1",
+      },
+      {
+        ID: "2",
+        Name: "FTown 2",
+      },
+    ],
+    Reviewer: "Lý Minh Nhân",
+    Approver: "Võ Trọng Bình",
+    ReviewDate: "09/02/2023",
+    ApproveDate: "20/02/2023",
     ClassID: "1",
   };
   // Test case 1: Rendering with valid class information

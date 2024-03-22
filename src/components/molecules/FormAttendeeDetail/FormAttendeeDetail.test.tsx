@@ -1,4 +1,3 @@
-import React from "react";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import FormAttendeeDetail from "./FormAttendeeDetail";
@@ -30,18 +29,36 @@ const mockStudentDetail: IStudent = {
 
 const mockClassDetail: IClass[] = [
   {
+    ClassName: "Fresher Developer Legacy Security Developer",
+    StartDate: "01/03/2023",
+    EndDate: "10/04/2023",
+    CreatedDate: "15/02/2023",
+    CreatedBy: "Ngư Hữu Khanh",
+    UpdatedDate: "25/04/2023",
+    UpdatedBy: "Chu Thiện Phước",
+    Duration: 41,
+    Location: "Hồ Chí Minh",
+    Status: "Closed",
+    ProgramID: "91ab0aab-fc7c-4ada-9c37-38c76e8c116c",
+    StartTime: "09:00",
+    EndTime: "12:00",
+    Trainers: ["3", "5"],
+    FSU: "FHM",
+    SpecificLocation: [
+      {
+        ID: "1",
+        Name: "FTown 1",
+      },
+      {
+        ID: "2",
+        Name: "FTown 2",
+      },
+    ],
+    Reviewer: "Lý Minh Nhân",
+    Approver: "Võ Trọng Bình",
+    ReviewDate: "09/02/2023",
+    ApproveDate: "20/02/2023",
     ClassID: "1",
-    ClassName: "Math 101",
-    StartDate: "2022-01-01",
-    EndDate: "2022-05-01",
-    CreatedDate: "2022-01-01",
-    CreatedBy: "John Doe",
-    UpdatedDate: "2022-01-02",
-    UpdatedBy: "Jane Doe",
-    Duration: 16,
-    Location: "Room 101",
-    Status: "Active",
-    ProgramID: "P1",
   },
   // Add more class instances if needed
 ];

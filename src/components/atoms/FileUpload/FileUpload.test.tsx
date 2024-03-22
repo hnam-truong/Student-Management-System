@@ -119,7 +119,8 @@ import FileUpload from "./FileUpload";
 
 describe("FileUpload component", () => {
   test("displays upload area with correct text", () => {
-    render(<FileUpload />);
+    const excelUpload = vi.fn();
+    render(<FileUpload excelUpload={excelUpload} />);
     expect(
       screen.getByText("Click or drag file to this area to upload")
     ).toBeInTheDocument();
@@ -131,8 +132,9 @@ describe("FileUpload component", () => {
   });
 
   test("triggers success notification when file upload is successful", async () => {
+    const excelUpload = vi.fn();
     global.fetch = vi.fn().mockResolvedValueOnce({ status: 200 });
-    render(<FileUpload />);
+    render(<FileUpload excelUpload={excelUpload} />);
     const file = new File(["dummy content"], "example.xlsx", {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });
@@ -146,8 +148,9 @@ describe("FileUpload component", () => {
   });
 
   test("triggers error notification when file upload fails", async () => {
+    const excelUpload = vi.fn();
     global.fetch = vi.fn().mockRejectedValueOnce(new Error("Upload failed"));
-    render(<FileUpload />);
+    render(<FileUpload excelUpload={excelUpload} />);
     const file = new File(["dummy content"], "example.xlsx", {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     });

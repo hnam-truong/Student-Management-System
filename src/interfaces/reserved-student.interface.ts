@@ -3,7 +3,7 @@ export interface IReservedStudent {
   StudentID: string;
   FullName: string;
   Gender: boolean;
-  DateOfBirth: Date;
+  DateOfBirth: string;
   Hometown: string;
   Class: string;
   ClassID: string;
@@ -11,8 +11,8 @@ export interface IReservedStudent {
   ReservedModule: string;
   Reason: string;
   Conditions: string[] | [];
-  ReservedStartDate?: Date | undefined;
-  ReservedEndDate?: Date | undefined;
+  ReservedStartDate?: string | undefined;
+  ReservedEndDate?: string | undefined;
   Status: string;
   Email: string;
 }

@@ -20,7 +20,7 @@ const UpdateStudentClassStatus = ({
     setIsModalOpen(true);
   };
   const handleOk = () => {
-    console.log("Stuent in class:", studentSelect);
+    console.log("Student in class:", studentSelect);
     console.log("Status is:", statusStudent);
     setIsModalOpen(false);
   };

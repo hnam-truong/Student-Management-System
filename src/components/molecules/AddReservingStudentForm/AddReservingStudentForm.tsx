@@ -10,7 +10,6 @@
  */
 import { Form, FormInstance } from "antd";
 import React, { useEffect, useState } from "react";
-import { Dayjs } from "dayjs";
 import { IReservedStudent } from "../../../interfaces/reserved-student.interface";
 import useReservingCondition from "../../../store/ReservingConditionStore";
 import useReservingReason from "../../../store/ReservingReasonStore";
@@ -30,7 +29,7 @@ type ReservingFormType = {
   CurrentModules: string;
   ReservingReasonSelect: string;
   ReservingReasonTextArea: string;
-  ReservingPeriod: [Dayjs | null, Dayjs | null];
+  ReservingPeriod: [null, null];
   ReservingConditions: string[];
   ActivateReserving: boolean;
 };
@@ -104,8 +103,8 @@ const AddReservingStudentForm: React.FC<AddReservingStudentProps> = ({
         : reservingReason?.find(
             (reason: { ID: string }) => reason?.ID === selectedReasonKey
           )?.Name;
-    const endDate = values.ReservingPeriod[1]?.toDate() || undefined;
-    const startDate = values.ReservingPeriod[0]?.toDate() || undefined;
+    const endDate = values.ReservingPeriod[1] || undefined;
+    const startDate = values.ReservingPeriod[0] || undefined;
     const conditions: string[] = values.ReservingConditions || [];
     const reservationData: IReservedStudent = {
       ID: "",
@@ -125,6 +124,7 @@ const AddReservingStudentForm: React.FC<AddReservingStudentProps> = ({
       DateOfBirth: (aReservedStudent as IReservedStudent)?.DateOfBirth,
       Hometown: (aReservedStudent as IReservedStudent)?.Hometown,
       ReservedModule: (aReservedStudent as IReservedStudent)?.ReservedModule,
+      Email: (aReservedStudent as IReservedStudent)?.Email,
     };
     postReservedStudent(reservationData);
     const studentID = (aReservedStudent as IReservedStudent)?.StudentID;

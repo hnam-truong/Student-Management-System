@@ -12,13 +12,9 @@ import Sizes from "../../../constants/Sizes";
 import Colors from "../../../constants/Colors";
 import { useSingleStudentStore } from "../../../store/StudentStore";
 
-interface Props {
-  data: IStudent | null;
-}
-
 const { Search } = Input;
 
-const AddStudentsClass: React.FC<Props> = () => {
+const AddStudentsClass: React.FC = () => {
   const [open, setOpen] = useState(false);
   const [studentId, setStudentId] = useState("");
   const [classId] = useState("");
@@ -140,7 +136,7 @@ const AddStudentsClass: React.FC<Props> = () => {
           layout="vertical"
           className="add-class-form"
           form={form}
-          name="AddStudenClass"
+          name="AddStudentClass"
           initialValues={initialValues}
         >
           <div className="form-row">

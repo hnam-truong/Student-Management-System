@@ -1,8 +1,9 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import UpdateStudentStatusModal from "./UpdateStudentStatusModal";
+import { IStudent } from "../../../interfaces/student.interface";
 
 describe("UpdateStudentStatusModal component", () => {
-  const mockStudentSelect = [
+  const mockStudentSelect: IStudent[] = [
     {
       Name: "Jerald Murazik",
       Gender: false,
@@ -52,24 +53,32 @@ describe("UpdateStudentStatusModal component", () => {
   ];
 
   test("Renders modal with correct title", () => {
+    const setStatusStudent = vi.fn();
+    const handleOk = vi.fn();
+    const handleCancel = vi.fn();
     render(
       <UpdateStudentStatusModal
         studentSelect={mockStudentSelect}
         isModalOpen
-        handleOk={() => {}}
-        handleCancel={() => {}}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+        setStatusStudent={setStatusStudent}
       />
     );
     expect(screen.getByText("Update status")).toBeInTheDocument();
   });
 
   test("Displays correct number of students in the message", () => {
+    const setStatusStudent = vi.fn();
+    const handleOk = vi.fn();
+    const handleCancel = vi.fn();
     render(
       <UpdateStudentStatusModal
         studentSelect={mockStudentSelect}
         isModalOpen
-        handleOk={() => {}}
-        handleCancel={() => {}}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+        setStatusStudent={setStatusStudent}
       />
     );
     expect(
@@ -80,19 +89,22 @@ describe("UpdateStudentStatusModal component", () => {
   });
 
   test("Clicking on 'Save' button triggers handleOk function", () => {
-    const mockHandleOk = vi.fn();
+    const setStatusStudent = vi.fn();
+    const handleOk = vi.fn();
+    const handleCancel = vi.fn();
     render(
       <UpdateStudentStatusModal
         studentSelect={mockStudentSelect}
         isModalOpen
-        handleOk={mockHandleOk}
-        handleCancel={() => {}}
+        handleOk={handleOk}
+        handleCancel={handleCancel}
+        setStatusStudent={setStatusStudent}
       />
     );
 
     const saveButton = screen.getByText("Save");
     fireEvent.click(saveButton);
 
-    expect(mockHandleOk).toHaveBeenCalledTimes(1);
+    expect(handleOk).toHaveBeenCalledTimes(1);
   });
 });

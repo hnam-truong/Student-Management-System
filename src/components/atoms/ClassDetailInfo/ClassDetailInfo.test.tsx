@@ -4,18 +4,36 @@ import { IClass } from "../../../interfaces/class.interface";
 
 describe("ClassDetailInfo Component", () => {
   const mockClassDetail: IClass = {
+    ClassName: "Fresher Developer Legacy Security Developer",
+    StartDate: "01/03/2023",
+    EndDate: "10/04/2023",
+    CreatedDate: "15/02/2023",
+    CreatedBy: "Ngư Hữu Khanh",
+    UpdatedDate: "25/04/2023",
+    UpdatedBy: "Chu Thiện Phước",
+    Duration: 41,
+    Location: "Hồ Chí Minh",
+    Status: "Closed",
+    ProgramID: "91ab0aab-fc7c-4ada-9c37-38c76e8c116c",
+    StartTime: "09:00",
+    EndTime: "12:00",
+    Trainers: ["3", "5"],
+    FSU: "FHM",
+    SpecificLocation: [
+      {
+        ID: "1",
+        Name: "FTown 1",
+      },
+      {
+        ID: "2",
+        Name: "FTown 2",
+      },
+    ],
+    Reviewer: "Lý Minh Nhân",
+    Approver: "Võ Trọng Bình",
+    ReviewDate: "09/02/2023",
+    ApproveDate: "20/02/2023",
     ClassID: "1",
-    ClassName: "Class A",
-    StartDate: "2022-03-08",
-    EndDate: "2022-03-18",
-    CreatedDate: "2022-03-08",
-    CreatedBy: "John Doe",
-    UpdatedDate: "2022-03-08",
-    UpdatedBy: "Jane Smith",
-    Duration: 10,
-    Location: "Room 101",
-    Status: "Active",
-    ProgramID: "1",
   };
 
   test("renders class detail information correctly", async () => {
