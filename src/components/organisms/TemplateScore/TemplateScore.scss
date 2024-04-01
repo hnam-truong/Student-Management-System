@@ -19,8 +19,12 @@
 }
 
 .template-score-card {
+  cursor: auto;
   .ant-card-head {
     background-color: $primary-color;
+    .ant-card-head-title {
+      color: $white;
+    }
     span {
       color: $white;
     }

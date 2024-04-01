@@ -1,9 +1,8 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /** This function component is Modal contain Form with response for add information for user
  * Usage:
  * <EditStudent/>
  */
-import { Form, Spin } from "antd";
+import { Spin } from "antd";
 import React, { useEffect } from "react";
 import { useParams } from "react-router";
 import dayjs from "dayjs";
@@ -19,55 +18,41 @@ interface EditStudentProps {
 }
 
 const EditStudent: React.FC<EditStudentProps> = ({ handleDataChange }) => {
-  const [form] = Form.useForm();
   const { id } = useParams();
 
   // USE STORES
   const { aStudent, getStudentByID, putSingleStudent, loading } =
     useSingleStudentStore();
 
-  const updateUserFormValues = () => {
-    form.setFieldsValue({
-      ID: aStudent?.ID,
-      Name: aStudent?.Name,
-      Gender: aStudent?.Gender,
-      Email: aStudent?.Email,
-      DateOfBirth: dayjs(aStudent?.DateOfBirth, "DD/MM/YYYY"),
-      Phone: aStudent?.Phone,
-      Status: aStudent?.Status,
-      AttendingStatus: aStudent?.AttendingStatus,
-      ImageUrl: aStudent?.ImageUrl,
-      PermanentResidence: aStudent?.PermanentResidence,
-      Location: aStudent?.Location,
-      University: aStudent?.University,
-      Major: aStudent?.Major,
-      RECer: aStudent?.RECer,
-      GPA: aStudent?.GPA,
-      GraduationTime: dayjs(aStudent?.GraduationTime, "DD/MM/YYYY"),
-      ClassCode: aStudent?.ClassCode,
-      ClassStartDate: dayjs(aStudent?.ClassStartDate, "DD/MM/YYYY"),
-      Class: aStudent?.Class,
-      StudentClasses: aStudent?.StudentClasses,
-    });
+  const initialValues = {
+    ID: aStudent?.ID,
+    Name: aStudent?.Name,
+    Gender: aStudent?.Gender,
+    Email: aStudent?.Email,
+    DateOfBirth: dayjs(aStudent?.DateOfBirth, "DD/MM/YYYY"),
+    Phone: aStudent?.Phone,
+    Status: aStudent?.Status,
+    AttendingStatus: aStudent?.AttendingStatus,
+    ImageUrl: aStudent?.ImageUrl,
+    PermanentResidence: aStudent?.PermanentResidence,
+    Location: aStudent?.Location,
+    University: aStudent?.University,
+    Major: aStudent?.Major,
+    RECer: aStudent?.RECer,
+    GPA: aStudent?.GPA,
+    GraduationTime: dayjs(aStudent?.GraduationTime, "DD/MM/YYYY"),
+    ClassCode: aStudent?.ClassCode,
+    ClassStartDate: dayjs(aStudent?.ClassStartDate, "DD/MM/YYYY"),
+    Class: aStudent?.Class,
+    StudentClasses: aStudent?.StudentClasses,
   };
 
   useEffect(() => {
     getStudentByID(id ?? "");
   }, [id, getStudentByID]);
 
-  useEffect(() => {
-    // Update form values when aStudent changes
-    updateUserFormValues();
-  }, [aStudent, form]);
-
-  // Reset form values
-  // const resetFormValue = () => {
-  //   form.resetFields();
-  // };
-
   const handleOk = () => {
     handleDataChange();
-    // resetFormValue();
   };
 
   // Function handles form submit, get value and send this to api,
@@ -112,12 +97,12 @@ const EditStudent: React.FC<EditStudentProps> = ({ handleDataChange }) => {
           </div>
         ) : (
           <StudentForm
-            form={form}
             onFinish={onFinish}
             formName={`EditStudent_${id}`}
             isEdit
             data={aStudent || null}
             onAttendingStatusChange={() => {}}
+            initialValues={initialValues}
           />
         )}
       </div>

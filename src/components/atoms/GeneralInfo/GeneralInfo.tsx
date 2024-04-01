@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Form, Input, Select, DatePicker, Spin } from "antd";
-import dayjs, { Dayjs } from "dayjs";
-import { validateEmail, validatePhoneNumber } from "../../../utils/Validations";
+import {
+  validateDateOfBirth,
+  validateEmail,
+  validatePhoneNumber,
+} from "../../../utils/Validations";
 import { useProvinceStore } from "../../../store/ProvinceStore";
-import { errorNotify } from "../Notify/Notify";
 
 const { Option } = Select;
 const StatusOptions = ["In class", "Drop out", "Finish", "Reserve"];
@@ -13,23 +15,21 @@ interface GeneralInfoProps {
 }
 
 const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit }) => {
-  const [dob, setDob] = useState<Dayjs | null>(null);
   const { fetchProvinces, loading, province } = useProvinceStore();
 
   useEffect(() => {
     fetchProvinces();
   }, [fetchProvinces]);
 
-  const handleDobChange = (newDob: Dayjs | null | undefined) => {
-    if (newDob && newDob.year) {
-      const today = dayjs();
-      if (today.year() - newDob.year() < 18) {
-        errorNotify("Age must be greater than or equal 18");
-      } else {
-        setDob(newDob);
-      }
-    }
-  };
+  const dateOfBirthRules = [
+    { required: true, message: "Please input date of birth!" },
+    {
+      validator: (_: unknown, value: string) =>
+        validateDateOfBirth(_, value)
+          ? Promise.resolve()
+          : Promise.reject(new Error("Age must be greater than or equal 18!")),
+    },
+  ];
   return loading ? (
     <div className="spin-container">
       <Spin />
@@ -66,16 +66,12 @@ const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit }) => {
         <Form.Item
           label="Date of Birth"
           name="DateOfBirth"
-          rules={[
-            { required: true, message: "Please select the date of birth" },
-          ]}
+          rules={dateOfBirthRules}
         >
           <DatePicker
             className="input-content"
             format="DD/MM/YYYY"
-            onChange={handleDobChange}
-            value={dob}
-            placeholder="Select Date of birth"
+            placeholder="Select date of birth"
           />
         </Form.Item>
         <Form.Item

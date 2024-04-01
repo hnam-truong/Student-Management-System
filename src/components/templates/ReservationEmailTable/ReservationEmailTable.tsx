@@ -1,7 +1,6 @@
 import React from "react";
 import { Table, TableColumnsType } from "antd";
-import { generateFilters } from "../../../utils/GenerateFilter";
-import { IActivityLog } from "../../../interfaces/activity-log.inteface";
+import { IActivityLog } from "../../../interfaces/activity-log.interface";
 
 interface ReservationEmailTableProps {
   activityLogs: IActivityLog[];
@@ -12,12 +11,6 @@ const ReservationEmailTable: React.FC<ReservationEmailTableProps> = ({
   activityLogs,
   loading,
 }) => {
-  const filters: { [key: string]: ReturnType<typeof generateFilters> } = {
-    Type: generateFilters(activityLogs, "Type"),
-    DateTime: generateFilters(activityLogs, "DateTime"),
-    Sender: generateFilters(activityLogs, "Sender"),
-    ID: generateFilters(activityLogs, "ID"),
-  };
   let counterID = 0;
   const columns: TableColumnsType<IActivityLog> = [
     {
@@ -39,11 +32,6 @@ const ReservationEmailTable: React.FC<ReservationEmailTableProps> = ({
       dataIndex: "Sender",
       key: "Sender",
       sorter: (a, b) => a.Sender.localeCompare(b.Sender),
-      filters: filters.Sender,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (value: boolean | React.Key, record) =>
-        record.Sender.indexOf(value as string) === 0,
     },
     {
       title: "Action",

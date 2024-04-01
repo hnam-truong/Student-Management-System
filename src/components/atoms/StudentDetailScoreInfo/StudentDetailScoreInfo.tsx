@@ -71,7 +71,7 @@ const StudentDetailScoreInfo: React.FC<StudentDetailScoreInfoProps> = ({
     <div className="score-table-container">
       {/* Basic Information */}
       <Space className="class-code" direction="vertical">
-        <div className="headingh5 student-class">{studentDetail?.Class}</div>
+        <div className="heading-h5 student-class">{studentDetail?.Class}</div>
         <div className="subtitle1-bold class-code">
           {studentDetail?.ClassCode}
         </div>

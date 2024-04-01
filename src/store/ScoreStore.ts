@@ -38,9 +38,7 @@ export const useScoreStore = create<IScoreStore>((set) => ({
       // Update scores when fetch successfully
       set((state) => ({ ...state, score: data }));
     } catch (err) {
-      // Catch & log error
-      console.log("API Error:", err);
-      errorNotify(generateErrorMessage("get", "list of score"));
+      console.error(err);
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));
@@ -86,9 +84,7 @@ export const useSingleScoreStore = create<ISingleScoreStore>((set) => ({
       // Update scores of student when fetch successfully
       set((state) => ({ ...state, aScore: validData }));
     } catch (err) {
-      // Catch & log error
-      console.log("API Error:", err);
-      errorNotify(generateErrorMessage("get", "score information"));
+      console.error(err);
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));

@@ -3,8 +3,8 @@
  * Usage:
  * <UserForm form={form} handleOk={handleOk}/>
  */
-import { DatePicker, Form, FormInstance, Input } from "antd";
-import React from "react";
+import { DatePicker, Form, Input } from "antd";
+import React, { useEffect } from "react";
 import SwitchStatus from "../../atoms/SwitchStatus/SwitchStatus";
 import { IUser } from "../../../interfaces/user.interface";
 import FormRadio from "../../atoms/FormRadio/FormRadio";
@@ -16,22 +16,25 @@ import {
 } from "../../../utils/Validations";
 
 interface UserFormProps {
-  form: FormInstance<IUser>;
   onFinish: (values: IUser) => void;
   initialValues?: object;
   formName: string;
+  isReset: boolean;
+  setIsReset: React.Dispatch<React.SetStateAction<boolean>>;
   isEdit?: boolean;
   isAdmin?: boolean;
 }
 
 const UserForm: React.FC<UserFormProps> = ({
-  form,
   onFinish,
   initialValues,
   formName,
   isEdit,
   isAdmin,
+  isReset,
+  setIsReset,
 }) => {
+  const [form] = Form.useForm();
   const stringFields = [
     {
       id: "1",
@@ -90,6 +93,16 @@ const UserForm: React.FC<UserFormProps> = ({
           : Promise.reject(new Error("Age must be greater than or equal 18!")),
     },
   ];
+
+  // Reset form values
+  const resetFormValue = () => {
+    form.resetFields();
+    setIsReset(true);
+  };
+
+  useEffect(() => {
+    isReset && resetFormValue();
+  }, [isReset]);
 
   return (
     <Form

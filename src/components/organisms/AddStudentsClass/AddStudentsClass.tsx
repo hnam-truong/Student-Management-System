@@ -3,14 +3,13 @@ import { Modal, Form, Input } from "antd";
 import { VscError } from "react-icons/vsc";
 import { SearchProps } from "antd/es/input";
 import { errorNotify, successNotify } from "../../atoms/Notify/Notify";
-import { postSingleStudentInClass } from "../../../services/api/ApiCaller3";
 import { IStudent } from "../../../interfaces/student.interface";
-import { IStudentClass } from "../../../interfaces/student-class.interface";
 import FormFooter from "../../molecules/FormFooter/FormFooter";
 import { AddButton } from "../../atoms/CustomButton/CustomButton";
 import Sizes from "../../../constants/Sizes";
 import Colors from "../../../constants/Colors";
 import { useSingleStudentStore } from "../../../store/StudentStore";
+import { useSingleClassStore } from "../../../store/StudentClassStore";
 
 const { Search } = Input;
 
@@ -20,11 +19,8 @@ const AddStudentsClass: React.FC = () => {
   const [classId] = useState("");
   const { getStudentByID, aStudent, putSingleStudent } =
     useSingleStudentStore();
+  const { postSingleStudentInClass } = useSingleClassStore();
   const [form] = Form.useForm();
-
-  const showModal = () => {
-    setOpen(true);
-  };
 
   const resetFormValue = () => {
     form.resetFields();
@@ -36,6 +32,11 @@ const AddStudentsClass: React.FC = () => {
       Status: "",
       GPA: "",
     });
+  };
+
+  const showModal = () => {
+    setOpen(true);
+    resetFormValue();
   };
 
   const handleCancel = () => {
@@ -67,7 +68,7 @@ const AddStudentsClass: React.FC = () => {
       aStudent.StudentClasses.push(classId);
       await putSingleStudent(aStudent, studentId);
 
-      const classStudentData: IStudentClass = {
+      await postSingleStudentInClass({
         ID: studentId,
         FullName: aStudent.Name,
         Phone: aStudent.Phone,
@@ -76,16 +77,12 @@ const AddStudentsClass: React.FC = () => {
         DateOfBirth: aStudent.DateOfBirth,
         GPA: aStudent.GPA,
         RECer: aStudent.RECer,
-      };
-
-      await postSingleStudentInClass({
-        data: classStudentData,
       });
 
       successNotify("Student added to class successfully");
       setOpen(false);
     } catch (error) {
-      console.error(error);
+      console.error("API Error: ", error);
       errorNotify("An error occurred while adding the student to class.");
     }
 

@@ -79,7 +79,7 @@ export const AddButton = ({ onClick, text }: ButtonProps) => (
 );
 
 export const AddButtonWithCircle = ({ onClick, text }: ButtonProps) => (
-  <Button className="btn btn--add-cirle" onClick={onClick}>
+  <Button className="btn btn--add-circle" onClick={onClick}>
     <FaPlusCircle size={Sizes.LgMedium} />
     <strong>{text}</strong>
   </Button>

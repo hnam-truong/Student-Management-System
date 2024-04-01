@@ -7,8 +7,6 @@
 import { create } from "zustand";
 import { getReservingConditions } from "../services/api/ApiCaller4";
 import { IReservingCondition } from "../interfaces/reserving-condition.interface";
-import { errorNotify } from "../components/atoms/Notify/Notify";
-import { generateErrorMessage } from "../utils/GenerateErrorMessage";
 // RESERVING REASONS
 interface IReservingConditionStore {
   reservingCondition: IReservingCondition[] | null;
@@ -27,9 +25,7 @@ const useReservingCondition = create<IReservingConditionStore>((set) => ({
       // Update reserving conditions when fetch successfully
       set((state) => ({ ...state, reservingCondition: data }));
     } catch (err) {
-      // Catch & log error
-      console.log("API Error:", err);
-      errorNotify(generateErrorMessage("get", "reserving condition"));
+      console.error(err);
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));

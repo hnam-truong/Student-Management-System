@@ -49,7 +49,8 @@ const StudentDetailAcademicInfo: React.FC<StudentDetailAcademicInfoProps> = ({
           children: [
             {
               key: "1",
-              name: studentDetail.ClassCode,
+              name:
+                studentDetail.ClassCode === "" ? "-" : studentDetail.ClassCode,
             },
             {
               key: "2",
@@ -57,7 +58,10 @@ const StudentDetailAcademicInfo: React.FC<StudentDetailAcademicInfoProps> = ({
             },
             {
               key: "3",
-              name: studentDetail.ClassStartDate,
+              name:
+                studentDetail.ClassStartDate === ""
+                  ? "-"
+                  : studentDetail.ClassStartDate,
             },
           ],
         },

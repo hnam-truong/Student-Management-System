@@ -36,7 +36,7 @@ export const useUserStore = create<IUserStore>((set) => ({
       const data = await getUsers();
       set((state) => ({ ...state, user: data }));
     } catch (error) {
-      errorNotify(generateErrorMessage("get", "list of user"));
+      console.error("API Error: ", error);
     } finally {
       set((state) => ({ ...state, loading: false }));
     }
@@ -84,7 +84,7 @@ export const useSingleUserStore = create<ISingleUserStore>((set) => ({
         users: [...state.users, ...(Array.isArray(data) ? data : [data])],
       }));
     } catch (error) {
-      errorNotify(generateErrorMessage("get", "user information"));
+      console.error("API Error: ", error);
     } finally {
       set((state) => ({ ...state, loading: false }));
     }

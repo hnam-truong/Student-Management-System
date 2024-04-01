@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { Button, Table } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
-import { IoSettingsOutline } from "react-icons/io5";
 import { MdMoreHoriz } from "react-icons/md";
 import { IReservedStudent } from "../../../interfaces/reserved-student.interface";
-import { generateFilters } from "../../../utils/GenerateFilter";
 import ModalReservation from "../../atoms/TerminalReservation/TerminalReservation";
 import { exportReserveStudentToExcel } from "../../../utils/ExportToExcel";
 import {
@@ -14,6 +12,7 @@ import {
 import Gender from "../../atoms/Gender/Gender";
 import FontSizes from "../../../constants/FontSizes";
 import StatusTag from "../../atoms/StatusTag/StatusTag";
+import ActionTitle from "../../atoms/ActionTitle/ActionTitle";
 
 interface ReservedTableProps {
   reservedStudent: IReservedStudent[] | null;
@@ -37,52 +36,6 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [selectedRows, setSelectedRows] = useState<IReservedStudent[]>([]);
   console.log(reservedStudent);
-  const filters: { [key: string]: ReturnType<typeof generateFilters> } = {
-    FullName: generateFilters(
-      (reservedStudent || []) as IReservedStudent[],
-      "FullName"
-    ),
-    StudentID: generateFilters(
-      (reservedStudent || []) as IReservedStudent[],
-      "StudentID"
-    ),
-    Gender: generateFilters(
-      (reservedStudent || []) as IReservedStudent[],
-      "Gender"
-    ),
-    DateOfBirth: generateFilters(
-      (reservedStudent || []) as IReservedStudent[],
-      "DateOfBirth"
-    ),
-    Hometown: generateFilters(
-      (reservedStudent || []) as IReservedStudent[],
-      "Hometown"
-    ),
-    Class: generateFilters(
-      (reservedStudent || []) as IReservedStudent[],
-      "Class"
-    ),
-    ReservedModule: generateFilters(
-      (reservedStudent || []) as IReservedStudent[],
-      "ReservedModule"
-    ),
-    Reason: generateFilters(
-      (reservedStudent || []) as IReservedStudent[],
-      "Reason"
-    ),
-    ReservedStartDate: generateFilters(
-      (reservedStudent || []) as IReservedStudent[],
-      "ReservedStartDate"
-    ),
-    ReservedEndDate: generateFilters(
-      (reservedStudent || []) as IReservedStudent[],
-      "ReservedEndDate"
-    ),
-    Status: generateFilters(
-      (reservedStudent || []) as IReservedStudent[],
-      "Status"
-    ),
-  };
 
   const columns: TableColumnsType<IReservedStudent> = [
     {
@@ -92,13 +45,6 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
       fixed: "left",
       sorter: (a: { FullName: string }, b: { FullName: string }) =>
         a.FullName.localeCompare(b.FullName),
-      filters: filters.FullName,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (
-        value: boolean | React.Key,
-        record: { FullName: string | string[] }
-      ) => record.FullName.indexOf(value as string) === 0,
     },
     {
       title: "Student code",
@@ -107,27 +53,11 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
       fixed: "left",
       sorter: (a: { StudentID: string }, b: { StudentID: string }) =>
         a.StudentID.localeCompare(b.StudentID),
-      filters: filters.StudentID,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (
-        value: boolean | React.Key,
-        record: { StudentID: string | string[] }
-      ) => record.StudentID.indexOf(value as string) === 0,
     },
     {
       title: "Gender",
       dataIndex: "Gender",
       key: "Gender",
-      filters: [
-        { text: "Male", value: true },
-        { text: "Female", value: false },
-      ],
-      filterMode: "tree",
-      onFilter: (
-        value: boolean | React.Key,
-        record: { Gender: boolean | React.Key }
-      ) => record.Gender === value,
       render: (_value, record) => (
         <Gender gender={record.Gender} customFontSize={FontSizes.XsLarger} />
       ),
@@ -141,50 +71,22 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
         a: { DateOfBirth: { toString: () => string } },
         b: { DateOfBirth: { toString: () => string } }
       ) => a.DateOfBirth.toString().localeCompare(b.DateOfBirth.toString()),
-      filters: filters.DateOfBirth,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (
-        value: boolean | React.Key,
-        record: { DateOfBirth: { toString: () => string | string[] } }
-      ) => record.DateOfBirth.toString().indexOf(value as string) === 0,
       render: (dateOfBirth: string) => dateOfBirth,
     },
     {
       title: "Hometown",
       dataIndex: "Hometown",
       key: "Hometown",
-      filters: filters.Hometown,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (
-        value: boolean | React.Key,
-        record: { Hometown: string | string[] }
-      ) => record.Hometown.indexOf(value as string) === 0,
     },
     {
       title: "Class",
       dataIndex: "Class",
       key: "Class",
-      filters: filters.Class,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (
-        value: boolean | React.Key,
-        record: { Class: string | string[] }
-      ) => record.Class.indexOf(value as string) === 0,
     },
     {
       title: "Reserve module",
       dataIndex: "ReservedModule",
       key: "ReservedModule",
-      filters: filters.ReservedModule,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (
-        value: boolean | React.Key,
-        record: { ReservedModule: string | string[] }
-      ) => record.ReservedModule.indexOf(value as string) === 0,
     },
     {
       title: "Reason",
@@ -192,34 +94,11 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
       key: "Reason",
       sorter: (a: { Reason: string }, b: { Reason: string }) =>
         a.Reason.localeCompare(b.Reason),
-      filters: filters.Reason,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (
-        value: boolean | React.Key,
-        record: { Reason: string | string[] }
-      ) => record.Reason.indexOf(value as string) === 0,
     },
     {
       title: "Reserve start date",
       dataIndex: "ReservedStartDate",
       key: "ReservedStartDate",
-      // {
-      //   title: "Birthday",
-      //   dataIndex: "DateOfBirth",
-      //   key: "DateOfBirth",
-      //   sorter: (
-      //     a: { DateOfBirth: { toString: () => string } },
-      //     b: { DateOfBirth: { toString: () => string } }
-      //   ) => a.DateOfBirth.toString().localeCompare(b.DateOfBirth.toString()),
-      //   filters: filters.DateOfBirth,
-      //   filterSearch: true,
-      //   filterMode: "tree",
-      //   onFilter: (
-      //     value: boolean | React.Key,
-      //     record: { DateOfBirth: { toString: () => string | string[] } }
-      //   ) => record.DateOfBirth.toString().indexOf(value as string) === 0,
-      // },
       sorter: (a: IReservedStudent, b: IReservedStudent) => {
         const dateA = a.ReservedStartDate
           ? new Date(a.ReservedStartDate)
@@ -230,13 +109,6 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
         return dateA.getTime() - dateB.getTime();
       },
 
-      filters: filters.ReservedStartDate,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (value: boolean | React.Key, record: IReservedStudent) => {
-        const stringValue = record.ReservedStartDate?.toString() || "";
-        return stringValue.includes(value as string);
-      },
       render: (reservedStartDate: string) => reservedStartDate,
     },
     {
@@ -247,13 +119,7 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
         (a?.ReservedEndDate?.toString() || "").localeCompare(
           b?.ReservedEndDate?.toString() || ""
         ),
-      filters: filters.ReservedEndDate,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (value: boolean | React.Key, record: IReservedStudent) => {
-        const stringValue = record.ReservedEndDate?.toString() || "";
-        return stringValue.includes(value as string);
-      },
+
       render: (ReservedEndDate: string) => ReservedEndDate,
     },
     {
@@ -262,23 +128,13 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
       key: "Status",
       sorter: (a: { Status: string }, b: { Status: string }) =>
         a.Status.localeCompare(b.Status),
-      filters: filters.Status,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (
-        value: boolean | React.Key,
-        record: { Status: string | string[] }
-      ) => record.Status.indexOf(value as string) === 0,
+
       render: (status: string) => (
         <StatusTag status={status} content={status} />
       ),
     },
     {
-      title: (
-        <div className="centered">
-          <IoSettingsOutline size={20} />
-        </div>
-      ),
+      title: <ActionTitle />,
       key: "operation",
       width: 80,
       render: (record: IReservedStudent) => (

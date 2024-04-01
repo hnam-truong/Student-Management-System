@@ -1,9 +1,9 @@
-// This function is handle get, post, put, del Mock API for emails
+// This function is handle get, post, put, del Mock API for dashboard and activities log
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { BASE_URL_7 } from "../../constants/Api";
+import { BASE_URL_8 } from "../../constants/Api";
 
 const api = axios.create({
-  baseURL: BASE_URL_7,
+  baseURL: BASE_URL_8,
   headers: {
     "Content-Type": "application/json",
   },

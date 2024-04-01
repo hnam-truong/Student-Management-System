@@ -39,7 +39,7 @@ describe("FormClassDetail Component", () => {
   test("renders ClassDetailInfo with correct props", () => {
     render(<ClassDetailInfo classDetail={classDetail} />);
     expect(screen.getByText("Duration")).toBeInTheDocument();
-    expect(screen.getByText("Location")).toBeInTheDocument();
+    expect(screen.getAllByText("Location")).toHaveLength(2);
     expect(screen.getByText("Created on")).toBeInTheDocument();
     expect(screen.getByText("Updated on")).toBeInTheDocument();
   });
@@ -47,7 +47,7 @@ describe("FormClassDetail Component", () => {
     render(<ClassDetailInfo classDetail={classDetail} />);
 
     expect(screen.getByText("Duration")).toBeInTheDocument();
-    expect(screen.getByText("Location")).toBeInTheDocument();
+    expect(screen.getAllByText("Location")).toHaveLength(2);
     expect(screen.getByText("Created on")).toBeInTheDocument();
     expect(screen.getByText("Updated on")).toBeInTheDocument();
   });

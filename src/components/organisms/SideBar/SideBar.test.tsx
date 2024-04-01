@@ -15,7 +15,7 @@ describe("Sidebar Component", () => {
       </MemoryRouter>
     );
     // Find element containing content "Class"
-    const scoresLink = await screen.findByText("Class");
+    const scoresLink = await screen.findByText("Class management");
     // eslint-disable-next-line testing-library/no-node-access
     const scoresLiEL = scoresLink.closest("li");
     // Click to navigate
@@ -34,14 +34,14 @@ describe("Sidebar Component", () => {
         <SideBar />
       </MemoryRouter>
     );
-    // Find element containing content "Students"
-    const studentsLink = await screen.findByText("Students");
+    // Find element containing content "Student management"
+    const studentsLink = await screen.findByText("Student management");
     // eslint-disable-next-line testing-library/no-node-access
     const studentLiEle = studentsLink.closest("li");
-    // Find element child have text "en.findByText("Students");
+    // Find element child have text "en.findByText("Student management");
     // Find element child before clicking
     const studentChildBefore = screen.queryByRole("menuitem", {
-      name: /Student List/i,
+      name: /Student list/i,
     });
     // Check element must not be shown
     expect(studentChildBefore).not.toBeInTheDocument();

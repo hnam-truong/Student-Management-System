@@ -1,5 +1,3 @@
-import { IModuleScore } from "./module-score";
-
 export interface IEmail {
   ID: string;
   Name: string;
@@ -15,5 +13,5 @@ export interface IEmail {
   Cc: string;
   DearName: boolean;
   Body: string;
-  ModuleScores: Array<IModuleScore>;
+  ModuleScores: Array<string>;
 }

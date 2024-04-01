@@ -1,7 +1,6 @@
 import React from "react";
 import { Table } from "antd";
 import type { TableColumnsType } from "antd";
-import { generateFilters } from "../../../utils/GenerateFilter";
 import CustomDropdown from "../../molecules/CustomDropdown/CustomDropdown";
 import { IUser } from "../../../interfaces/user.interface";
 import Gender from "../../atoms/Gender/Gender";
@@ -18,13 +17,6 @@ const UserTable: React.FC<UserTableProps> = ({
   loading,
   handleDataChange,
 }) => {
-  const filters: { [key: string]: ReturnType<typeof generateFilters> } = {
-    Name: generateFilters(user, "Name"),
-    DateOfBirth: generateFilters(user, "DateOfBirth"),
-    Email: generateFilters(user, "Email"),
-    Gender: generateFilters(user, "Gender"),
-    UserType: generateFilters(user, "UserType"),
-  };
   const columns: TableColumnsType<IUser> = [
     {
       title: "ID",
@@ -36,21 +28,11 @@ const UserTable: React.FC<UserTableProps> = ({
       dataIndex: "Name",
       key: "Name",
       sorter: (a, b) => a.Name.localeCompare(b.Name),
-      filters: filters.Name,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (value: boolean | React.Key, record) =>
-        record.Name.indexOf(value as string) === 0,
     },
     {
       title: "Email",
       dataIndex: "Email",
       key: "Email",
-      filters: filters.Email,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (value: boolean | React.Key, record) =>
-        record.Email.indexOf(value as string) === 0,
     },
     {
       title: "Date of Birth",
@@ -58,11 +40,6 @@ const UserTable: React.FC<UserTableProps> = ({
       key: "DateOfBirth",
       sorter: (a, b) =>
         a.DateOfBirth.toString().localeCompare(b.DateOfBirth.toString()),
-      filters: filters.DateOfBirth,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (value: boolean | React.Key, record) =>
-        record.DateOfBirth.toString().indexOf(value as string) === 0,
     },
     {
       title: "Gender",
@@ -73,21 +50,11 @@ const UserTable: React.FC<UserTableProps> = ({
           <Gender gender={gender} />
         </div>
       ),
-      filters: filters.Gender,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (value: boolean | React.Key, record) =>
-        record.Gender.toString().indexOf(value as string) === 0,
     },
     {
       title: "User Role",
       dataIndex: "UserType",
       key: "UserType",
-      filters: filters.UserType,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (value: boolean | React.Key, record) =>
-        record.UserType.toString().indexOf(value as string) === 0,
       render: (role) => (
         <div className="centered">
           <StatusTag status={role} content={role} />

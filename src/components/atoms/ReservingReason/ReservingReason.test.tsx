@@ -1,14 +1,33 @@
-import { render, screen, waitFor } from "@testing-library/react"; // Assuming you have a custom test-utils for rendering components
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import ReservingReason from "./ReservingReason";
+import { IReservingReason } from "../../../interfaces/reserving-reason.interface";
 
-const mockReservingReasons = [
-  { ID: "1", Name: "Reason 1" },
-  { ID: "2", Name: "Reason 2" },
+const mockReservingReasons: IReservingReason[] = [
+  {
+    Name: "Reserve to study again",
+    ID: "1",
+  },
+  {
+    Name: "Disadvantaged",
+    ID: "2",
+  },
+  {
+    Name: "Reserve to study Ielts",
+    ID: "3",
+  },
+  {
+    Name: "Not enough money for fee payment",
+    ID: "4",
+  },
+  {
+    Name: "Looking for new chance",
+    ID: "5",
+  },
 ];
 
 describe("ReservingReason Component", () => {
-  it("renders ReservingReason with default options", async () => {
+  test("renders ReservingReason with default options", async () => {
     render(
       <ReservingReason
         reservingReason={mockReservingReasons}
@@ -17,9 +36,16 @@ describe("ReservingReason Component", () => {
       />
     );
 
+    // Wait for the Select element to appear
+    await waitFor(() => {
+      expect(screen.getByRole("combobox")).toBeInTheDocument();
+    });
+
     // Check if the Select is rendered with the default placeholder
-    const selectElement = screen.getByPlaceholderText("Please select a reason");
-    expect(selectElement).toBeInTheDocument();
+    const placeholderElement = screen.getByText("Please select a reason", {
+      selector: ".ant-select-selection-placeholder",
+    });
+    expect(placeholderElement).toBeInTheDocument();
 
     // Check if all reserving reasons are present in the dropdown
     for (const reason of mockReservingReasons) {
@@ -34,7 +60,7 @@ describe("ReservingReason Component", () => {
     expect(textareaElement).not.toBeVisible();
   });
 
-  it('shows Other reason textarea when "Others" is selected', async () => {
+  test('shows Other reason textarea when "Others" is selected', async () => {
     render(
       <ReservingReason
         reservingReason={mockReservingReasons}
@@ -43,10 +69,17 @@ describe("ReservingReason Component", () => {
       />
     );
 
-    // Select the "Others" option
-    await userEvent.selectOptions(screen.getByLabelText("Reserving reason"), [
-      "Others",
-    ]);
+    // Open the dropdown
+    fireEvent.click(screen.getByRole("combobox"));
+
+    // Find the option containing "Others" text and click it
+    const othersOption = screen.getByRole("option", { name: "Others" });
+    fireEvent.click(othersOption);
+
+    // // Select the "Others" option
+    // await userEvent.selectOptions(screen.getByLabelText("Reserving reason"), [
+    //   "Others",
+    // ]);
 
     // Wait for the "Other reason" textarea to become visible
     await waitFor(() => {
@@ -55,7 +88,7 @@ describe("ReservingReason Component", () => {
     });
   });
 
-  it("hides Other reason textarea when a specific reason is selected", async () => {
+  test("hides Other reason textarea when a specific reason is selected", async () => {
     render(
       <ReservingReason
         reservingReason={mockReservingReasons}
@@ -75,6 +108,4 @@ describe("ReservingReason Component", () => {
       expect(textareaElement).not.toBeVisible();
     });
   });
-
-  // Add more tests if needed
 });

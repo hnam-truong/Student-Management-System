@@ -34,7 +34,7 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem("Dashboard", RouterEndpoints.Home, <MdOutlineSpaceDashboard />),
+  getItem("Dashboard", RouterEndpoints.Dashboard, <MdOutlineSpaceDashboard />),
   getItem("Student management", "students", <MdOutlineGroup />, [
     getItem("Student list", RouterEndpoints.StudentsManagement),
     getItem("Reserve list", RouterEndpoints.ReservedStudents),

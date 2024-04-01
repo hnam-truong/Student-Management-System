@@ -65,8 +65,8 @@ const StudentDetailGeneralInfo: React.FC<StudentDetailGeneralInfoProps> = ({
               key: "3",
               name: (
                 <StatusTag
-                  status={studentDetail?.Status}
-                  content={studentDetail?.Status}
+                  status={studentDetail?.AttendingStatus}
+                  content={studentDetail?.AttendingStatus}
                 />
               ),
             },
@@ -75,8 +75,6 @@ const StudentDetailGeneralInfo: React.FC<StudentDetailGeneralInfoProps> = ({
       ],
     },
   ];
-  // console.log(studentDetail);
-  // console.log(infos);
 
   return <DetailGeneralInfo infos={infos} />;
 };

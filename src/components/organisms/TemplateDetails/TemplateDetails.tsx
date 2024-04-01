@@ -77,22 +77,12 @@ const TemplateDetails: React.FC<TemplateDetailsProps> = ({
       {isEdit && (
         <div className="template-detail-col">
           <Col xs={24} sm={12}>
-            <Form.Item
-              {...formItemLayoutGrid}
-              label="Created by"
-              name="CreatedBy"
-              colon
-            >
+            <Form.Item {...formItemLayoutGrid} label="Created by" colon>
               {createdByData}
             </Form.Item>
           </Col>
           <Col xs={24} sm={12}>
-            <Form.Item
-              {...formItemLayoutGrid}
-              label="Created on"
-              name="CreatedOn"
-              colon
-            >
+            <Form.Item {...formItemLayoutGrid} label="Created on" colon>
               {createdOnData}
             </Form.Item>
           </Col>

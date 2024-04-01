@@ -8,11 +8,13 @@ import { useStudentClassStore } from "../store/StudentClassStore";
 import { useUserStore } from "../store/UserStore";
 
 export const ImportFromExcel = () => {
-  const { postStudent } = useStudentStore();
-  const { postReservedStudent } = useReservedStudentStore();
-  const { postScore } = useScoreStore();
-  const { postStudentClass } = useStudentClassStore();
-  const { postUser } = useUserStore();
+  const { postStudent, loading: studentLoading } = useStudentStore();
+  const { postReservedStudent, loading: reservedStudentLoading } =
+    useReservedStudentStore();
+  const { postScore, loading: scoreLoading } = useScoreStore();
+  const { postStudentClass, loading: studentClassLoading } =
+    useStudentClassStore();
+  const { postUser, loading: userLoading } = useUserStore();
 
   const readExcelFile = (file: any, setExcelFile: any) => {
     const reader = new FileReader();
@@ -107,5 +109,11 @@ export const ImportFromExcel = () => {
     handleExcelStudentScore,
     handleExcelStudentClass,
     handleExcelUser,
+    loading:
+      studentLoading ||
+      reservedStudentLoading ||
+      scoreLoading ||
+      studentClassLoading ||
+      userLoading,
   };
 };

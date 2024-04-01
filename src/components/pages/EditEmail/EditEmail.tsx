@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { Form } from "antd";
 import { useParams } from "react-router";
@@ -6,7 +5,6 @@ import { MdOutlineEdit } from "react-icons/md";
 import EmailForm from "../../templates/EmailForm/EmailForm";
 import { useSingleEmailStore } from "../../../store/EmailStore";
 import { IEmail } from "../../../interfaces/email.interface";
-import { getCurrentTime } from "../../../utils/TakeCurrentTime";
 
 const EditEmail: React.FC = () => {
   const [form] = Form.useForm();
@@ -16,17 +14,25 @@ const EditEmail: React.FC = () => {
   const [bodyValue, setBodyValue] = useState("");
   const [createdByData, setCreatedByData] = useState("");
   const [createdOnData, setCreatedOnData] = useState("");
+  const [moduleScores, setModuleScores] = useState<string[]>([]);
 
   const updateEmailFormValues = () => {
-    const { ...rest } = aEmail || {};
+    const { ...value } = aEmail || {};
     form.setFieldsValue({
-      ...rest,
+      ...value,
     });
   };
 
   useEffect(() => {
     getEmailByID(id ?? "");
   }, [id, getEmailByID]);
+
+  // Set initial module scores
+  let initialModuleScores;
+  if (aEmail) {
+    const { ModuleScores } = aEmail;
+    initialModuleScores = ModuleScores;
+  }
 
   useEffect(() => {
     // save data to body
@@ -38,7 +44,6 @@ const EditEmail: React.FC = () => {
     }
     // Update form values when aEmail changes
     updateEmailFormValues();
-    console.log(form);
   }, [aEmail, form]);
 
   // handle data input
@@ -47,12 +52,16 @@ const EditEmail: React.FC = () => {
     form.setFieldsValue({ Body: value });
   };
 
+  // Handle module scores to set to ModuleScores[]
+  const onModuleScoresChange = (scores: string[]) => {
+    setModuleScores(scores);
+  };
+
   // convert form data
   const onFinish = (values: IEmail) => {
     const emailData: IEmail = {
       ...values,
-      CreatedOn: getCurrentTime(),
-      CreatedBy: "User",
+      ModuleScores: moduleScores,
     };
     putSingleEmail(emailData, id || "");
   };
@@ -70,6 +79,8 @@ const EditEmail: React.FC = () => {
         isEdit
         createdByData={createdByData}
         createdOnData={createdOnData}
+        moduleScores={initialModuleScores}
+        onModuleScoresChange={onModuleScoresChange}
         submitText={
           <div className="centered">
             <MdOutlineEdit />

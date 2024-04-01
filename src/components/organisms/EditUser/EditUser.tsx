@@ -1,10 +1,9 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 /** This function component is Modal contain Form with response for add information for user
  * Usage:
  * <EditUser id={userId} handleDataChange={handleDataChange}/>
  */
-import { Form, Modal, Spin } from "antd";
-import React, { useEffect, useState } from "react";
+import { Modal, Spin } from "antd";
+import React, { useState } from "react";
 import { VscError } from "react-icons/vsc";
 import dayjs from "dayjs";
 import { CommonButton } from "../../atoms/CustomButton/CustomButton";
@@ -22,36 +21,33 @@ interface EditUserProps {
 }
 
 const EditUser: React.FC<EditUserProps> = ({ id, handleDataChange }) => {
-  const [form] = Form.useForm();
   // USE STATE
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isReset, setIsReset] = useState(false);
 
   // USE STORES
   const { aUser, getUserByID, putSingleUser, loading } = useSingleUserStore();
 
-  const updateUserFormValues = () => {
-    form.setFieldsValue({
-      ID: aUser?.ID,
-      Name: aUser?.Name,
-      Gender: aUser?.Gender,
-      Email: aUser?.Email,
-      DateOfBirth: dayjs(aUser?.DateOfBirth, "DD/MM/YYYY"),
-      Phone: aUser?.Phone,
-      Status: aUser?.Status,
-      UserType: aUser?.UserType,
-      ImageUrl: aUser?.ImageUrl,
-    });
+  const initialValues = {
+    ID: aUser?.ID,
+    Name: aUser?.Name,
+    Gender: aUser?.Gender,
+    Email: aUser?.Email,
+    DateOfBirth: dayjs(aUser?.DateOfBirth, "DD/MM/YYYY"),
+    Phone: aUser?.Phone,
+    Status: aUser?.Status,
+    UserType: aUser?.UserType,
+    ImageUrl: aUser?.ImageUrl,
   };
 
-  useEffect(() => {
-    // Update form values when aUser changes
-    updateUserFormValues();
-  }, [aUser, form]);
+  // const updateUserFormValues = () => {
+  //   form.setFieldsValue(initialValues);
+  // };
 
-  // Reset form values
-  const resetFormValue = () => {
-    form.resetFields();
-  };
+  // useEffect(() => {
+  //   // Update form values when aUser changes
+  //   updateUserFormValues();
+  // }, [aUser]);
 
   // Functions handles modals and form reset fields
   const showModal = () => {
@@ -61,12 +57,12 @@ const EditUser: React.FC<EditUserProps> = ({ id, handleDataChange }) => {
 
   const handleOk = () => {
     handleDataChange();
-    resetFormValue();
+    setIsReset(true);
     setIsModalOpen(false);
   };
 
   const handleCancel = () => {
-    resetFormValue();
+    setIsReset(true);
     setIsModalOpen(false);
   };
 
@@ -120,11 +116,13 @@ const EditUser: React.FC<EditUserProps> = ({ id, handleDataChange }) => {
           <div className="model-reserve-content">
             <div className="reserving modal-content-custom">
               <UserForm
-                form={form}
                 onFinish={onFinish}
                 formName={`EditUser_${id}`}
                 isEdit
                 isAdmin={aUser?.UserType === "Admin"}
+                isReset={isReset}
+                setIsReset={setIsReset}
+                initialValues={initialValues}
               />
             </div>
           </div>

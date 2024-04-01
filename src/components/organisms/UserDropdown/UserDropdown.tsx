@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { Dropdown, MenuProps } from "antd";
 import { Link } from "react-router-dom";
 import { FaPhoneVolume } from "react-icons/fa6";
@@ -14,16 +14,16 @@ interface UserDropdownProps {
 }
 const UserDropdown: React.FC<UserDropdownProps> = ({ user }) => {
   const [openRemind, setOpenRemind] = useState<boolean>(false);
-  const handleOpenRemind = () => {
+  const handleOpenRemind = useCallback(() => {
     setOpenRemind(true);
-  };
-  const handleCloseRemind = () => {
+  }, []);
+  const handleCloseRemind = useCallback(() => {
     setOpenRemind(false);
-  };
-  const handleRemind = () => {
-    handleOpenRemind();
-    // closeFn();
-  };
+  }, []);
+  // const handleRemind = () => {
+  //   handleOpenRemind();
+  //   // closeFn();
+  // };
   console.log(openRemind);
   const items: MenuProps["items"] = [
     {
@@ -48,17 +48,19 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ user }) => {
       key: "3",
       label: (
         <div>
-          <CommonButton onClick={handleRemind} text="Send Email" />
+          <CommonButton onClick={handleOpenRemind} text="Send Email" />
 
-          <EmailTemplate
-            open={openRemind}
-            handleOpenRemind={handleOpenRemind}
-            handleCloseRemind={handleCloseRemind}
-            data={user}
-            modalTitle="Select email template"
-            type="Trainer"
-            isIndividual
-          />
+          {openRemind && (
+            <EmailTemplate
+              open={openRemind}
+              handleOpenRemind={handleOpenRemind}
+              handleCloseRemind={handleCloseRemind}
+              data={user}
+              modalTitle="Select email template"
+              type="Trainer"
+              isIndividual
+            />
+          )}
         </div>
       ),
       icon: <IoSend />,

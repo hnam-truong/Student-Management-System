@@ -60,7 +60,6 @@ const mockClassDetail: IClass[] = [
     ApproveDate: "20/02/2023",
     ClassID: "1",
   },
-  // Add more class instances if needed
 ];
 
 describe("FormAttendeeDetail Component", () => {
@@ -76,7 +75,7 @@ describe("FormAttendeeDetail Component", () => {
 
     // Assertions for the initial render
     const generalInfoTab = screen.getByText("General information");
-    const academicInfoTab = screen.getByText("Academic infomation");
+    const academicInfoTab = screen.getByText("Academic information");
     const classInfoTitle = screen.getByText("Class information");
     const reservingTitle = screen.getByText("Reserving");
     const scoreTitle = screen.getByText("Score in all class information");
@@ -87,10 +86,11 @@ describe("FormAttendeeDetail Component", () => {
     expect(reservingTitle).toBeInTheDocument();
     expect(scoreTitle).toBeInTheDocument();
 
-    // Add more specific assertions based on your component content
     const studentName = screen.getByText("John Doe");
     const studentEmail = screen.getByText("john.doe@example.com");
-    const classLink = screen.getByRole("link", { name: /Math 101/i });
+    const classLink = screen.getByRole("link", {
+      name: "Fresher Developer Legacy Security Developer Closed 1 01/03/2023 10/04/2023",
+    });
 
     expect(studentName).toBeInTheDocument();
     expect(studentEmail).toBeInTheDocument();

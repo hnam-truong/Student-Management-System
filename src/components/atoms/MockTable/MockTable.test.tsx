@@ -6,27 +6,27 @@ describe("MockTable Component", () => {
   const mockScore: IScore = {
     ID: "123",
     FullName: "John Doe",
-    Account: "johndoe",
-    ASM: 85,
-    HTML: 92,
-    CSS: 88,
-    Quiz3: 75,
-    Quiz4: 80,
-    Quiz5: 85,
-    Quiz6: 90,
-    AvgQuiz: 83,
-    Practice1: 95,
-    Practice2: 88,
-    Practice3: 92,
-    AvgASM: 91,
-    QuizFinal: 88,
-    Audit: 90,
-    PracticeFinal: 94,
-    FinalModule: 90,
+    Account: "johnDoe",
+    ASM: 8.5,
+    HTML: 9.2,
+    CSS: 8.8,
+    Quiz3: 7.5,
+    Quiz4: 8.0,
+    Quiz5: 8.5,
+    Quiz6: 9.0,
+    AvgQuiz: 8.3,
+    Practice1: 9.5,
+    Practice2: 8.8,
+    Practice3: 9.2,
+    AvgASM: 9.1,
+    QuizFinal: 8.8,
+    Audit: 9.0,
+    PracticeFinal: 9.4,
+    FinalModule: 9.0,
     GPAModule: 3.8,
     LevelModule: 2,
-    Mock: 85,
-    MockFinalModule: 92,
+    Mock: 8.5,
+    MockFinalModule: 9.2,
     MockGPAModule: 3.8,
     MockLevelModule: 3,
     Status: true,
@@ -36,25 +36,46 @@ describe("MockTable Component", () => {
   test("should render correctly", () => {
     render(<MockTable studentScore={mockScore} />);
 
-    // Check if the card title is rendered correctly
-    // const cardTitle = screen.getByText("Mock");
-    // expect(cardTitle).toBeInTheDocument();
-
     // Check if table headers are rendered correctly
-    const tableHeaders = Object.keys(mockScore).filter(
-      (key) => key !== "ID" && key !== "FullName" && key !== "Account"
-    );
-    tableHeaders.forEach((header) => {
-      const columnHeader = screen.getByText(header);
-      expect(columnHeader).toBeInTheDocument();
+    const mockTableHeaders = ["Mock", "Final", "GPA", "Level"];
+
+    mockTableHeaders.forEach((header) => {
+      const columnHeaders = screen.getAllByText(header);
+      columnHeaders.forEach((columnHeader) => {
+        expect(columnHeader).toBeInTheDocument();
+      });
     });
 
     // Check if student score data is rendered correctly
-    Object.entries(mockScore).forEach(([key, value]) => {
-      if (key !== "ID" && key !== "FullName" && key !== "Account") {
-        const dataCell = screen.getByText(value.toString());
-        expect(dataCell).toBeInTheDocument();
-      }
+    const {
+      ID,
+      FullName,
+      Account,
+      ASM,
+      HTML,
+      CSS,
+      Quiz3,
+      Quiz4,
+      Quiz5,
+      Quiz6,
+      AvgQuiz,
+      Practice1,
+      Practice2,
+      Practice3,
+      AvgASM,
+      QuizFinal,
+      Audit,
+      PracticeFinal,
+      FinalModule,
+      GPAModule,
+      LevelModule,
+      MockStatus,
+      Status,
+      ...specificMockScore
+    } = mockScore; // get Mock Scores
+    Object.values(specificMockScore).forEach((value) => {
+      const dataCell = screen.getByText(value.toString());
+      expect(dataCell).toBeInTheDocument();
     });
   });
 });

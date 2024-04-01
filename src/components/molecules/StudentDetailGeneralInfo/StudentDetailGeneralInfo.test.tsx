@@ -1,29 +1,30 @@
 import { render, screen } from "@testing-library/react";
 import StudentDetailGeneralInfo from "./StudentDetailGeneralInfo";
+import { IStudent } from "../../../interfaces/student.interface";
 
 describe("StudentDetailGeneralInfo component", () => {
-  const mockStudentDetail = {
-    Name: "Jerald Murazik",
-    Gender: false,
-    DateOfBirth: "1963-03-09",
-    Status: "Status 12",
-    Phone: "(928) 912-6561 x79342",
-    Email: "Quincy_Gulgowski@yahoo.com",
-    PermanentResidence: "Suite 425",
-    Location: "070",
-    University: "University 12",
-    Major: "Global Identity Specialist",
-    RECer: "Stanley O'Conner IV",
-    GPA: 39,
-    GraduationTime: "2064-10-02",
-    ClassCode: "ClassCode 12",
-    ClassStartDate: "2050-02-07",
-    ID: "12",
-    ImageUrl:
-      "https://th.bing.com/th/id/OIP.iAhcp6m_91O-ClK79h8EQQHaFj?rs=1&pid=ImgDetMain",
-    Class: "Class 12",
-    StudentClasses: [],
+  const mockStudentDetail: IStudent = {
+    Name: "Chu Thiện Phước",
+    Gender: true,
+    DateOfBirth: "01/02/2003",
+    Status: "Active",
+    Phone: "0934876321",
+    Email: "chuthienphuoc12@gmail.com",
+    PermanentResidence: "Hồ Chí Minh",
+    Location: "Hồ Chí Minh",
+    University: "Đại học FPT",
+    Major: "Legacy Security Developer",
+    RECer: "Giang Việt Phương",
+    GPA: 6.2,
+    GraduationTime: "01/02/2025",
+    ClassCode: "HCM_25_FR_LSD_01",
+    ClassStartDate: "01/02/2024",
+    Class: "Fresher Developer Legacy Security Developer",
+    StudentClasses: ["2", "4", "9"],
     AttendingStatus: "In class",
+    ID: "1",
+    ImageUrl:
+      "https://i.pinimg.com/736x/7c/75/dd/7c75dd01ec75f1998b9b14af6227851c.jpg",
   };
 
   test("Renders general information correctly", () => {
@@ -41,7 +42,7 @@ describe("StudentDetailGeneralInfo component", () => {
     expect(screen.getByText("Status")).toBeInTheDocument();
     expect(screen.getByText("Suite 425")).toBeInTheDocument();
     expect(screen.getByText("070")).toBeInTheDocument();
-    expect(screen.getByText("Status 12")).toBeInTheDocument();
+    expect(screen.getByText("Active")).toBeInTheDocument();
   });
 
   test("Renders strong tags correctly", () => {
@@ -65,6 +66,6 @@ describe("StudentDetailGeneralInfo component", () => {
     expect(screen.getByText("1963-03-09")).toBeInTheDocument();
     expect(screen.getByText("Suite 425")).toBeInTheDocument();
     expect(screen.getByText("070")).toBeInTheDocument();
-    expect(screen.getByText("Status 12")).toBeInTheDocument();
+    expect(screen.getByText("Active")).toBeInTheDocument();
   });
 });

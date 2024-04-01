@@ -2,15 +2,14 @@
 import React, { useEffect, useState } from "react";
 import { Table } from "antd";
 import type { TableColumnsType, TableProps } from "antd";
-import { IoSettingsOutline } from "react-icons/io5";
 import { IStudent } from "../../../interfaces/student.interface";
-import { generateFilters } from "../../../utils/GenerateFilter";
 import CustomDropdown from "../../molecules/CustomDropdown/CustomDropdown";
 import {
   getDataFromCache,
   storeDataToCache,
 } from "../../../utils/StoreDataToCache";
 import { exportStudentToExcel } from "../../../utils/ExportToExcel";
+import ActionTitle from "../../atoms/ActionTitle/ActionTitle";
 
 interface StudentTableProps {
   student: IStudent[];
@@ -31,14 +30,6 @@ const StudentTable: React.FC<StudentTableProps> = ({
 }) => {
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [selectedRows, setSelectedRows] = useState<IStudent[]>([]);
-  const filters: { [key: string]: ReturnType<typeof generateFilters> } = {
-    Name: generateFilters(student, "Name"),
-    DateOfBirth: generateFilters(student, "DateOfBirth"),
-    Email: generateFilters(student, "Email"),
-    Phone: generateFilters(student, "Phone"),
-    GPA: generateFilters(student, "GPA"),
-    RECer: generateFilters(student, "RECer"),
-  };
 
   const columns: TableColumnsType<IStudent> = [
     {
@@ -46,11 +37,6 @@ const StudentTable: React.FC<StudentTableProps> = ({
       dataIndex: "Name",
       key: "Name",
       sorter: (a, b) => a.Name.localeCompare(b.Name),
-      filters: filters.Name,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (value: boolean | React.Key, record) =>
-        record.Name.indexOf(value as string) === 0,
     },
     {
       title: "Date of Birth",
@@ -58,61 +44,34 @@ const StudentTable: React.FC<StudentTableProps> = ({
       key: "DateOfBirth",
       sorter: (a, b) =>
         a.DateOfBirth.toString().localeCompare(b.DateOfBirth.toString()),
-      filters: filters.DateOfBirth,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (value: boolean | React.Key, record) =>
-        record.DateOfBirth.toString().indexOf(value as string) === 0,
       render: (dateOfBirth: string) => dateOfBirth,
     },
     {
       title: "Email",
       dataIndex: "Email",
       key: "Email",
-      filters: filters.Email,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (value: boolean | React.Key, record) =>
-        record.Email.indexOf(value as string) === 0,
+      sorter: (a, b) => a.Email.localeCompare(b.Email),
     },
     {
       title: "Phone",
       dataIndex: "Phone",
       key: "Phone",
       fixed: "left",
-      filters: filters.Phone,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (value: boolean | React.Key, record) =>
-        record.Phone.indexOf(value as string) === 0,
     },
     {
       title: "GPA",
       dataIndex: "GPA",
       key: "GPA",
       sorter: (a, b) => a.GPA - b.GPA,
-      filters: filters.GPA,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (value: boolean | React.Key, record) => record.GPA === value,
     },
     {
       title: "RECer",
       dataIndex: "RECer",
       key: "RECer",
       sorter: (a, b) => a.RECer.localeCompare(b.RECer),
-      filters: filters.RECer,
-      filterSearch: true,
-      filterMode: "tree",
-      onFilter: (value: boolean | React.Key, record) =>
-        record.RECer.indexOf(value as string) === 0,
     },
     {
-      title: (
-        <div className="centered">
-          <IoSettingsOutline size={20} />
-        </div>
-      ),
+      title: <ActionTitle />,
       key: "operation",
       width: 80,
       render: (_value, record) => (

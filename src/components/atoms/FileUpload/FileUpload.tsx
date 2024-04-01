@@ -3,7 +3,7 @@
 import type { UploadProps } from "antd";
 import { Button, Upload } from "antd";
 import { FiInbox } from "react-icons/fi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ImportFromExcel } from "../../../utils/ImportFromExcel";
 import { errorNotify, successNotify } from "../Notify/Notify";
 import "./FileUpload.scss";
@@ -14,9 +14,14 @@ interface FileUploadProps {
 
 const FileUpload = ({ excelUpload }: FileUploadProps) => {
   const [uploadedData, setUploadedData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const { Dragger } = Upload;
-  const { readExcelFile } = ImportFromExcel();
+  const { readExcelFile, loading: excelImportLoading } = ImportFromExcel();
+
+  useEffect(() => {
+    setLoading(excelImportLoading);
+  }, [excelImportLoading]);
 
   const props: UploadProps = {
     name: "file",
@@ -26,9 +31,6 @@ const FileUpload = ({ excelUpload }: FileUploadProps) => {
     action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
     onChange(info) {
       const { status } = info.file;
-      // if (status !== "uploading") {
-      //   console.log(info.file, info.fileList);
-      // }
       if (status === "done") {
         successNotify(`${info.file.name} file uploaded successfully.`);
       } else if (status === "error") {
@@ -63,7 +65,7 @@ const FileUpload = ({ excelUpload }: FileUploadProps) => {
         onClick={() => excelUpload(uploadedData)}
         className="upload-btn"
         type="primary"
-        // loading={}
+        loading={loading}
       >
         Upload File
       </Button>

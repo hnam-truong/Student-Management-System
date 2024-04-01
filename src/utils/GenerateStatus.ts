@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 export const getCourseStatus = (status: boolean | undefined): string => {
   if (status === true) {
     return "Passed";

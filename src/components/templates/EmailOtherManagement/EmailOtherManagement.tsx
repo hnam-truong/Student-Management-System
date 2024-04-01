@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useEffect, useState } from "react";
 import EmailTable from "../EmailTable/EmailTable";
 import TableHeader from "../../organisms/TableHeader/TableHeader";

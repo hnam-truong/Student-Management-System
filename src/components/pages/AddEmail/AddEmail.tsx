@@ -10,12 +10,12 @@ const AddEmail: React.FC = () => {
   const [form] = Form.useForm();
   const { postSingleEmail, loading } = useSingleEmailStore();
   const [bodyValue, setBodyValue] = useState("");
+  const [moduleScores, setModuleScores] = useState<string[]>([]);
 
   // reset field after done
   const resetFormValue = () => {
     form.resetFields();
   };
-
   const handleOk = () => {
     resetFormValue();
     setBodyValue("");
@@ -27,10 +27,16 @@ const AddEmail: React.FC = () => {
     form.setFieldsValue({ Body: value });
   };
 
+  // Handle module scores to set to ModuleScores[]
+  const onModuleScoresChange = (scores: string[]) => {
+    setModuleScores(scores);
+  };
+
   // convert form data
   const onFinish = async (values: IEmail) => {
     const emailData: IEmail = {
       ...values,
+      ModuleScores: moduleScores,
       CreatedOn: getCurrentTime(),
       CreatedBy: "User",
     };
@@ -48,6 +54,8 @@ const AddEmail: React.FC = () => {
         loading={loading}
         bodyValue={bodyValue}
         onChangeBodyValue={onChangeBodyValue}
+        moduleScores={moduleScores}
+        onModuleScoresChange={onModuleScoresChange}
         submitText={
           <div className="centered">
             <MdCloudUpload />

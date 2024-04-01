@@ -38,9 +38,7 @@ export const useStudentStore = create<IStudentStore>((set) => ({
       // Update student when fetch successfully
       set((state) => ({ ...state, student: data }));
     } catch (err) {
-      // Catch & log error
-      console.log("API Error:", err);
-      errorNotify(generateErrorMessage("get", "list of student"));
+      console.error(err);
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));
@@ -90,8 +88,7 @@ export const useSingleStudentStore = create<ISingleStudentStore>((set) => ({
       set((state) => ({ ...state, aStudent: validData }));
     } catch (err) {
       // Catch & log error
-      console.log("API Error:", err);
-      errorNotify(generateErrorMessage("get", "student information"));
+      console.error(err);
 
       set((state) => ({ ...state, aStudent: null }));
     } finally {

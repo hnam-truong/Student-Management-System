@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable import/prefer-default-export */
-import { IActivityLog } from "../interfaces/activity-log.inteface";
+import { IActivityLog } from "../interfaces/activity-log.interface";
 import { IStudentClass } from "../interfaces/student-class.interface";
 import { IClass } from "../interfaces/class.interface";
 import { IEmail } from "../interfaces/email.interface";

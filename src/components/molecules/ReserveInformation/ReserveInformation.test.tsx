@@ -65,10 +65,10 @@ describe("ReserveInformation component", () => {
     expect(screen.getByText("Student Score")).toBeInTheDocument();
 
     // Check if reserving information section is rendered
-    expect(screen.getByText("Reserving informations")).toBeInTheDocument();
+    expect(screen.getByText("Reserving information")).toBeInTheDocument();
 
     // Check if re-class possibilities section is rendered
-    expect(screen.getByText("Re-class posibilities")).toBeInTheDocument();
+    expect(screen.getByText("Re-class possibilities")).toBeInTheDocument();
   });
 
   test("Renders ReserveInformation component with no classes available", async () => {

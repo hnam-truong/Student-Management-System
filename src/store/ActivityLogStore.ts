@@ -1,9 +1,9 @@
 import { create } from "zustand";
-import { IActivityLog } from "../interfaces/activity-log.inteface";
+import { IActivityLog } from "../interfaces/activity-log.interface";
 import {
   getActivityLogsByStudentID,
   postAnActivityLog,
-} from "../services/api/ApiCaller8";
+} from "../services/api/ApiCaller7";
 import { errorNotify, successNotify } from "../components/atoms/Notify/Notify";
 import {
   generateErrorMessage,
@@ -25,7 +25,6 @@ export const useActivityLogStore = create<IActivityLogStore>((set) => ({
       set((state) => ({ ...state, activityLogs: data }));
     } catch (err) {
       console.log("API Error:", err);
-      errorNotify(generateErrorMessage("get", "list of activity logs"));
     } finally {
       set((state) => ({ ...state, loading: false }));
     }

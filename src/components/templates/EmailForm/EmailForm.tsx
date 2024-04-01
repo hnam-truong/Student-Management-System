@@ -23,11 +23,14 @@ interface EmailFormProps {
   isEdit?: boolean;
   createdByData?: string;
   createdOnData?: string;
+  moduleScores?: string[];
+  onModuleScoresChange: (ModuleScores: string[]) => void;
 }
 const emailFormDefaultProps: Partial<EmailFormProps> = {
   isEdit: false,
   createdByData: "",
   createdOnData: "",
+  moduleScores: [],
 };
 
 const EmailForm: React.FC<EmailFormProps> = ({
@@ -42,14 +45,18 @@ const EmailForm: React.FC<EmailFormProps> = ({
   isEdit,
   createdByData,
   createdOnData,
+  moduleScores,
+  onModuleScoresChange,
 }) => {
   const navigate = useNavigate();
   const handleCancel = () => {
     navigate("/emails");
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [selectedCategory, setSelectedCategory] = useState<string>("");
 
+  // Handle check category to show module score
   const handleCategoryChange = (value: string) => {
     setSelectedCategory(value);
   };
@@ -86,9 +93,12 @@ const EmailForm: React.FC<EmailFormProps> = ({
             onChangeBodyValue={onChangeBodyValue}
           />
         </Card>
-        {selectedCategory === "Reserve" && (
+        {selectedCategory !== "" && (
           <Card hoverable className="email-form-card">
-            <TemplateScore />
+            <TemplateScore
+              moduleScores={moduleScores || []}
+              onModuleScoresChange={onModuleScoresChange}
+            />
           </Card>
         )}
 

@@ -38,9 +38,7 @@ export const useReservedStudentStore = create<IReservedStudentStore>((set) => ({
       // Update reserved students when fetch successfully
       set((state) => ({ ...state, reservedStudent: data }));
     } catch (err) {
-      // Catch & log error
-      console.log("API Error:", err);
-      errorNotify(generateErrorMessage("get", "list of reserved student"));
+      console.error(err);
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));
@@ -92,11 +90,7 @@ export const useReservedStudentSingleStore =
         // Update reserved student when fetch successfully
         set((state) => ({ ...state, aReservedStudent: validData }));
       } catch (err) {
-        // Catch & log error
-        console.log("API Error:", err);
-        errorNotify(
-          generateErrorMessage("get", "reserved student information")
-        );
+        console.error(err);
       } finally {
         // Set loading false
         set((state) => ({ ...state, loading: false }));

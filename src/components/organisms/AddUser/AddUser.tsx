@@ -2,7 +2,7 @@
  * Usage:
  * <AddUser/>
  */
-import { Form, Modal } from "antd";
+import { Modal } from "antd";
 import React, { useState } from "react";
 import { VscError } from "react-icons/vsc";
 import { AddButton } from "../../atoms/CustomButton/CustomButton";
@@ -19,14 +19,14 @@ interface AddUserProps {
 }
 
 const AddUser: React.FC<AddUserProps> = ({ handleDataChange }) => {
-  const [form] = Form.useForm();
   // USE STATE
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isReset, setIsReset] = useState(false);
 
   // USE STORES
   const { postSingleUser } = useSingleUserStore();
 
-  const initialValues = {
+  const initialValues: IUser = {
     ID: "",
     Name: "",
     Gender: true,
@@ -38,11 +38,6 @@ const AddUser: React.FC<AddUserProps> = ({ handleDataChange }) => {
     ImageUrl: "",
   };
 
-  // Reset form values
-  const resetFormValue = () => {
-    form.resetFields();
-  };
-
   // Functions handles modals and form reset fields
   const showModal = () => {
     setIsModalOpen(true);
@@ -51,12 +46,12 @@ const AddUser: React.FC<AddUserProps> = ({ handleDataChange }) => {
   const handleOk = () => {
     setIsModalOpen(false);
     handleDataChange();
-    resetFormValue();
+    setIsReset(true);
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
-    resetFormValue();
+    setIsReset(true);
   };
 
   // Function handles form submit, get value and send this to api,
@@ -108,7 +103,8 @@ const AddUser: React.FC<AddUserProps> = ({ handleDataChange }) => {
         <div className="model-reserve-content">
           <div className="reserving modal-content-custom">
             <UserForm
-              form={form}
+              setIsReset={setIsReset}
+              isReset={isReset}
               onFinish={onFinish}
               initialValues={initialValues}
               formName="AddUser"

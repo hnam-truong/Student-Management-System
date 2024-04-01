@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import EmailTable from "../EmailTable/EmailTable";
 import TableHeader from "../../organisms/TableHeader/TableHeader";

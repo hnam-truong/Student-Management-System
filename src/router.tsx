@@ -1,6 +1,5 @@
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import Layout from "./components/templates/Layout/Layout";
-import Home from "./components/pages/Home/Home";
 import Login from "./components/pages/Login/Login";
 import NotFound from "./components/pages/NotFound/NotFound";
 import Dashboard from "./components/pages/Dashboard/Dashboard";
@@ -33,16 +32,10 @@ const router = createBrowserRouter([
     path: "/",
     element: <Layout />,
     children: [
-      // HOME PAGE
       {
         index: true,
-        element: <Navigate to={RouterEndpoints.Home} />,
+        element: <Navigate to={RouterEndpoints.Dashboard} />,
       },
-      {
-        path: RouterEndpoints.Home,
-        element: <Home />,
-      },
-
       // DASHBOARD
       {
         path: RouterEndpoints.Dashboard,

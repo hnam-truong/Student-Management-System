@@ -1,6 +1,6 @@
 // AddStudentUI.tsx
 import React, { useEffect, useState } from "react";
-import { Form, FormInstance } from "antd";
+import { Form } from "antd";
 import { useNavigate } from "react-router-dom";
 import GeneralInfo from "../../atoms/GeneralInfo/GeneralInfo";
 import OtherInfo from "../../atoms/OtherInfo/OtherInfo";
@@ -14,7 +14,6 @@ import TerminalReservation from "../../atoms/TerminalReservation/TerminalReserva
 import { useReservedStudentSingleStore } from "../../../store/ReservedStudentStore";
 
 interface StudentFormProps {
-  form: FormInstance<IStudent>;
   onFinish: (values: IStudent) => void;
   initialValues?: object;
   formName: string;
@@ -24,7 +23,6 @@ interface StudentFormProps {
   onAttendingStatusChange: () => void;
 }
 const StudentForm: React.FC<StudentFormProps> = ({
-  form,
   onFinish,
   initialValues,
   formName,
@@ -33,12 +31,13 @@ const StudentForm: React.FC<StudentFormProps> = ({
   isAbleAdd,
   onAttendingStatusChange,
 }) => {
-  console.log(data);
+  const [form] = Form.useForm();
   const [student, setStudent] = useState<IStudent | null>(null);
   const navigate = useNavigate();
   const [isShow, setIsShow] = useState<boolean>(false);
   const { fetchReservedStudentByID, aReservedStudent } =
     useReservedStudentSingleStore();
+
   const handleCancel = () => {
     form.resetFields();
     navigate("/students");
@@ -48,7 +47,6 @@ const StudentForm: React.FC<StudentFormProps> = ({
     setStudent(data || null);
     fetchReservedStudentByID(student?.ID ?? "");
   }, [data, fetchReservedStudentByID, student?.ID]);
-  console.log(isAbleAdd, student);
 
   return (
     <>
@@ -83,8 +81,6 @@ const StudentForm: React.FC<StudentFormProps> = ({
               <div className="container-update">
                 {aReservedStudent && (
                   <div className="update-status">
-                    {/* <div> </div>
-                    <div> </div> */}
                     <TerminalReservation
                       isShow={isShow}
                       setIsShow={setIsShow}
@@ -113,6 +109,13 @@ const StudentForm: React.FC<StudentFormProps> = ({
       )}
     </>
   );
+};
+
+StudentForm.defaultProps = {
+  data: null,
+  initialValues: {},
+  isEdit: false,
+  isAbleAdd: false,
 };
 
 export default StudentForm;

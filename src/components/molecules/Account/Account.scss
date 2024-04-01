@@ -11,8 +11,9 @@
 }
 
 .user-name {
-  width: 100px;
+  display: flex;
   cursor: pointer;
+  justify-content: end;
   p {
     overflow: hidden;
     text-overflow: ellipsis;

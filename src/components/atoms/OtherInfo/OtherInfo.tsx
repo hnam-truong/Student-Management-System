@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Input, DatePicker, InputNumber } from "antd";
-import { validateGPA } from "../../../utils/Validations";
+import rules from "../../../utils/ScoreValidation";
 
 const OtherInfo: React.FC = () => (
   <div className="container-info">
@@ -28,25 +28,11 @@ const OtherInfo: React.FC = () => (
       </Form.Item>
     </div>
     <div className="col-content">
-      <Form.Item
-        label="GPA"
-        name="GPA"
-        rules={[
-          { required: true, message: "Please enter the GPA" },
-          {
-            validator: (_, value) => {
-              if (value && !validateGPA(parseFloat(value))) {
-                return Promise.reject(
-                  new Error("Please enter the GPA between 0 and 10")
-                );
-              }
-              return Promise.resolve();
-            },
-          },
-        ]}
-      >
+      <Form.Item label="GPA" name="GPA" rules={rules}>
         <InputNumber
           type="number"
+          min={0}
+          max={10}
           step={0.1}
           className="input-content"
           placeholder="Enter GPA"
@@ -62,6 +48,7 @@ const OtherInfo: React.FC = () => (
         <DatePicker
           className="input-content"
           picker="year"
+          mode="year"
           placeholder="Enter Graduation Time"
         />
       </Form.Item>

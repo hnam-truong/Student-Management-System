@@ -7,10 +7,10 @@ import { IReservedStudent } from "../../../interfaces/reserved-student.interface
 import Sizes from "../../../constants/Sizes";
 import Colors from "../../../constants/Colors";
 import { useEmailStore } from "../../../store/EmailStore";
-import { IEmail } from "../../../interfaces/email.interface";
 import { useSingleActivityLogStore } from "../../../store/ActivityLogStore";
-import { IActivityLog } from "../../../interfaces/activity-log.inteface";
 import { errorNotify } from "../../atoms/Notify/Notify";
+import { IActivityLog } from "../../../interfaces/activity-log.interface";
+import { IEmail } from "../../../interfaces/email.interface";
 import { IUser } from "../../../interfaces/user.interface";
 import formatDate from "../../../utils/DateFormatting";
 
@@ -47,8 +47,8 @@ const EmailTemplate: React.FC<EmailTemplateProps> = ({
     setPreviewModal(false);
   };
   const handleTemplateChange = (value: string) => {
-    const choosedTemplate = email?.find((item) => item.ID === value);
-    setTemplate(choosedTemplate ?? null);
+    const chooseTemplate = email?.find((item) => item.ID === value);
+    setTemplate(chooseTemplate ?? null);
   };
   const handleReceiverChange = (value: string) => {
     setReceiver(value);
@@ -75,6 +75,7 @@ const EmailTemplate: React.FC<EmailTemplateProps> = ({
       console.error("Error remind:", error);
     }
   };
+  console.log(open);
 
   useEffect(() => {
     getEmail();

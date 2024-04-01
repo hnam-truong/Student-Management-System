@@ -62,20 +62,20 @@
   letter-spacing: $md-small;
 }
 
-.headerh3 {
+.header-h3 {
   font-size: $font-size-larger;
   font-weight: $fw-semi-bold;
   line-height: $lg-large;
   letter-spacing: 20%;
 }
 
-.headingh4 {
+.heading-h4 {
   font-size: $font-size-lg-large;
   font-weight: $fw-semi-bold;
   line-height: $sm-large;
   letter-spacing: $md-small;
 }
-.headingh5 {
+.heading-h5 {
   font-size: $font-size-larger;
   font-weight: $fw-semi-bold;
   line-height: $sm-large;
@@ -318,6 +318,10 @@ body {
   margin-top: $xs-large;
 }
 
-.btn-save{
+.mb-2 {
+  margin-bottom: $xs-large;
+}
+
+.btn-save {
   text-align: right;
 }

@@ -6,6 +6,6 @@ export interface IUser {
   DateOfBirth: string;
   UserType: string;
   Status: boolean;
-  Phone: number;
+  Phone: string;
   ImageUrl: string;
 }

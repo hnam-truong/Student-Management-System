@@ -39,7 +39,7 @@ const FormAttendeeDetail: React.FC<FormAttendeeDetailProps> = ({
     },
     {
       key: "academic-info",
-      label: "Academic infomation",
+      label: "Academic information",
       children: <StudentDetailAcademicInfo studentDetail={studentDetail} />,
     },
   ];

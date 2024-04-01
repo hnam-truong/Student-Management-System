@@ -23,21 +23,22 @@ const ClassDetailHeader = ({ classDetail }: ClassDetailHeaderProps) => {
     setOpenRemind(false);
   }, []);
   const user: IUser = {
-    ID: "",
-    Email: "",
-    Name: "",
-    Gender: false,
-    DateOfBirth: "",
-    UserType: "",
-    Status: false,
-    Phone: 0,
-    ImageUrl: "",
+    Name: "Lý An Tường",
+    UserType: "Admin",
+    Email: "lyantuong23@gmail.com",
+    Phone: "0987654324",
+    DateOfBirth: "30/11/2004",
+    Gender: true,
+    Status: true,
+    ID: "1",
+    ImageUrl:
+      "https://i.pinimg.com/564x/71/72/72/717272a5b39bf32128253cdba482a1a9.jpg",
   };
   return (
     <div className="classname-status">
       <div className="subtitle3 classname-label">Class</div>
       <div className="cl-st">
-        <div className="headingh5 classname">{classDetail.ClassName}</div>
+        <div className="heading-h5 classname">{classDetail.ClassName}</div>
         <div className="classstatus">
           <StatusTag status={classDetail.Status} content={classDetail.Status} />
         </div>
@@ -49,7 +50,7 @@ const ClassDetailHeader = ({ classDetail }: ClassDetailHeaderProps) => {
           <span>{classDetail.StartDate}</span> -{" "}
           <span className="enddate">{classDetail.EndDate}</span>
         </div>
-        <div className="icons">
+        <div className="icons" data-testid="class-icons">
           <BsJournalBookmarkFill />
           <RiRemoteControlFill />
           <LuSpellCheck />

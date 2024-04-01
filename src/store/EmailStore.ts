@@ -37,7 +37,7 @@ export const useEmailStore = create<IEmailStore>((set) => ({
       const data = await getEmails();
       set((state) => ({ ...state, email: data }));
     } catch (error) {
-      errorNotify(generateErrorMessage("get", "list of email template"));
+      console.error("API Error: ", error);
     } finally {
       set((state) => ({ ...state, loading: false }));
     }
@@ -81,7 +81,7 @@ export const useSingleEmailStore = create<ISingleEmailStore>((set) => ({
       const validData: IEmail | null = Array.isArray(data) ? data[0] : data;
       set((state) => ({ ...state, aEmail: validData }));
     } catch (error) {
-      errorNotify(generateErrorMessage("get", "email template information"));
+      console.error("API Error: ", error);
     } finally {
       set((state) => ({ ...state, loading: false }));
     }

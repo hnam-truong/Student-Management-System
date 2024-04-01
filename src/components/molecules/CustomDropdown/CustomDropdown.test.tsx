@@ -3,10 +3,7 @@ import CustomDropdown from "./CustomDropdown";
 
 describe("CustomDropdown Component", () => {
   // Mock function to simulate handleDataChange
-  const mockHandleDataChange = () => {
-    // Your mock implementation goes here
-    console.log("Mock handleDataChange called");
-  };
+  const mockHandleDataChange = vi.fn();
 
   test("should render correctly", () => {
     render(

@@ -1,9 +1,11 @@
 import { Switch, Collapse, Checkbox, Table } from "antd";
 import type { CollapseProps, TableColumnsType } from "antd";
+import ReactQuill from "react-quill";
 import TableHeader from "../../organisms/TableHeader/TableHeader";
 import "./ViewEmailDetail.scss";
 import { IEmail } from "../../../interfaces/email.interface";
 import { BackButton } from "../../atoms/CustomButton/CustomButton";
+import { IModuleScore } from "../../../interfaces/module-score";
 
 interface ViewEmailDetailProps {
   data: IEmail | null;
@@ -14,23 +16,18 @@ interface Item {
   key: string;
 }
 
-interface DataType {
-  key: React.Key;
-  name: string;
-  age: number;
-  address: string;
-}
-const columns: TableColumnsType<DataType> = [
-  {
-    title: "Module Score",
-    dataIndex: "Module Score",
-  },
-  {
-    title: "Module Score will be applied",
-    dataIndex: "appliedScore",
-  },
-];
+// interface DataType {
+//   key: React.Key;
+//   name: string;
+//   age: number;
+//   address: string;
+// }
+
 const ViewEmailDetail = ({ data }: ViewEmailDetailProps) => {
+  // const { moduleScore, fetchModuleScores } = useModuleScoreStore();
+  // if (data?.Category === "Score") {
+  //   fetchModuleScores();
+  // }
   const listLeftItems: Item[] = [
     {
       label: "Email name",
@@ -75,16 +72,28 @@ const ViewEmailDetail = ({ data }: ViewEmailDetailProps) => {
           </div>
           <div className="item-collapse ">
             <div className="item-collapse-label">User dear name</div>
-            <Checkbox checked />
+            <Checkbox checked={data?.DearName} disabled />
           </div>
           <div className="item-collapse ">
             <div className="item-collapse-label">Body</div>
-            <div className="item-collapse-content">{data?.Body}</div>
+            <ReactQuill
+              value={data?.Body}
+              readOnly
+              style={{ height: "fit-content" }}
+            />
           </div>
         </div>
       ),
     },
   ];
+  const columns: TableColumnsType<IModuleScore> = [
+    {
+      title: "Module Name",
+      dataIndex: "moduleName",
+      key: "moduleName",
+    },
+  ];
+
   const scoreItems: CollapseProps["items"] = [
     {
       key: "score",

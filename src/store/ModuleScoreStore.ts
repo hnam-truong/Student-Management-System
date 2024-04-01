@@ -1,7 +1,5 @@
 import { create } from "zustand";
 import { IModuleScore } from "../interfaces/module-score";
-import { errorNotify } from "../components/atoms/Notify/Notify";
-import { generateErrorMessage } from "../utils/GenerateErrorMessage";
 import { getModuleScores } from "../services/api/ApiCaller5";
 
 interface ModuleScoreProps {
@@ -18,8 +16,7 @@ const useModuleScoreStore = create<ModuleScoreProps>((set) => ({
       const data = await getModuleScores();
       set((state) => ({ ...state, moduleScore: data }));
     } catch (error) {
-      console.log("API Error:", error);
-      errorNotify(generateErrorMessage("get", "module scores"));
+      console.error("API Error: ", error);
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));

@@ -6,9 +6,10 @@
 
 import { create } from "zustand";
 import {
-  deleteSingleStudenInClass,
+  deleteSingleStudentInClass,
   getStudentClass,
   postStudentClass,
+  postSingleStudentInClass,
 } from "../services/api/ApiCaller3";
 import { IStudentClass } from "../interfaces/student-class.interface";
 import {
@@ -35,9 +36,7 @@ export const useStudentClassStore = create<IStudentClassStore>((set) => ({
       // Update student when fetch successfully
       set((state) => ({ ...state, classStudent: data }));
     } catch (err) {
-      // Catch & log error
-      console.log("API Error:", err);
-      errorNotify(generateErrorMessage("get", "list of student in class"));
+      console.error(err);
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));
@@ -66,6 +65,7 @@ interface ISingleClassStore {
   classStudent: IStudentClass | null;
   loading: boolean;
   deleteSingleStudentInClass: (id: string) => void;
+  postSingleStudentInClass: (data: IStudentClass) => Promise<void>;
 }
 
 export const useSingleClassStore = create<ISingleClassStore>((set) => ({
@@ -74,11 +74,28 @@ export const useSingleClassStore = create<ISingleClassStore>((set) => ({
   deleteSingleStudentInClass: async (id: string) => {
     set((state) => ({ ...state, loading: true }));
     try {
-      await deleteSingleStudenInClass({ id });
+      await deleteSingleStudentInClass({ id });
       successNotify(generateSuccessMessage("deleted", "The student"));
     } catch (error) {
       errorNotify(generateErrorMessage("delete", "the student"));
     } finally {
+      set((state) => ({ ...state, loading: false }));
+    }
+  },
+  postSingleStudentInClass: async (data: IStudentClass) => {
+    // Set Loading true
+    set((state) => ({ ...state, loading: true }));
+    try {
+      await postSingleStudentInClass({ data });
+      successNotify(
+        generateSuccessMessage("has been created", "Student information")
+      );
+    } catch (err) {
+      // Catch & log error
+      console.log("API Error:", err);
+      errorNotify(generateErrorMessage("create", "new student"));
+    } finally {
+      // Set loading false
       set((state) => ({ ...state, loading: false }));
     }
   },

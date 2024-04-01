@@ -1,12 +1,9 @@
 interface IModuleGroup {
-  Name: string;
-  Module: string;
-  Applied: boolean;
+  AssignmentName: string;
 }
 
 export interface IModuleScore {
   ID: string;
-  ModuleGroupName: string;
-  ModuleGroup: IModuleGroup[];
-  Applied: boolean;
+  AssignmentNameGroup: IModuleGroup[];
+  ModuleName: string;
 }

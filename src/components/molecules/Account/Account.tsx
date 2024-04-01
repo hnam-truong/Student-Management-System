@@ -6,11 +6,25 @@ import { IoMdLogOut } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import Sizes from "../../../constants/Sizes";
+import { useAuthStore } from "../../../store/AuthStore";
+import { errorNotify } from "../../atoms/Notify/Notify";
 
 const Account: React.FC = () => {
   const [open, setOpen] = React.useState(false);
+  const { postLogout } = useAuthStore();
+
   const handleChange = () => setOpen(!open);
   const handleClickContent = () => setOpen(false);
+  const handleLogout = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      postLogout(token);
+    } else {
+      errorNotify("Failed to Logout. Please try again later");
+    }
+    handleClickContent();
+  };
+
   const content = (
     <div className="content-user">
       <Link to="/profile" className="link">
@@ -19,12 +33,10 @@ const Account: React.FC = () => {
           Profile
         </Button>
       </Link>
-      <Link to="/login" className="link">
-        <Button className="body1 btn " onClick={handleClickContent}>
-          <IoMdLogOut size={Sizes.LgMedium} />
-          Log out
-        </Button>
-      </Link>
+      <Button className="body1 btn " onClick={handleLogout}>
+        <IoMdLogOut size={Sizes.LgMedium} />
+        Log out
+      </Button>
     </div>
   );
   return (

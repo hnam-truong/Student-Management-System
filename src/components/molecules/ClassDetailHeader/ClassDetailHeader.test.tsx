@@ -39,25 +39,27 @@ describe("ClassDetailHeader Component", () => {
     render(<ClassDetailHeader classDetail={mockClassDetail} />);
 
     // Check if the class name is rendered
-    const classNameElement = screen.getByText("Sample Class");
+    const classNameElement = screen.getByText(
+      "Fresher Developer Legacy Security Developer"
+    );
     expect(classNameElement).toBeInTheDocument();
 
     // Check if the class status is rendered
-    const classStatusElement = screen.getByText("Active");
+    const classStatusElement = screen.getByText("Closed");
     expect(classStatusElement).toBeInTheDocument();
 
     // Check if the class ID is rendered
-    const classIdElement = screen.getByText("123456");
+    const classIdElement = screen.getByText("1");
     expect(classIdElement).toBeInTheDocument();
 
     // Check if the start and end dates are rendered
-    const startDateElement = screen.getByText("2022-01-01");
-    const endDateElement = screen.getByText("2022-12-31");
+    const startDateElement = screen.getByText("01/03/2023");
+    const endDateElement = screen.getByText("10/04/2023");
     expect(startDateElement).toBeInTheDocument();
     expect(endDateElement).toBeInTheDocument();
 
     // Check if the icons are present with data-testid
-    const icons = screen.getAllByTestId("class-icon");
-    expect(icons).toHaveLength(5);
+    const iconsAndButton = screen.getAllByTestId("class-icons");
+    expect(iconsAndButton[0].childNodes.length).toBe(6);
   });
 });

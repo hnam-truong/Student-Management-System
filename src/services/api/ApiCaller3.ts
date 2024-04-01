@@ -1,4 +1,3 @@
-/* eslint-disable import/prefer-default-export */
 import { del, get, post } from "./api3";
 import { IStudentClass } from "../../interfaces/student-class.interface";
 // get all students in specific class
@@ -34,12 +33,12 @@ export const postStudentClass = async ({
   return [];
 };
 
-interface DeleteSingleStudenInClassProps {
+interface DeleteSingleStudentInClassProps {
   id: string;
 }
-export const deleteSingleStudenInClass = async ({
+export const deleteSingleStudentInClass = async ({
   id,
-}: DeleteSingleStudenInClassProps): Promise<IStudentClass[]> => {
+}: DeleteSingleStudentInClassProps): Promise<IStudentClass[]> => {
   try {
     const response = await del<IStudentClass[]>(`/class100/${id}`);
     if (response.status === 200) {
@@ -52,7 +51,7 @@ export const deleteSingleStudenInClass = async ({
   return [];
 };
 
-// post one student
+// // post one student
 interface PostSingleStudentInClassProps {
   data: IStudentClass;
 }
