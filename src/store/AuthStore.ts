@@ -1,5 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 import { create } from "zustand";
+import { AxiosError } from "axios";
 import { ILogin } from "../interfaces/login.interface";
 import { errorNotify, successNotify } from "../components/atoms/Notify/Notify";
 import {
@@ -23,8 +24,11 @@ export const useAuthStore = create<IAuthStore>((set) => ({
       successNotify("Login successfully!");
     } catch (err) {
       // Catch & log error
-      console.log("API Error:", err);
-      errorNotify("Your Username or Password is incorrect!");
+      const axiosError = err as AxiosError;
+      errorNotify(
+        axiosError?.response?.data?.toString() ??
+          "Your Username or Password is incorrect!"
+      );
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));
