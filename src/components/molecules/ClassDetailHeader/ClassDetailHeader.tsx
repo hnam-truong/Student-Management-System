@@ -13,8 +13,14 @@ import { IUser } from "../../../interfaces/user.interface";
 
 type ClassDetailHeaderProps = {
   classDetail: IClass;
+  hideSendEmail: boolean;
 };
-const ClassDetailHeader = ({ classDetail }: ClassDetailHeaderProps) => {
+const ClassDetailHeader = ({
+  classDetail,
+  hideSendEmail,
+}: ClassDetailHeaderProps) => {
+  console.log(classDetail);
+
   const [openRemind, setOpenRemind] = useState<boolean>(false);
   const handleOpenRemind = useCallback(() => {
     setOpenRemind(true);
@@ -23,16 +29,18 @@ const ClassDetailHeader = ({ classDetail }: ClassDetailHeaderProps) => {
     setOpenRemind(false);
   }, []);
   const user: IUser = {
-    Name: "Lý An Tường",
-    UserType: "Admin",
-    Email: "lyantuong23@gmail.com",
-    Phone: "0987654324",
-    DateOfBirth: "30/11/2004",
+    FullName: "",
+    Role: "",
+    Email: "",
+    Phone: "",
+    DOB: "",
     Gender: true,
-    Status: true,
-    ID: "1",
-    ImageUrl:
-      "https://i.pinimg.com/564x/71/72/72/717272a5b39bf32128253cdba482a1a9.jpg",
+    Status: "",
+    Id: "",
+    ImageUrl: "",
+    Address: "",
+    Username: "",
+    Password: "",
   };
   return (
     <div className="classname-status">
@@ -40,10 +48,13 @@ const ClassDetailHeader = ({ classDetail }: ClassDetailHeaderProps) => {
       <div className="cl-st">
         <div className="heading-h5 classname">{classDetail.ClassName}</div>
         <div className="classstatus">
-          <StatusTag status={classDetail.Status} content={classDetail.Status} />
+          <StatusTag
+            status={classDetail.StatusClass}
+            content={classDetail.StatusClass}
+          />
         </div>
       </div>
-      <div className="subtitle2-bold classid">{classDetail.ClassID}</div>
+      <div className="subtitle2-bold classid">{classDetail.Id}</div>
       <hr className="solid" />
       <div className="fourth-line">
         <div className="subtitle3-bold date">
@@ -56,16 +67,19 @@ const ClassDetailHeader = ({ classDetail }: ClassDetailHeaderProps) => {
           <LuSpellCheck />
           <VscBroadcast />
           <IoHandRightOutline />
-          <SendEmailButton onClick={handleOpenRemind} text="Send email" />
-          {openRemind && (
-            <EmailTemplate
-              open={openRemind}
-              handleOpenRemind={handleOpenRemind}
-              handleCloseRemind={handleCloseRemind}
-              data={user}
-              modalTitle="Send email"
-            />
+          {!hideSendEmail && (
+            <SendEmailButton onClick={handleOpenRemind} text="Send email" />
           )}
+
+          <EmailTemplate
+            open={openRemind}
+            handleOpenRemind={handleOpenRemind}
+            handleCloseRemind={handleCloseRemind}
+            data={user}
+            modalTitle="Send email"
+            type="Student"
+            setOpenRemind={setOpenRemind}
+          />
         </div>
       </div>
     </div>

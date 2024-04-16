@@ -35,6 +35,7 @@ const ToolBar: React.FC<ToolBarProps> = ({ bodyValue, onChangeBodyValue }) => {
 
   return (
     <ReactQuill
+      data-testid="quill-editor"
       theme="snow"
       modules={modules}
       placeholder="Write something..."

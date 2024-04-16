@@ -5,13 +5,13 @@ import InputExcelModal from "./InputExcelModal";
 test("renders InputExcelModal component", () => {
   const mockProps = {
     isModalOpen: true,
-    handleCancel: () => {},
-    excelUpload: () => {},
+    handleCancel: vi.fn(),
+    excelUpload: vi.fn(),
     href: "/template.xlsx",
     fileDownload: "template.xlsx",
   };
 
-  render(<InputExcelModal {...mockProps} />);
+  render(<InputExcelModal importId="1" {...mockProps} />);
 
   const modalTitle = screen.getByText("Import file");
   const cancelButton = screen.getByRole("button", { name: /cancel/i });

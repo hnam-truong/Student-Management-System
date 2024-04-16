@@ -4,9 +4,14 @@ import type { TableColumnsType, TableProps } from "antd";
 import { IEmail } from "../../../interfaces/email.interface";
 import { storeDataToCache } from "../../../utils/StoreDataToCache";
 import StatusTag from "../../atoms/StatusTag/StatusTag";
-import { getUserStatus } from "../../../utils/GenerateStatus";
 import CustomDropdown from "../../molecules/CustomDropdown/CustomDropdown";
 import ActionTitle from "../../atoms/ActionTitle/ActionTitle";
+import RouterEndpoints from "../../../constants/RouterEndpoints";
+import {
+  EmailCategoryFilters,
+  EmailStatusFilters,
+  ReceiverTypeFilters,
+} from "../../../constants/TableFilters";
 
 interface EmailTableProps {
   email: IEmail[];
@@ -23,9 +28,10 @@ const EmailTable: React.FC<EmailTableProps> = ({
 
   const columns: TableColumnsType<IEmail> = [
     {
-      title: "Full name",
+      title: "Template name",
       dataIndex: "Name",
       key: "Name",
+      width: 170,
       sorter: (a, b) => a.Name.localeCompare(b.Name),
     },
     {
@@ -33,28 +39,43 @@ const EmailTable: React.FC<EmailTableProps> = ({
       dataIndex: "Status",
       key: "Status",
       render: (_value, record) => (
-        <StatusTag
-          status={getUserStatus(record.Status)}
-          content={getUserStatus(record.Status)}
-        />
+        <StatusTag status={record.Status} content={record.Status} />
       ),
+      filters: EmailStatusFilters,
+      filterSearch: true,
+      filterMode: "tree",
+      onFilter: (value, record) => record.Status === value,
     },
     {
       title: "Description",
       dataIndex: "Description",
       key: "Description",
+      width: 200,
+      sorter: (a, b) => a.Description.localeCompare(b.Description),
     },
     {
       title: "Categories",
-      dataIndex: "Category",
-      key: "Category",
-      sorter: (a, b) => a.Category.localeCompare(b.Category),
+      dataIndex: "Type",
+      key: "Type",
+      filters: EmailCategoryFilters,
+      filterSearch: true,
+      filterMode: "tree",
+      onFilter: (value, record) => record.Type === value,
+      render: (_value, record) => (
+        <StatusTag content={record?.Type} status={record?.Type} />
+      ),
     },
     {
       title: "Apply to",
       dataIndex: "ApplyTo",
       key: "ApplyTo",
-      sorter: (a, b) => a.ApplyTo.localeCompare(b.ApplyTo),
+      filters: ReceiverTypeFilters,
+      filterSearch: true,
+      filterMode: "tree",
+      onFilter: (value, record) => record.ApplyTo === value,
+      render: (_value, record) => (
+        <StatusTag status={record?.ApplyTo} content={record?.ApplyTo} />
+      ),
     },
     {
       title: <ActionTitle />,
@@ -63,9 +84,9 @@ const EmailTable: React.FC<EmailTableProps> = ({
       render: (_value, record) => (
         <div className="centered">
           <CustomDropdown
-            id={record?.ID}
-            viewLink="/email-detail"
-            editLink="/email/edit"
+            id={record?.Id}
+            viewLink={RouterEndpoints.EmailsManagement}
+            editLink={`${RouterEndpoints.EmailsManagement}/edit`}
             isDeleteEmail
             handleDataChange={handleDataChange}
           />
@@ -85,7 +106,7 @@ const EmailTable: React.FC<EmailTableProps> = ({
 
   const scoresWithKeys = email.map((_email) => ({
     ..._email,
-    key: _email.ID,
+    key: _email.Id,
   }));
 
   const onChange: TableProps<IEmail>["onChange"] = (
@@ -106,7 +127,7 @@ const EmailTable: React.FC<EmailTableProps> = ({
         flexDirection: "column",
         maxWidth: "100%",
       }}
-      className="ant-table-container"
+      className="ant-table-container "
     >
       <Table
         size="middle"

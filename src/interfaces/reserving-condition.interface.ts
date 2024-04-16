@@ -1,4 +1,4 @@
 export interface IReservingCondition {
-  ID: string;
+  Id: string;
   Name: string;
 }

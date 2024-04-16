@@ -15,6 +15,10 @@
 .classes-frame {
   margin-bottom: $medium;
 }
+
+.breadcrumb-frame-custom {
+  padding: 0 $medium;
+}
 .class-title {
   margin-bottom: $lg-small;
   font-size: $medium;
@@ -93,5 +97,23 @@
         margin-bottom: var(--item-spacing);
       }
     }
+  }
+}
+.wrapper-update {
+  display: flex;
+  width: 100%;
+  justify-content: end;
+  align-items: center;
+  .update-status {
+    cursor: pointer;
+    width: fit-content;
+    border-radius: $small;
+    padding: 0 $small;
+    background-color: $third-color;
+    color: $white;
+  }
+  .update-status:hover {
+    background-color: $light-purple;
+    color: $white;
   }
 }

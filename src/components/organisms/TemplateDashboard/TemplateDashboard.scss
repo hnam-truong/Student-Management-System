@@ -1,6 +1,7 @@
 @import "../../../styles/main.scss";
 
 .dashboard {
+  background-color: $dashboard-main;
   padding: $medium;
   color: $primary-color;
   gap: $lg-medium;
@@ -31,6 +32,11 @@
     }
     .wrapper-table-ranking {
       grid-column: span 5 / span 5;
+      border: solid $white 1px;
+      border-radius: $sm-medium;
+      padding: $medium;
+      margin-right: $small;
+      background-color: $white;
     }
     .wrapper-student {
       grid-column: span 5 / span 5;
@@ -54,13 +60,19 @@
     grid-column: span 8 / span 8;
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: $medium;
+    gap: $lg-large;
     padding: $medium 0;
+    margin-right: $small;
   }
   .pie-chart {
     grid-column: span 1 / span 1;
     justify-content: center;
     align-items: center;
+    border: solid $white 1px;
+    border-radius: $sm-medium;
+    padding-top: $medium;
+    padding-bottom: $small;
+    background-color: $white;
   }
   .wrapper-gender {
     display: flex;

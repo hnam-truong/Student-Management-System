@@ -1,33 +1,45 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from "react";
-import { Form, Input, Checkbox } from "antd";
+import { Form, Input } from "antd";
 import TableHeader from "../TableHeader/TableHeader";
 import ToolBar from "../../molecules/ToolBar/ToolBar";
 
 interface TemplateContentProps {
   bodyValue: string;
   onChangeBodyValue: (value: string) => void;
+  isEdit?: boolean;
+  type: string;
 }
 
 const TemplateContent: React.FC<TemplateContentProps> = ({
   bodyValue,
   onChangeBodyValue,
+  type,
+  isEdit,
 }) => {
   const formItemLayout = {
     labelCol: {
+      lg: { span: 3 },
+      md: { span: 4 },
+      sm: { span: 6 },
       xs: { span: 6 },
-      sm: { span: 3 },
     },
     wrapperCol: {
+      lg: { span: 21 },
+      md: { span: 20 },
       xs: { span: 18 },
-      sm: { span: 21 },
+      sm: { span: 18 },
     },
   };
 
   return (
     <div>
-      <TableHeader isHeaderBottom={false} title="Content" />
-      {/* Field for Subject */}
+      <TableHeader
+        isHeaderBottom={false}
+        title="Content"
+        setSearchSignal={() => {}}
+        setSearchTerm={() => {}}
+      />
       <Form.Item
         {...formItemLayout}
         className="mt-2"
@@ -35,25 +47,23 @@ const TemplateContent: React.FC<TemplateContentProps> = ({
         name="Subject"
         rules={[{ required: true }]}
       >
-        <Input placeholder="Enter subject" />
+        <Input placeholder="Enter subject" type="text" />
       </Form.Item>
 
-      {/* Field for Dear name */}
-      <Form.Item
-        {...formItemLayout}
-        label="Dear name"
-        name="DearName"
-        valuePropName="checked"
-      >
-        <Checkbox />
-      </Form.Item>
-
-      {/* Field for Body */}
-      <Form.Item {...formItemLayout} label="Body" name="Body">
-        <ToolBar bodyValue={bodyValue} onChangeBodyValue={onChangeBodyValue} />
+      <Form.Item {...formItemLayout} label="Content" name="Content">
+        {type === "Score" && isEdit ? (
+          <div dangerouslySetInnerHTML={{ __html: bodyValue ?? "" }} />
+        ) : (
+          <ToolBar
+            bodyValue={bodyValue}
+            onChangeBodyValue={onChangeBodyValue}
+          />
+        )}
       </Form.Item>
     </div>
   );
 };
-
+TemplateContent.defaultProps = {
+  isEdit: false,
+};
 export default TemplateContent;

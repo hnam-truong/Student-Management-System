@@ -1,7 +1,7 @@
-const HandleTableScore = ({ titleScore }: { titleScore: string[] }) => {
+const HandleTableScore = (moduleScores: string[]) => {
   const tableScore = `<table style="justify-content: center; display: flex; border-collapse: collapse;">
  ${
-   titleScore.includes("Quiz Module")
+   moduleScores.includes("Quiz Module")
      ? `<tr>
     <th rowspan="7" style="background-color: rgb(241, 238, 66); padding: 5px; border: 1px solid black;">Quiz Module</th>
     <th style="padding: 5px; border: 1px solid black;">Quiz 1</th>
@@ -29,12 +29,12 @@ const HandleTableScore = ({ titleScore }: { titleScore: string[] }) => {
   </tr>
   <tr>
     <th style="padding: 5px; border: 1px solid black;">Average Quiz</th>
-    <td style="padding: 5px; border: 1px solid black;">%Avg Quiz%</td>
+    <td style="padding: 5px; border: 1px solid black;">%Quiz Avg%</td>
   </tr>`
      : ``
  }
   ${
-    titleScore.includes("Assignment Module")
+    moduleScores.includes("Assignment Module")
       ? `<tr>
     <th rowspan="4" style="background-color: rgb(241, 238, 66); padding: 5px; border: 1px solid black;">Practice Module</th>
     <th style="padding: 5px; border: 1px solid black;">Practice 1</th>
@@ -50,12 +50,12 @@ const HandleTableScore = ({ titleScore }: { titleScore: string[] }) => {
   </tr>
   <tr>
     <th style="padding: 5px; border: 1px solid black;">Average Practice</th>
-    <td style="padding: 5px; border: 1px solid black;">%Avg Practice%</td>
+    <td style="padding: 5px; border: 1px solid black;">%ASM Avg%</td>
   </tr>`
       : ``
   }
  ${
-   titleScore.includes("Mock Module")
+   moduleScores.includes("Mock Module")
      ? `<tr>
   <th rowspan="5" style="background-color: rgb(241, 238, 66); padding: 5px; border: 1px solid black;">Mock Module</th>
   <th style="padding: 5px; border: 1px solid black;">Mock</th>
@@ -63,32 +63,32 @@ const HandleTableScore = ({ titleScore }: { titleScore: string[] }) => {
 </tr>
 <tr>
   <th style="padding: 5px; border: 1px solid black;">Final Module</th>
-  <td style="padding: 5px; border: 1px solid black;">%Final Module%</td>
+  <td style="padding: 5px; border: 1px solid black;">%Mock Final Module%</td>
 </tr>
 <tr>
   <th style="padding: 5px; border: 1px solid black;">GPA Module</th>
-  <td style="padding: 5px; border: 1px solid black;">%GPA Module%</td>
+  <td style="padding: 5px; border: 1px solid black;">%Mock GPA Module%</td>
 </tr>
 <tr>
   <th style="padding: 5px; border: 1px solid black;">Level Module</th>
-  <td style="padding: 5px; border: 1px solid black;">%Level Module%</td>
+  <td style="padding: 5px; border: 1px solid black;">%Mock Level Module%</td>
 </tr>
 <tr>
   <th style="padding: 5px; border: 1px solid black;">Status</th>
-  <td style="padding: 5px; border: 1px solid black;">%Status%</td>
+  <td style="padding: 5px; border: 1px solid black;">%Mock Status%</td>
 </tr>`
      : ``
  }
 ${
-  titleScore.includes("Quiz Final")
+  moduleScores.includes("Quiz Final")
     ? `<tr>
 <th colspan="2" style="background-color: rgb(241, 238, 66); padding: 5px; border: 1px solid black;">Quiz Final</th>
-<td style="padding: 5px; border: 1px solid black;">%Quiz Final%</td>
+<td style="padding: 5px; border: 1px solid black;">%Quiz%</td>
 </tr>`
     : ``
 }
 ${
-  titleScore.includes("Audit")
+  moduleScores.includes("Audit")
     ? `<tr>
 <th colspan="2" style="background-color: rgb(241, 238, 66); padding: 5px; border: 1px solid black;">Audit</th>
 <td style="padding: 5px; border: 1px solid black;">%Audit%</td>
@@ -96,7 +96,7 @@ ${
     : ``
 }
 ${
-  titleScore.includes("Practice Final")
+  moduleScores.includes("Practice Final")
     ? `<tr>
 <th colspan="2" style="background-color: rgb(241, 238, 66); padding: 5px; border: 1px solid black;">Practice Final</th>
 <td style="padding: 5px; border: 1px solid black;">%Practice Final%</td>
@@ -104,7 +104,7 @@ ${
     : ``
 }
 ${
-  titleScore.includes("Final Module")
+  moduleScores.includes("Final Module")
     ? `<tr>
 <th colspan="2" style="background-color: rgb(241, 238, 66); padding: 5px; border: 1px solid black;">Final Module</th>
 <td style="padding: 5px; border: 1px solid black;">%Final Module%</td>
@@ -112,7 +112,7 @@ ${
     : ``
 }
 ${
-  titleScore.includes("GPA Module")
+  moduleScores.includes("GPA Module")
     ? `<tr>
 <th colspan="2" style="background-color: rgb(241, 238, 66); padding: 5px; border: 1px solid black;">GPA Module</th>
 <td style="padding: 5px; border: 1px solid black;">%GPA Module%</td>
@@ -120,7 +120,7 @@ ${
     : ``
 }
 ${
-  titleScore.includes("Level Module")
+  moduleScores.includes("Level Module")
     ? `<tr>
 <th colspan="2" style="background-color: rgb(241, 238, 66); padding: 5px; border: 1px solid black;">Level Module</th>
 <td style="padding: 5px; border: 1px solid black;">%Level Module%</td>
@@ -128,10 +128,10 @@ ${
     : ``
 }
 ${
-  titleScore.includes("Status")
+  moduleScores.includes("Status")
     ? `<tr>
 <th colspan="2" style="background-color: rgb(241, 238, 66); padding: 5px; border: 1px solid black;">Status</th>
-<td style="padding: 5px; border: 1px solid black;">%Status%</td>
+<td style="padding: 5px; border: 1px solid black;">%Final Status%</td>
 </tr>`
     : ``
 }

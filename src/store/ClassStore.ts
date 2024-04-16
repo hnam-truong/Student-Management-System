@@ -10,14 +10,14 @@ import {
   getClass,
   getClassByID,
   getClassesByName,
-} from "../services/api/ApiCaller2";
+} from "../services/api/api-caller/ClassApiCaller";
 
 // CLASS STORE
 interface IClassStore {
   classes: IClass[] | null;
   loading: boolean;
   fetchClass: () => void;
-  getClassesByName: (className: string) => void;
+  getAllClassToReClass: (className: string, studentId: string) => void;
 }
 
 export const useClassStore = create<IClassStore>((set) => ({
@@ -37,18 +37,16 @@ export const useClassStore = create<IClassStore>((set) => ({
       set((state) => ({ ...state, loading: false }));
     }
   },
-  getClassesByName: async (className) => {
+  getAllClassToReClass: async (className: string, studentId: string) => {
     set((state) => ({ ...state, loading: true }));
     try {
-      const response: IClass[] = await getClassesByName({ className });
-      const data: IClass[] = response.filter(
-        (classItem) =>
-          classItem.Status === "Opening" || classItem.Status === "Planning"
-      );
+      const data = await getClassesByName({ className, studentId });
+      // Update student when fetch successfully
       set((state) => ({ ...state, classes: data }));
-    } catch (error) {
-      console.error("API Error: ", error);
+    } catch (err) {
+      console.error(err);
     } finally {
+      // Set loading false
       set((state) => ({ ...state, loading: false }));
     }
   },

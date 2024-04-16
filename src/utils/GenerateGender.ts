@@ -1,4 +1,4 @@
-const generateGender = ({ gender }: { gender: boolean }): string => {
+const generateGender = (gender: boolean): string => {
   if (gender === true) {
     return "Male";
   }

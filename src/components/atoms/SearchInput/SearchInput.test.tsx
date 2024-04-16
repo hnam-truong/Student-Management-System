@@ -2,8 +2,15 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import SearchInput from "./SearchInput";
 
 describe("SearchInput Component", () => {
+  const setSearchSignal = vi.fn();
+  const setSearchTerm = vi.fn();
   it("renders SearchInput correctly", async () => {
-    render(<SearchInput />);
+    render(
+      <SearchInput
+        setSearchSignal={setSearchSignal}
+        setSearchTerm={setSearchTerm}
+      />
+    );
 
     // Check if the input is rendered
     const searchInput = screen.getByPlaceholderText("Search");

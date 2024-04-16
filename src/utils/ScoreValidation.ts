@@ -5,6 +5,11 @@
 import { Rule, RuleObject } from "antd/es/form";
 
 const scoreValidator = (_: RuleObject, value: number): Promise<void> => {
+  // Check if the value is empty and if it's required
+  if (!value && value !== 0) {
+    return Promise.resolve();
+  }
+
   // Validate score is number
   if (Number.isNaN(value)) {
     return Promise.reject(new Error("Please enter a number."));

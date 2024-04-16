@@ -10,6 +10,10 @@ import {
 } from "../../../utils/StoreDataToCache";
 import { exportStudentToExcel } from "../../../utils/ExportToExcel";
 import ActionTitle from "../../atoms/ActionTitle/ActionTitle";
+import RouterEndpoints from "../../../constants/RouterEndpoints";
+import { handleNumberShown } from "../../../utils/HandleDataShown";
+import StatusTag from "../../atoms/StatusTag/StatusTag";
+import { StudentStatusFilters } from "../../../constants/TableFilters";
 
 interface StudentTableProps {
   student: IStudent[];
@@ -33,18 +37,24 @@ const StudentTable: React.FC<StudentTableProps> = ({
 
   const columns: TableColumnsType<IStudent> = [
     {
-      title: "Full name",
-      dataIndex: "Name",
-      key: "Name",
-      sorter: (a, b) => a.Name.localeCompare(b.Name),
+      title: "Student ID",
+      dataIndex: "StudentId",
+      key: "StudentId",
+      fixed: "left",
+      sorter: (a: { StudentId: string }, b: { StudentId: string }) =>
+        a.StudentId.localeCompare(b.StudentId),
     },
     {
-      title: "Date of Birth",
-      dataIndex: "DateOfBirth",
-      key: "DateOfBirth",
-      sorter: (a, b) =>
-        a.DateOfBirth.toString().localeCompare(b.DateOfBirth.toString()),
-      render: (dateOfBirth: string) => dateOfBirth,
+      title: "Full name",
+      dataIndex: "FullName",
+      key: "FullName",
+      sorter: (a, b) => a.FullName.localeCompare(b.FullName),
+    },
+    {
+      title: "Birthday",
+      dataIndex: "DOB",
+      key: "DOB",
+      sorter: (a, b) => a.DOB.toString().localeCompare(b.DOB.toString()),
     },
     {
       title: "Email",
@@ -63,12 +73,19 @@ const StudentTable: React.FC<StudentTableProps> = ({
       dataIndex: "GPA",
       key: "GPA",
       sorter: (a, b) => a.GPA - b.GPA,
+      render: (value) => handleNumberShown(value),
     },
     {
-      title: "RECer",
-      dataIndex: "RECer",
-      key: "RECer",
-      sorter: (a, b) => a.RECer.localeCompare(b.RECer),
+      title: "Status",
+      dataIndex: "Status",
+      key: "Status",
+      render: (status: string) => (
+        <StatusTag status={status} content={status} />
+      ),
+      filters: StudentStatusFilters,
+      filterMode: "tree",
+      filterSearch: true,
+      onFilter: (value, record) => record.Status.includes(value as string),
     },
     {
       title: <ActionTitle />,
@@ -77,11 +94,11 @@ const StudentTable: React.FC<StudentTableProps> = ({
       render: (_value, record) => (
         <div className="centered">
           <CustomDropdown
-            id={record?.ID}
-            viewLink="/student"
-            editLink="/student/edit"
-            isDelete
+            id={record?.StudentId}
+            viewLink={RouterEndpoints.StudentsManagement}
+            editLink={`${RouterEndpoints.StudentsManagement}/edit`}
             handleDataChange={handleDataChange}
+            isDelete
           />
         </div>
       ),
@@ -101,9 +118,9 @@ const StudentTable: React.FC<StudentTableProps> = ({
     onChange: onSelectChange,
   };
 
-  const scoresWithKeys = student.map((_student) => ({
+  const scoresWithKeys = student.map((_student, index) => ({
     ..._student,
-    key: _student.ID,
+    key: index,
   }));
 
   const onChange: TableProps<IStudent>["onChange"] = (

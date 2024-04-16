@@ -1,31 +1,32 @@
-import React from "react";
-import { Card, Space } from "antd";
+import React, { useState } from "react";
+import { Button, Card, Space } from "antd";
 import { IUser } from "../../../interfaces/user.interface";
 import AvatarImage from "../../atoms/AvatarImage/AvatarImage";
 import "./UserInfo.scss";
 import StatusTag from "../../atoms/StatusTag/StatusTag";
-import { getUserStatus } from "../../../utils/GenerateStatus";
-import { BackButton } from "../../atoms/CustomButton/CustomButton";
+import UploadImage from "../../atoms/UploadImage/UploadImage";
 
 interface UserInfoProps {
   userDetail: IUser;
 }
 
-interface CardContent {
+interface CardContentProps {
   id: string;
   label: string;
   value: React.ReactNode;
 }
 
-interface CardData {
+interface CardDataProps {
   id: string;
   title: string;
-  content: CardContent[];
+  content: CardContentProps[];
 }
 
 const UserInfo: React.FC<UserInfoProps> = ({ userDetail }) => {
+  const userAvatar = localStorage.getItem("imgUrl");
+
   // Define card data
-  const cardData: CardData[] = [
+  const cardData: CardDataProps[] = [
     {
       id: "system",
       title: "System",
@@ -33,16 +34,13 @@ const UserInfo: React.FC<UserInfoProps> = ({ userDetail }) => {
         {
           id: "role",
           label: "Role:",
-          value: userDetail.UserType,
+          value: userDetail.Role,
         },
         {
           id: "status",
           label: "Status:",
           value: (
-            <StatusTag
-              status={getUserStatus(userDetail.Status)}
-              content={userDetail.Status ? "Activating..." : "Inactivated"}
-            />
+            <StatusTag status={userDetail.Status} content={userDetail.Status} />
           ),
         },
       ],
@@ -59,7 +57,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ userDetail }) => {
         {
           id: "dob",
           label: "Date of Birth:",
-          value: userDetail.DateOfBirth,
+          value: userDetail.DOB,
         },
       ],
     },
@@ -81,16 +79,36 @@ const UserInfo: React.FC<UserInfoProps> = ({ userDetail }) => {
     },
   ];
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <div>
-      <div className="back-btn">
-        <BackButton />
-      </div>
       <div className="userinfo-container centered">
         <div className="userinfo-header centered">
-          <AvatarImage detail={userDetail} isImage />
-          <h2 className="userinfo-name">{userDetail.Name}</h2>
-          <p className="userinfo-id">ID: {userDetail.ID}</p>
+          <AvatarImage
+            FullName={userDetail?.FullName}
+            ImageUrl={userAvatar}
+            isImage={
+              userDetail?.ImageUrl !== null || userDetail?.ImageUrl !== ""
+            }
+          />
+          <Button type="link" onClick={showModal}>
+            Change Avatar
+          </Button>
+          <h2 className="userinfo-name">{userDetail.FullName}</h2>
+          <p className="userinfo-id">ID: {userDetail.Id}</p>
+          {isModalOpen && (
+            <UploadImage
+              isModalOpen={isModalOpen}
+              handleCancel={handleCancel}
+            />
+          )}
         </div>
         <Space wrap className="useinfo-body">
           {cardData.map((card) => (

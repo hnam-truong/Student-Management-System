@@ -67,6 +67,8 @@ const ReservingPeriod: React.FC = () => {
         }}
         onOpenChange={onOpenChange}
         changeOnBlur
+        disabled
+        format="DD/MM/YYYY"
         style={{ width: "100%" }}
       />
     </Form.Item>

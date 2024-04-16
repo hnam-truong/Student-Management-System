@@ -26,6 +26,7 @@ const UpdateStudentStatusModal = ({
   const handleChangeStatus = (value: string) => {
     // console.log("Change status: ", value);
     setStatusStudent(value);
+    console.log(1111, value);
   };
 
   return (
@@ -72,9 +73,9 @@ const UpdateStudentStatusModal = ({
             style={{ width: 200 }}
             onChange={handleChangeStatus}
             options={[
-              { value: "In class", label: "In class " },
-              { value: "Drop out", label: "Drop out" },
-              { value: "Reverse", label: "Reverse" },
+              { value: "InClass", label: "In class " },
+              { value: "DropOut", label: "Drop out" },
+              { value: "Reserve", label: "Reserve" },
               { value: "Finish", label: "Finish" },
             ]}
           />

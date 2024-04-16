@@ -3,25 +3,20 @@
 import type { UploadProps } from "antd";
 import { Button, Upload } from "antd";
 import { FiInbox } from "react-icons/fi";
-import { useEffect, useState } from "react";
-import { ImportFromExcel } from "../../../utils/ImportFromExcel";
+import { useState } from "react";
 import { errorNotify, successNotify } from "../Notify/Notify";
 import "./FileUpload.scss";
+import ImportFromExcel from "../../../utils/ImportFromExcel";
 
 interface FileUploadProps {
-  excelUpload: (excelData: any) => void;
+  excelUpload: (file: File, id?: string) => void;
+  importId: string;
 }
 
-const FileUpload = ({ excelUpload }: FileUploadProps) => {
-  const [uploadedData, setUploadedData] = useState([]);
-  const [loading, setLoading] = useState(false);
-
+const FileUpload = ({ excelUpload, importId }: FileUploadProps) => {
+  const [uploadedFile, setUploadedFile] = useState<any>(null);
+  const { loading } = ImportFromExcel();
   const { Dragger } = Upload;
-  const { readExcelFile, loading: excelImportLoading } = ImportFromExcel();
-
-  useEffect(() => {
-    setLoading(excelImportLoading);
-  }, [excelImportLoading]);
 
   const props: UploadProps = {
     name: "file",
@@ -31,6 +26,7 @@ const FileUpload = ({ excelUpload }: FileUploadProps) => {
     action: "https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188",
     onChange(info) {
       const { status } = info.file;
+      console.log(info.file);
       if (status === "done") {
         successNotify(`${info.file.name} file uploaded successfully.`);
       } else if (status === "error") {
@@ -39,11 +35,11 @@ const FileUpload = ({ excelUpload }: FileUploadProps) => {
     },
 
     onRemove: () => {
-      setUploadedData([]);
+      setUploadedFile(null);
     },
 
     beforeUpload: (file) => {
-      readExcelFile(file, setUploadedData);
+      setUploadedFile(file);
     },
   };
 
@@ -62,7 +58,9 @@ const FileUpload = ({ excelUpload }: FileUploadProps) => {
       </Dragger>
 
       <Button
-        onClick={() => excelUpload(uploadedData)}
+        onClick={() => {
+          excelUpload(uploadedFile, importId);
+        }}
         className="upload-btn"
         type="primary"
         loading={loading}

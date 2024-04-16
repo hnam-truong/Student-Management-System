@@ -6,7 +6,7 @@
  */
 
 import React from "react";
-import { IoWomanSharp, IoManSharp } from "react-icons/io5";
+import { GrUserFemale, GrUser } from "react-icons/gr";
 import Colors from "../../../constants/Colors";
 import FontSizes from "../../../constants/FontSizes";
 
@@ -18,20 +18,20 @@ interface GenderProps {
 const Gender: React.FC<GenderProps> = ({ gender, customFontSize }) => (
   <div>
     {(gender !== undefined || gender !== null) && gender ? (
-      <IoManSharp
+      <GrUser
         data-testid="male-icon"
         style={{
-          color: Colors.LighterBlack,
+          color: Colors.Grey,
           width: "100%",
           alignItems: "center",
           fontSize: customFontSize,
         }}
       />
     ) : (
-      <IoWomanSharp
+      <GrUserFemale
         data-testid="female-icon"
         style={{
-          color: Colors.Red,
+          color: Colors.Grey,
           width: "100%",
           alignItems: "center",
           fontSize: customFontSize,
@@ -42,7 +42,7 @@ const Gender: React.FC<GenderProps> = ({ gender, customFontSize }) => (
 );
 
 Gender.defaultProps = {
-  customFontSize: FontSizes.XsLarger,
+  customFontSize: FontSizes.LgLarge,
 };
 
 export default Gender;

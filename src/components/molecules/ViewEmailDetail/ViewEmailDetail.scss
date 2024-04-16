@@ -26,6 +26,10 @@
       padding: $sm-medium $large;
       row-gap: $small;
     }
+    .checkbox {
+      margin-right: $medium;
+      pointer-events: none;
+    }
   }
   .ant-collapse {
     .ant-collapse-header {
@@ -37,7 +41,6 @@
         right: 0;
         color: $white;
         font-size: $font-size-lg-medium;
-        top: 10;
       }
     }
   }
@@ -65,11 +68,29 @@
     font-weight: $fw-semi-bold;
   }
 }
+.template-col {
+  display: flex;
+  justify-content: space-between;
+  gap: $lg-larger;
+  flex-direction: row;
+}
+
+.card-item {
+  width: $x-md-large !important;
+
+  .card-title {
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+  }
+  .item {
+    display: flex;
+    justify-content: space-between;
+  }
+}
 .score-module {
   justify-content: center;
-  display: grid;
-  grid-template-columns: 45% 45%;
-  gap: $sm-medium;
+  display: flex;
 }
 
 @media (max-width: $md) {
@@ -83,9 +104,16 @@
       }
     }
   }
-  .score-module {
+  .template-col {
+    flex-wrap: wrap;
     justify-content: center;
-    display: grid;
-    grid-template-columns: 80%;
+  }
+}
+
+@media (max-width: $lg) {
+  .template-col {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: $sm-medium;
   }
 }

@@ -1,48 +1,50 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { Spin } from "antd";
 import FormStudentDetail from "../../molecules/FormStudentDetail/FormStudentDetail";
-import { useSingleScoreStore } from "../../../store/ScoreStore";
-import { useSingleStudentStore } from "../../../store/StudentStore";
-import "../../molecules/FormClassDetail/FormClassDetail.scss";
-import { BackButton } from "../../atoms/CustomButton/CustomButton";
+import "../../../styles/main.scss";
+import { useSingleStudentClassStore } from "../../../store/StudentClassStore";
+import { useScoreStore } from "../../../store/ScoreStore";
+import { useSingleClassStore } from "../../../store/ClassStore";
+import CustomBreadcrumb from "../../atoms/CustomBreadcrumb/CustomBreadcrumb";
 
 const StudentDetail: React.FC = () => {
-  const { id } = useParams<{ id?: string }>();
-  const [loading, setLoading] = useState(true);
-  const { aStudent, getStudentByID } = useSingleStudentStore();
-  const { aScore, getStudentScoreByID } = useSingleScoreStore();
+  const { classId } = useParams<{ classId?: string }>();
+  const { studentId } = useParams<{ studentId?: string }>();
+  console.log(classId, studentId);
+  const { studentClass, getSingleStudentInClass, loading } =
+    useSingleStudentClassStore();
+  const { fetchScoreOfStudentInClass, scoreDetail, scoreLoading } =
+    useScoreStore();
+  const { aClass, getClassByID } = useSingleClassStore();
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      if (id) {
-        await Promise.all([getStudentByID(id), getStudentScoreByID(id)]);
-        setLoading(false);
-      }
-    };
+    getSingleStudentInClass(classId ?? "", studentId ?? "");
+  }, [classId, fetchScoreOfStudentInClass, getSingleStudentInClass, studentId]);
+  useEffect(() => {
+    fetchScoreOfStudentInClass(classId ?? "", studentId ?? "");
+  }, [classId, fetchScoreOfStudentInClass, getSingleStudentInClass, studentId]);
 
-    fetchData();
-  }, [id, getStudentByID, getStudentScoreByID]);
+  useEffect(() => {
+    classId && classId !== "" && getClassByID(classId);
+  }, [classId, getClassByID]);
 
-  if (!id) {
-    return null;
-  }
-
-  if (loading || !aStudent || !aScore) {
-    return (
-      <div className="spin-container">
-        <Spin />
-      </div>
-    );
-  }
-
-  return (
+  return loading || scoreLoading || !studentClass || !scoreDetail ? (
+    <div className="spin-container">
+      <Spin />
+    </div>
+  ) : (
     <div className="student-detail">
-      <div className="back-btn">
-        <BackButton />
+      <div className="breadcrumb-frame-custom">
+        <CustomBreadcrumb />
       </div>
-      <FormStudentDetail studentDetail={aStudent} studentScore={aScore} />
+      <FormStudentDetail
+        studentDetail={studentClass}
+        studentScore={scoreDetail}
+        classId={classId || ""}
+        className={aClass?.ClassName ?? ""}
+        studentId={studentId || ""}
+      />
     </div>
   );
 };

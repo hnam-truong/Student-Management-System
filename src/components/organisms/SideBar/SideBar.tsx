@@ -14,6 +14,7 @@ import { FaRegUser } from "react-icons/fa";
 import "./SideBar.scss";
 import RouterEndpoints from "../../../constants/RouterEndpoints";
 import Sizes from "../../../constants/Sizes";
+import { IAccount } from "../../../interfaces/account.interface";
 
 type MenuItem = Required<MenuProps>["items"][number];
 
@@ -33,28 +34,53 @@ function getItem(
   } as MenuItem;
 }
 
-const items: MenuItem[] = [
-  getItem("Dashboard", RouterEndpoints.Dashboard, <MdOutlineSpaceDashboard />),
-  getItem("Student management", "students", <MdOutlineGroup />, [
-    getItem("Student list", RouterEndpoints.StudentsManagement),
-    getItem("Reserve list", RouterEndpoints.ReservedStudents),
-  ]),
-  getItem(
-    "Class management",
-    RouterEndpoints.ClassesManagement,
-    <MdOutlineSchool size={23} />
-  ),
-  getItem(
-    "Email management",
-    RouterEndpoints.EmailsManagement,
-    <MdOutlineEmail size={23} />
-  ),
-  getItem(
-    "User management",
-    RouterEndpoints.UsersManagement,
-    <FaRegUser size={20} />
-  ),
-];
+let userInfo: IAccount | null = null;
+
+try {
+  const userInfoString = localStorage.getItem("userInfo");
+  if (userInfoString) {
+    userInfo = JSON.parse(userInfoString);
+  }
+} catch (error) {
+  console.error("Error parsing userInfo:", error);
+}
+
+const typeUser = userInfo?.role ?? "";
+const items: MenuItem[] =
+  typeUser === "Admin"
+    ? [
+        getItem(
+          "Dashboard",
+          RouterEndpoints.Dashboard,
+          <MdOutlineSpaceDashboard />
+        ),
+        getItem("Student management", "students", <MdOutlineGroup />, [
+          getItem("Student list", RouterEndpoints.StudentsManagement),
+          getItem("Reserve list", RouterEndpoints.ReservedStudents),
+        ]),
+        getItem(
+          "Class management",
+          RouterEndpoints.ClassesManagement,
+          <MdOutlineSchool size={23} />
+        ),
+        getItem(
+          "Email management",
+          RouterEndpoints.EmailsManagement,
+          <MdOutlineEmail size={23} />
+        ),
+        getItem(
+          "User management",
+          RouterEndpoints.UsersManagement,
+          <FaRegUser size={20} />
+        ),
+      ]
+    : [
+        getItem(
+          "Class management",
+          RouterEndpoints.ClassesManagement,
+          <MdOutlineSchool size={23} />
+        ),
+      ];
 const SideBar = () => {
   const navigate = useNavigate();
   const location = useLocation();

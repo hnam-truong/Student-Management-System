@@ -9,8 +9,10 @@ import SwitchStatus from "../../atoms/SwitchStatus/SwitchStatus";
 import { IUser } from "../../../interfaces/user.interface";
 import FormRadio from "../../atoms/FormRadio/FormRadio";
 import FormSelect from "../../atoms/FormSelect/FormSelect";
+
 import {
-  validateDateOfBirth,
+  validatePassword,
+  validateDOB,
   validateEmail,
   validatePhoneNumber,
 } from "../../../utils/Validations";
@@ -39,12 +41,19 @@ const UserForm: React.FC<UserFormProps> = ({
     {
       id: "1",
       label: "Name",
-      name: "Name",
+      name: "FullName",
       text: "User's name",
       rules: [{ required: true, message: "Please input user's name!" }],
     },
     {
       id: "2",
+      label: "UserName",
+      name: "Username",
+      text: "Username ",
+      rules: [{ required: true, message: "Please input user name!" }],
+    },
+    {
+      id: "3",
       label: "Email",
       name: "Email",
       text: "Email address",
@@ -59,7 +68,14 @@ const UserForm: React.FC<UserFormProps> = ({
       ],
     },
     {
-      id: "3",
+      id: "4",
+      label: "Address",
+      name: "Address",
+      text: "Address ",
+      rules: [{ required: true, message: "Please input address!" }],
+    },
+    {
+      id: "5",
       label: "Phone",
       name: "Phone",
       text: "Phone number",
@@ -76,8 +92,8 @@ const UserForm: React.FC<UserFormProps> = ({
   ];
 
   const genders = [
-    { id: "1", value: true, name: "Male" },
-    { id: "2", value: false, name: "Female" },
+    { id: "1", value: "Male", name: "Male" },
+    { id: "2", value: "Female", name: "Female" },
   ];
 
   const genderRules = [{ required: true, message: "Please input gender!" }];
@@ -88,7 +104,7 @@ const UserForm: React.FC<UserFormProps> = ({
     { required: true, message: "Please input date of birth!" },
     {
       validator: (_: unknown, value: string) =>
-        validateDateOfBirth(_, value)
+        validateDOB(_, value)
           ? Promise.resolve()
           : Promise.reject(new Error("Age must be greater than or equal 18!")),
     },
@@ -97,7 +113,7 @@ const UserForm: React.FC<UserFormProps> = ({
   // Reset form values
   const resetFormValue = () => {
     form.resetFields();
-    setIsReset(true);
+    setIsReset(false);
   };
 
   useEffect(() => {
@@ -137,11 +153,29 @@ const UserForm: React.FC<UserFormProps> = ({
           />
         </Form.Item>
       ))}
-      <Form.Item
-        label="Date of birth"
-        name="DateOfBirth"
-        rules={dateOfBirthRules}
-      >
+      {!isEdit && (
+        <Form.Item
+          key="Password"
+          label="Password"
+          name="Password"
+          rules={[
+            { required: true, message: "Please input password!" },
+            {
+              validator: (_: unknown, value: string) =>
+                validatePassword(value)
+                  ? Promise.resolve()
+                  : Promise.reject(
+                      new Error(
+                        "Password must be 8-12 characters long and contain at least one lowercase letter, one uppercase letter, one digit, and one special character!"
+                      )
+                    ),
+            },
+          ]}
+        >
+          <Input placeholder="Password" type="password" />
+        </Form.Item>
+      )}
+      <Form.Item label="Date of birth" name="DOB" rules={dateOfBirthRules}>
         <DatePicker format="DD/MM/YYYY" placeholder="Select date" />
       </Form.Item>
       <FormRadio
@@ -153,7 +187,7 @@ const UserForm: React.FC<UserFormProps> = ({
       <SwitchStatus
         name="Status"
         label="Activate user"
-        valuePropName="checked"
+        // valuePropName="checked"
       />
     </Form>
   );

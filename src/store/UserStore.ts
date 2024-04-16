@@ -5,6 +5,7 @@
 // 4: use set(newState) to update state value
 
 import { create } from "zustand";
+import { AxiosError } from "axios";
 import { IUser } from "../interfaces/user.interface";
 import {
   deleteSingleUser,
@@ -12,8 +13,8 @@ import {
   postUser,
   getUsersById,
   postSingleUser,
-  putSingleUser,
-} from "../services/api/ApiCaller5";
+  patchSingleUser,
+} from "../services/api/api-caller/UserApiCaller";
 import { errorNotify, successNotify } from "../components/atoms/Notify/Notify";
 import {
   generateErrorMessage,
@@ -23,20 +24,20 @@ import {
 interface IUserStore {
   user: IUser[] | null;
   loading: boolean;
-  fetchUser: () => void;
+  fetchUser: (searchTerm?: string, searchSignal?: AbortSignal) => void;
   postUser: (data: IUser[]) => Promise<void>;
 }
 
 export const useUserStore = create<IUserStore>((set) => ({
   user: [],
   loading: false,
-  fetchUser: async () => {
+  fetchUser: async (searchTerm?: string, searchSignal?: AbortSignal) => {
     set((state) => ({ ...state, loading: true }));
     try {
-      const data = await getUsers();
+      const data = await getUsers(searchTerm, searchSignal);
       set((state) => ({ ...state, user: data }));
     } catch (error) {
-      console.error("API Error: ", error);
+      set((state) => ({ ...state, user: [] }));
     } finally {
       set((state) => ({ ...state, loading: false }));
     }
@@ -51,8 +52,11 @@ export const useUserStore = create<IUserStore>((set) => ({
       );
     } catch (err) {
       // Catch & log error
-      console.log("API Error:", err);
-      errorNotify(generateErrorMessage("create", "new user"));
+      const axiosError = err as AxiosError;
+      errorNotify(
+        axiosError?.response?.data?.toString() ??
+          generateErrorMessage("add", "the user")
+      );
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));
@@ -66,7 +70,10 @@ interface ISingleUserStore {
   users: IUser[];
   getUserByID: (id: string) => void;
   postSingleUser: (data: IUser) => Promise<void>;
-  putSingleUser: (data: IUser, id: string) => Promise<void>;
+  putSingleUser: (
+    data: { path: string; value: string | boolean; op: string }[],
+    id: string
+  ) => Promise<void>;
   deleteSingleUser: (id: string) => Promise<void>;
 }
 export const useSingleUserStore = create<ISingleUserStore>((set) => ({
@@ -92,25 +99,40 @@ export const useSingleUserStore = create<ISingleUserStore>((set) => ({
   postSingleUser: async (data: IUser) => {
     set((state) => ({ ...state, loading: true }));
     try {
-      await postSingleUser({ data });
+      const response = await postSingleUser({ data });
       successNotify(
-        generateSuccessMessage("has been saved", "User information")
+        response?.message && response?.message !== ""
+          ? response?.message
+          : generateSuccessMessage("has been saved", "User information")
       );
     } catch (error) {
-      errorNotify(generateErrorMessage("create", "a new user"));
+      const axiosError = error as AxiosError;
+      errorNotify(
+        axiosError?.response?.data?.toString() ??
+          generateErrorMessage("create", "the user")
+      );
     } finally {
       set((state) => ({ ...state, loading: false }));
     }
   },
-  putSingleUser: async (data: IUser, id: string) => {
+  putSingleUser: async (
+    data: { path: string; value: string | boolean; op: string }[],
+    id: string
+  ) => {
     set((state) => ({ ...state, loading: true }));
     try {
-      await putSingleUser({ data, id });
+      const response = await patchSingleUser({ data, id });
       successNotify(
-        generateSuccessMessage("has been changed", "User information")
+        response?.message && response?.message !== ""
+          ? response?.message
+          : generateSuccessMessage("has been changed", "User information")
       );
     } catch (error) {
-      errorNotify(generateErrorMessage("edit", "the user"));
+      const axiosError = error as AxiosError;
+      errorNotify(
+        axiosError?.response?.data?.toString() ??
+          generateErrorMessage("edit", "the user")
+      );
     } finally {
       set((state) => ({ ...state, loading: false }));
     }
@@ -118,10 +140,18 @@ export const useSingleUserStore = create<ISingleUserStore>((set) => ({
   deleteSingleUser: async (id: string) => {
     set((state) => ({ ...state, loading: true }));
     try {
-      await deleteSingleUser({ id });
-      successNotify(generateSuccessMessage("deleted", "User was"));
+      const response = await deleteSingleUser({ id });
+      successNotify(
+        response?.message && response?.message !== ""
+          ? response?.message
+          : generateSuccessMessage("deleted", "User was")
+      );
     } catch (error) {
-      errorNotify(generateErrorMessage("delete", "the user"));
+      const axiosError = error as AxiosError;
+      errorNotify(
+        axiosError?.response?.data?.toString() ??
+          generateErrorMessage("delete", "the user")
+      );
     } finally {
       set((state) => ({ ...state, loading: false }));
     }

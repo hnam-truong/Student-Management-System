@@ -9,11 +9,11 @@ import DashboardTag from "../../atoms/DashboardTag/DashboardTag";
 import Sizes from "../../../constants/Sizes";
 import TableRanking from "../../molecules/TableRanking/TableRanking";
 import StudentChart from "../../molecules/StudentChart/StudentChart";
-import useDashboardStore from "../../../store/DashBoardStore";
 import GenderChart from "../../molecules/GenderChart/GenderChart";
-import StatusStudentChart from "../../molecules/StatusStudentChart/StatusStudentChart";
 import ResultChart from "../../molecules/ResultChart/ResultChart";
 import EmailChart from "../../molecules/EmailChart/EmailChart";
+import useDashboardStore from "../../../store/DashboardStore";
+import StatusStudentChart from "../../molecules/StatusStudentChart/StatusStudentChart";
 
 const TemplateDashboard = () => {
   const { dashboard, fetchDashboard, loading } = useDashboardStore();
@@ -114,6 +114,7 @@ const TemplateDashboard = () => {
                 totalEmailReserve={dashboard?.TotalEmailReserve ?? 0}
                 totalEmailRemind={dashboard?.TotalEmailRemind ?? 0}
                 totalEmailNotice={dashboard?.TotalEmailNotice ?? 0}
+                totalEmailScore={dashboard?.TotalEmailScore ?? 0}
               />
             </div>
           </div>

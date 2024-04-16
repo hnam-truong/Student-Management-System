@@ -3,21 +3,19 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useReservedStudentStore } from "../../../store/ReservedStudentStore";
 import TableHeader from "../../organisms/TableHeader/TableHeader";
 import ReservedTable from "../../templates/ReservedTable/ReservedTable";
-import { ImportFromExcel } from "../../../utils/ImportFromExcel";
 import ExcelTemplates from "../../../constants/ExcelTemplates";
+import CustomBreadcrumb from "../../atoms/CustomBreadcrumb/CustomBreadcrumb";
 
 const ReservedStudents: React.FC = () => {
-  const { handleExcelReservedStudent } = ImportFromExcel();
-  const { fetchReservedStudent, reservedStudent } = useReservedStudentStore();
-  const [isImport, setIsImport] = useState<boolean>(false);
+  const { fetchReservedStudent, reservedStudent, loading } =
+    useReservedStudentStore();
   const [isExport, setIsExport] = useState<boolean>(false);
   const [isChangeData, setIsChangeData] = useState<boolean>(false);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchSignal, setSearchSignal] = useState<AbortSignal | undefined>();
   const handleDataChange = () => {
     setIsChangeData((pre) => !pre);
   };
-  const importData = useCallback(() => {
-    setIsImport(true);
-  }, []);
   const exportData = useCallback(() => {
     setIsExport(true);
   }, []);
@@ -30,30 +28,32 @@ const ReservedStudents: React.FC = () => {
       sessionStorage.clear();
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
-    setTimeout(() => fetchReservedStudent(), 500);
+    setTimeout(() => fetchReservedStudent(searchTerm, searchSignal), 500);
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [isChangeData]);
-  const loading = !reservedStudent || !reservedStudent.length;
+  }, [isChangeData, searchSignal, searchTerm]);
 
   return (
     <div className="table-container">
+      <div className="breadcrumb-frame-custom">
+        <CustomBreadcrumb />
+      </div>
       <TableHeader
         title="Reserve List"
         href={ExcelTemplates.ReservedStudent}
         fileDownload="Reserved Student Import Template"
-        excelUpload={handleExcelReservedStudent}
-        importData={importData}
         exportData={exportData}
         handleDataChange={handleDataChange}
+        isImport={false}
         showAddModal
+        setSearchTerm={setSearchTerm}
+        setSearchSignal={setSearchSignal}
       />
       <div className="table-container__content">
         <ReservedTable
           reservedStudent={reservedStudent ?? []}
           loading={loading}
-          isImport={isImport}
           isExport={isExport}
           completedExport={completedExport}
           handleDataChange={handleDataChange}

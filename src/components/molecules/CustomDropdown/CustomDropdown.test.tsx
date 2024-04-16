@@ -1,18 +1,22 @@
+import { MemoryRouter } from "react-router-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
 import CustomDropdown from "./CustomDropdown";
+import RouterEndpoints from "../../../constants/RouterEndpoints";
 
 describe("CustomDropdown Component", () => {
   // Mock function to simulate handleDataChange
-  const mockHandleDataChange = vi.fn();
+  const mockHandleDataChange = () => {};
 
   test("should render correctly", () => {
     render(
-      <CustomDropdown
-        handleDataChange={mockHandleDataChange}
-        id="123"
-        viewLink="/sample"
-        isDelete
-      />
+      <MemoryRouter>
+        <CustomDropdown
+          handleDataChange={mockHandleDataChange}
+          id="1"
+          viewLink={RouterEndpoints.StudentsManagement}
+          isDelete
+        />
+      </MemoryRouter>
     );
 
     // Check if the dropdown component is rendered

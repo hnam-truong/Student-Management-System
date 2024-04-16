@@ -8,8 +8,12 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 import Sizes from "../../../constants/Sizes";
 import { useAuthStore } from "../../../store/AuthStore";
 import { errorNotify } from "../../atoms/Notify/Notify";
+import { getUserInfo } from "../../../utils/JWTAuth";
+import Colors from "../../../constants/Colors";
 
 const Account: React.FC = () => {
+  const userAvatar = localStorage.getItem("imgUrl");
+  const userName = getUserInfo().fullname;
   const [open, setOpen] = React.useState(false);
   const { postLogout } = useAuthStore();
 
@@ -39,6 +43,21 @@ const Account: React.FC = () => {
       </Button>
     </div>
   );
+  const generateColor = (name: string): string => {
+    const colors = [
+      Colors.Yellow,
+      Colors.Green,
+      Colors.Blue,
+      Colors.Orange,
+      Colors.DarkGreen,
+      Colors.Pink,
+    ];
+    const charCodeSum = name
+      .split("")
+      .reduce((sum: number, char: string) => sum + char.charCodeAt(0), 0);
+    const index = charCodeSum % colors.length;
+    return colors[index];
+  };
   return (
     <Popover
       arrow={false}
@@ -49,9 +68,24 @@ const Account: React.FC = () => {
       placement="bottom"
     >
       <div className="avatar centered">
-        <Avatar src="/assets/images/avatar.png" alt="user-avatar" size={50} />
+        {userAvatar ? (
+          <Avatar src={userAvatar} size={50} />
+        ) : (
+          localStorage.getItem("token") && (
+            <div
+              className="centered avatar-header-container"
+              style={{ backgroundColor: generateColor(userName || "") }}
+            >
+              {userName && (
+                <span className="avatar-header-initial">
+                  {userName.slice(0, 2).toUpperCase()}
+                </span>
+              )}
+            </div>
+          )
+        )}
         <div className="user-name centered">
-          <p> Warrior Tran</p>
+          <p>{userName}</p>
           <MdKeyboardArrowDown size={20} />
         </div>
       </div>

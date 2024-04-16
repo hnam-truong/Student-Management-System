@@ -1,6 +1,8 @@
 import { useEffect } from "react";
-import { useSingleScoreStore } from "../../../store/ScoreStore";
+import { Empty, Spin } from "antd";
+import { useScoreStore } from "../../../store/ScoreStore";
 import ScoreInClassesTable from "../ScoreInClassesTable/ScoreInClassesTable";
+import EmptyDescription from "../../../constants/EmptyDescription";
 
 interface ScoreInClassesOfStudentProps {
   attendeeID: string;
@@ -8,19 +10,24 @@ interface ScoreInClassesOfStudentProps {
 const ScoreInClassesOfStudent = ({
   attendeeID,
 }: ScoreInClassesOfStudentProps) => {
-  const { getStudentScoreByID, aScore, loading } = useSingleScoreStore();
+  const { fetchAllScoreByStudentId, scoreLoading, studentScore } =
+    useScoreStore();
   useEffect(() => {
-    getStudentScoreByID(attendeeID);
-  }, [getStudentScoreByID, attendeeID]);
-
-  // const loading = !aScore;
-  const scores =
-    aScore &&
-    new Array(1).fill({
-      ...aScore,
-    });
+    fetchAllScoreByStudentId(attendeeID);
+  }, [fetchAllScoreByStudentId, attendeeID]);
   // error array
-  return <ScoreInClassesTable scores={scores ?? []} loading={loading} />;
+  if (scoreLoading || !studentScore) {
+    return (
+      <div className="spin-container">
+        <Spin data-testid="loading-spinner" />
+      </div>
+    );
+  }
+  return studentScore && !scoreLoading && studentScore?.length === 0 ? (
+    <Empty description={EmptyDescription.Score} />
+  ) : (
+    <ScoreInClassesTable scores={studentScore ?? []} loading={scoreLoading} />
+  );
 };
 
 export default ScoreInClassesOfStudent;

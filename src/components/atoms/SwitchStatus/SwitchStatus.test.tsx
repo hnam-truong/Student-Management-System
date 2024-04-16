@@ -8,11 +8,7 @@ describe("Switch Status Component", () => {
     // Arrange
     render(
       <Form>
-        <SwitchStatus
-          name="ActivateReserving"
-          label="Activate reserving"
-          valuePropName="checked"
-        />
+        <SwitchStatus name="ActivateReserving" label="Activate reserving" />
       </Form>
     );
 
@@ -30,11 +26,7 @@ describe("Switch Status Component", () => {
     // Arrange
     render(
       <Form>
-        <SwitchStatus
-          name="ActivateReserving"
-          label="Activate reserving"
-          valuePropName="checked"
-        />
+        <SwitchStatus name="ActivateReserving" label="Activate reserving" />
       </Form>
     );
 
@@ -55,11 +47,7 @@ describe("Switch Status Component", () => {
     // Arrange
     render(
       <Form>
-        <SwitchStatus
-          name="ActivateReserving"
-          label="Activate reserving"
-          valuePropName="checked"
-        />
+        <SwitchStatus name="ActivateReserving" label="Activate reserving" />
       </Form>
     );
 

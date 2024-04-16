@@ -66,13 +66,15 @@ const TemplateScore: React.FC<TemplateScoreProps> = ({
 
   return (
     <div>
-      <TableHeader isHeaderBottom={false} title="Scores" />
+      <TableHeader
+        isHeaderBottom={false}
+        title="Scores"
+        setSearchSignal={() => {}}
+        setSearchTerm={() => {}}
+      />
       <div className="mt-2">
         <div className="template-module-score">
           <h2>Choose module scores you want to send</h2>
-          <Checkbox className="template-check-all">
-            All module scores will be applied
-          </Checkbox>
         </div>
         <Divider />
       </div>
@@ -85,9 +87,7 @@ const TemplateScore: React.FC<TemplateScoreProps> = ({
               title={
                 <Row>
                   <Col {...colTitleLayout}>Module Score</Col>
-                  <Col>
-                    <Checkbox>Apply all</Checkbox>
-                  </Col>
+                  <Col>{/* <Checkbox>Apply all</Checkbox> */}</Col>
                 </Row>
               }
               bordered={false}
@@ -119,9 +119,7 @@ const TemplateScore: React.FC<TemplateScoreProps> = ({
               title={
                 <Row>
                   <Col {...colTitleLayout}>Final Score</Col>
-                  <Col>
-                    <Checkbox>Apply all</Checkbox>
-                  </Col>
+                  <Col>{/* <Checkbox>Apply all</Checkbox> */}</Col>
                 </Row>
               }
               bordered={false}

@@ -1,20 +1,21 @@
 import React, { useEffect } from "react";
 import { Form, Input, Select, DatePicker, Spin } from "antd";
 import {
-  validateDateOfBirth,
+  validateDOB,
   validateEmail,
   validatePhoneNumber,
 } from "../../../utils/Validations";
 import { useProvinceStore } from "../../../store/ProvinceStore";
 
 const { Option } = Select;
-const StatusOptions = ["In class", "Drop out", "Finish", "Reserve"];
+const StatusOptions = ["Active", "Inactive"];
 
 interface GeneralInfoProps {
   isEdit?: boolean;
+  isAddSuccess?: boolean;
 }
 
-const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit }) => {
+const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit, isAddSuccess }) => {
   const { fetchProvinces, loading, province } = useProvinceStore();
 
   useEffect(() => {
@@ -25,7 +26,7 @@ const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit }) => {
     { required: true, message: "Please input date of birth!" },
     {
       validator: (_: unknown, value: string) =>
-        validateDateOfBirth(_, value)
+        validateDOB(_, value)
           ? Promise.resolve()
           : Promise.reject(new Error("Age must be greater than or equal 18!")),
     },
@@ -40,18 +41,18 @@ const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit }) => {
         {isEdit && (
           <Form.Item
             label={<span className="custom-label-id">ID</span>}
-            name="ID"
+            name="StudentId"
           >
             <Input className="input-content" disabled />
           </Form.Item>
         )}
         <Form.Item
           className="enter-name"
-          label="Name"
-          name="Name"
+          label="Full Name"
+          name="FullName"
           rules={[{ required: true, message: "Please enter the name" }]}
         >
-          <Input className="input-content" placeholder="Enter Name" />
+          <Input className="input-content" placeholder="Enter Full Name" />
         </Form.Item>
         <Form.Item
           label="Gender"
@@ -59,15 +60,11 @@ const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit }) => {
           rules={[{ required: true, message: "Please select the gender" }]}
         >
           <Select placeholder="Select Gender" className="select-content">
-            <Option value={false}>Male</Option>
-            <Option value>Female</Option>
+            <Option value>Male</Option>
+            <Option value={false}>Female</Option>
           </Select>
         </Form.Item>
-        <Form.Item
-          label="Date of Birth"
-          name="DateOfBirth"
-          rules={dateOfBirthRules}
-        >
+        <Form.Item label="Date of Birth" name="DOB" rules={dateOfBirthRules}>
           <DatePicker
             className="input-content"
             format="DD/MM/YYYY"
@@ -76,10 +73,14 @@ const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit }) => {
         </Form.Item>
         <Form.Item
           label="Status"
-          name="AttendingStatus"
+          name="Status"
           rules={[{ required: true, message: "Please select the status" }]}
         >
-          <Select placeholder="Select Status" className="select-content">
+          <Select
+            placeholder="Select Status"
+            className="select-content"
+            disabled
+          >
             {StatusOptions.map((option) => (
               <Option key={option} value={option}>
                 {option}
@@ -121,12 +122,31 @@ const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit }) => {
           <Input
             className="input-content"
             placeholder="Enter Email"
-            disabled={isEdit}
+            disabled={isEdit || isAddSuccess}
           />
         </Form.Item>
         <Form.Item
-          label="Permanent Residence"
-          name="PermanentResidence"
+          label="FA Account"
+          name="FAAccount"
+          rules={[
+            { required: true, message: "Please enter the email" },
+            {
+              validator: (_, value) =>
+                validateEmail(value)
+                  ? Promise.resolve()
+                  : Promise.reject(new Error("Invalid email format")),
+            },
+          ]}
+        >
+          <Input
+            className="input-content"
+            placeholder="Enter FAAccount"
+            disabled={isEdit || isAddSuccess}
+          />
+        </Form.Item>
+        <Form.Item
+          label="Area"
+          name="Area"
           rules={[
             {
               required: true,
@@ -134,10 +154,7 @@ const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit }) => {
             },
           ]}
         >
-          <Select
-            placeholder="Select Permanent Residence"
-            className="select-content"
-          >
+          <Select placeholder="Select Area" className="select-content">
             {province?.map((option) => (
               <Option key={option.id} value={option.name}>
                 {option.name}
@@ -146,11 +163,11 @@ const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit }) => {
           </Select>
         </Form.Item>
         <Form.Item
-          label="Location"
-          name="Location"
+          label="Address"
+          name="Address"
           rules={[{ required: true, message: "Please select the location" }]}
         >
-          <Select placeholder="Select Location" className="select-content">
+          <Select placeholder="Select Address" className="select-content">
             {province?.map((option) => (
               <Option key={option.id} value={option.name}>
                 {option.name}
@@ -165,6 +182,7 @@ const GeneralInfo: React.FC<GeneralInfoProps> = ({ isEdit }) => {
 
 GeneralInfo.defaultProps = {
   isEdit: false,
+  isAddSuccess: false,
 };
 
 export default GeneralInfo;

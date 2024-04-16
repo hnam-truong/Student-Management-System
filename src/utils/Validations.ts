@@ -45,9 +45,9 @@ export const validatePassword = (password: string) => {
 export const validateGPA = (gpa: number) =>
   typeof gpa === "number" && gpa >= 0 && gpa <= 10;
 
-// Validate DateOfBirth
+// Validate DOB
 // > 18 age
-export const validateDateOfBirth = (_: unknown, dateString: string) => {
+export const validateDOB = (_: unknown, dateString: string) => {
   const today = new Date();
   const birthDate = new Date(dateString);
 

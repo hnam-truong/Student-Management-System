@@ -3,21 +3,18 @@ import { Modal, Spin } from "antd";
 import "./ReserveInformation.scss";
 import { VscError } from "react-icons/vsc";
 import { IReservedStudent } from "../../../interfaces/reserved-student.interface";
-import useReservingCondition from "../../../store/ReservingConditionStore";
 import ClassDetailHeader from "../ClassDetailHeader/ClassDetailHeader";
 import { useClassStore, useSingleClassStore } from "../../../store/ClassStore";
-import ClassDetailInfoModal from "../../atoms/ClassDetailInfoModal/ClassDetailInfoModal";
-import { useSingleScoreStore } from "../../../store/ScoreStore";
-import FeeTable from "../../atoms/FeeTable/FeeTable";
-import MockTable from "../../atoms/MockTable/MockTable";
+import { useScoreStore } from "../../../store/ScoreStore";
 import { IClass } from "../../../interfaces/class.interface";
 import Sizes from "../../../constants/Sizes";
 import Colors from "../../../constants/Colors";
-import ReclassInformation from "../ReclassInformation/ReclassInformation";
 import FormFooter from "../FormFooter/FormFooter";
 import { useReservedStudentSingleStore } from "../../../store/ReservedStudentStore";
 import ReservingInformation from "../../atoms/ReservingInformation/ReservingInformation";
-// import { useSingleStudentStore } from "../../../store/StudentStore";
+import StudentDetailScoreInfo from "../../atoms/StudentDetailScoreInfo/StudentDetailScoreInfo";
+import StudentReClass from "../StudentReClass/StudentReClass";
+import ClassDetailInfoModal from "../../atoms/ClassDetailInfoModal/ClassDetailInfoModal";
 
 type ReserveInformationProps = {
   data: IReservedStudent;
@@ -31,80 +28,75 @@ const ReserveInformation = ({
   handleDataChange,
   updateStatusInClass,
 }: ReserveInformationProps) => {
-  const [choosedClass, setChoosedClass] = useState<IClass>();
+  const [chooseClass, setChooseClass] = useState<IClass>();
   const [open, setOpen] = useState<boolean>(false);
-  const { fetchReservingCondition, reservingCondition } =
-    useReservingCondition();
-  const { putReservedStudent } = useReservedStudentSingleStore();
+
+  const { putReserveStudentInClass } = useReservedStudentSingleStore();
   // const { putSingleStudent } = useSingleStudentStore();
   const { getClassByID, aClass } = useSingleClassStore();
-  const { getClassesByName, classes } = useClassStore();
-  const { aScore, getStudentScoreByID } = useSingleScoreStore();
-  const handleCloseReclass = useCallback(() => {
+  const { getAllClassToReClass, classes } = useClassStore();
+  // const { aScore, getStudentScoreByID } = useSingleScoreStore();
+  const { fetchScoreOfStudentInClass, scoreDetail, scoreLoading } =
+    useScoreStore();
+  const handleCloseReClass = useCallback(() => {
     setOpen(false);
   }, []);
-  const handleReclass = () => {
-    putReservedStudent(data?.ID, {
-      ...data,
-      Status: "In class",
+  const handleReClass = () => {
+    // putReservedStudent(data?.StudentId, {
+    //   ...data,
+    //   Status: "In class",
+    // });
+    putReserveStudentInClass(data?.StudentId, data.ClassId, {
+      ClassId: chooseClass?.Id ?? "",
+      Status: "InClass",
     });
-    handleCloseReclass();
+    handleCloseReClass();
     handleDataChange();
     updateStatusInClass();
     close();
   };
   useEffect(() => {
-    getClassByID(data?.ClassID);
-    fetchReservingCondition();
-    getStudentScoreByID("1");
+    getClassByID(data?.ClassId);
+    fetchScoreOfStudentInClass(data.ClassId ?? "", data.StudentId ?? "");
+    getAllClassToReClass(data.ClassName, data.StudentId);
   }, [
-    fetchReservingCondition,
-    data?.ClassID,
+    data?.ClassId,
     getClassByID,
-    getStudentScoreByID,
-    data?.ID,
+    data?.StudentId,
+    data.ClassName,
+    getAllClassToReClass,
+    fetchScoreOfStudentInClass,
   ]);
-  useEffect(() => {
-    setTimeout(() => getClassesByName(aClass?.ClassName ?? ""), 1000);
-  }, [aClass?.ClassName, getClassesByName]);
-  console.log(data.ClassID);
 
-  const chooseCondition = data?.Conditions;
-  const loading = !aClass || !reservingCondition || !classes || !aScore;
+  console.log(data.Conditions);
+
+  const loadingClass = !aClass;
   return (
     <div className="root-reserve-modal">
-      {loading ? (
+      {loadingClass ? (
         <Spin data-testid="loading-spinner" />
       ) : (
-        <ClassDetailHeader classDetail={aClass} />
+        <ClassDetailHeader classDetail={aClass} hideSendEmail />
       )}
       <hr className="divider-hr" />
       <div className="reserving modal-content-custom">
-        {loading && <Spin />}
-        <div className="reserving-score">
-          <div className="reserving-title">Student Score</div>
-          <div className="reserving-score-table">
-            {aScore && (
-              <>
-                <div>
-                  <div className="reserving-title">FEE</div>
-                  <FeeTable studentScore={aScore} />
-                </div>
-                <div>
-                  <div className="reserving-title">MOCK</div>
-                  <MockTable studentScore={aScore} />
-                </div>
-              </>
-            )}
+        {scoreLoading ? (
+          <Spin />
+        ) : (
+          <div className="reserving-score">
+            <div className="reserving-title">Student Score</div>
+            <div className="reserving-score-table">
+              <StudentDetailScoreInfo
+                className={data.ClassName}
+                classId={data.ClassId}
+                studentScore={scoreDetail}
+              />
+            </div>
           </div>
-        </div>
+        )}
         <hr className="divider-hr" />
         <div className="reserving-title">Reserving information</div>
-        <ReservingInformation
-          chooseCondition={chooseCondition}
-          data={data}
-          reservingCondition={reservingCondition}
-        />
+        <ReservingInformation data={data} />
         <div>
           <hr className="divider-hr" />
           <div className="reserving-content-classes">
@@ -114,17 +106,14 @@ const ReserveInformation = ({
                 ? classes.map((classItem) => (
                     // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                     <div
-                      key={classItem.ClassID}
+                      key={classItem.Id}
                       onClick={() => {
-                        setChoosedClass(classItem);
+                        setChooseClass(classItem);
                         // close();
                         setOpen(true);
                       }}
                     >
-                      <ClassDetailInfoModal
-                        classDetail={classItem}
-                        key={classItem.ClassID}
-                      />
+                      <ClassDetailInfoModal classDetail={classItem} />
                     </div>
                   ))
                 : "No class on Opening"}
@@ -134,22 +123,22 @@ const ReserveInformation = ({
       </div>
       <Modal
         open={open}
-        onCancel={handleCloseReclass}
-        onOk={handleReclass}
+        onCancel={handleCloseReClass}
+        onOk={handleReClass}
         title={<div className="modal-header-custom centered">Re-class</div>}
-        closeIcon={<VscError size={Sizes.LgMedium} color={Colors.White} />}
+        closeIcon={<VscError size={Sizes?.LgMedium} color={Colors?.White} />}
         footer={
           <div className="centered">
             <FormFooter
-              handleCancel={handleCloseReclass}
-              handleOk={handleReclass}
+              handleCancel={handleCloseReClass}
+              handleOk={handleReClass}
               text="Re-class"
             />
           </div>
         }
       >
         <div className="modal-content-custom">
-          <ReclassInformation classInfo={choosedClass ?? null} />
+          <StudentReClass classInfo={chooseClass ?? null} />
         </div>
       </Modal>
     </div>

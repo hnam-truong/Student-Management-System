@@ -19,11 +19,11 @@ import { Form, Switch } from "antd";
 interface SwitchStatusProps {
   name: string;
   label: string;
-  valuePropName: string;
+  // valuePropName: string;
 }
 
-const SwitchStatus = ({ name, label, valuePropName }: SwitchStatusProps) => (
-  <Form.Item name={name} label={label} valuePropName={valuePropName}>
+const SwitchStatus = ({ name, label }: SwitchStatusProps) => (
+  <Form.Item name={name} label={label}>
     <Switch />
   </Form.Item>
 );

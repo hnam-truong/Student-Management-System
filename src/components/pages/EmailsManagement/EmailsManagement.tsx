@@ -6,10 +6,15 @@ import "./EmailsManagement.scss";
 import EmailACateManagementProps from "../../templates/EmailACateManagement/EmailACateManagement";
 import EmailOtherManagement from "../../templates/EmailOtherManagement/EmailOtherManagement";
 import { useEmailStore } from "../../../store/EmailStore";
+import CustomBreadcrumb from "../../atoms/CustomBreadcrumb/CustomBreadcrumb";
+import TableHeader from "../../organisms/TableHeader/TableHeader";
 
 const EmailsManagement: React.FC = () => {
   const { getEmail, email, loading } = useEmailStore();
   const [isChangeData, setIsChangeData] = useState<boolean>(false);
+  const [searchSignal, setSearchSignal] = useState<AbortSignal>();
+  const [searchTerm, setSearchTerm] = useState<string>("");
+
   const handleDataChange = () => {
     setIsChangeData((pre) => !pre);
   };
@@ -19,11 +24,15 @@ const EmailsManagement: React.FC = () => {
       sessionStorage.clear();
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
-    setTimeout(() => getEmail(), 500);
+    setTimeout(() => getEmail(searchTerm, searchSignal), 500);
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
-  }, [isChangeData]);
+  }, [isChangeData, searchTerm, searchSignal]);
+
+  const filteredEmailData = email?.filter(
+    (item) => item.Status === "Active" || item.Status === "Inactive"
+  );
 
   const tabsItems: TabsProps["items"] = [
     {
@@ -31,31 +40,31 @@ const EmailsManagement: React.FC = () => {
       label: "All Categories",
       children: (
         <EmailCategoriesManagement
-          emailData={email}
+          emailData={filteredEmailData || []}
           loading={loading}
           handleDataChange={handleDataChange}
         />
       ),
     },
     {
-      key: "reserve",
-      label: "Reserve",
+      key: "reservation",
+      label: "Reservation",
       children: (
         <EmailACateManagementProps
-          cateFilter="Reserve"
-          emailData={email}
+          cateFilter="Reservation"
+          emailData={filteredEmailData || []}
           loading={loading}
           handleDataChange={handleDataChange}
         />
       ),
     },
     {
-      key: "notice",
-      label: "Notice",
+      key: "inform",
+      label: "Inform",
       children: (
         <EmailACateManagementProps
-          cateFilter="Notice"
-          emailData={email}
+          cateFilter="Inform"
+          emailData={filteredEmailData || []}
           loading={loading}
           handleDataChange={handleDataChange}
         />
@@ -67,6 +76,18 @@ const EmailsManagement: React.FC = () => {
       children: (
         <EmailACateManagementProps
           cateFilter="Remind"
+          emailData={filteredEmailData || []}
+          loading={loading}
+          handleDataChange={handleDataChange}
+        />
+      ),
+    },
+    {
+      key: "score",
+      label: "Score",
+      children: (
+        <EmailACateManagementProps
+          cateFilter="Score"
           emailData={email}
           loading={loading}
           handleDataChange={handleDataChange}
@@ -74,11 +95,11 @@ const EmailsManagement: React.FC = () => {
       ),
     },
     {
-      key: "ohter",
+      key: "other",
       label: "Other",
       children: (
         <EmailOtherManagement
-          emailData={email}
+          emailData={filteredEmailData || []}
           loading={loading}
           handleDataChange={handleDataChange}
         />
@@ -88,6 +109,20 @@ const EmailsManagement: React.FC = () => {
 
   return (
     <div className="table-container classinfo">
+      <div className="breadcrumb-frame-custom">
+        <CustomBreadcrumb />
+      </div>
+      <div className="table-container">
+        <TableHeader
+          title="Email List"
+          isExport={false}
+          isImport={false}
+          isSearch
+          isAddEmail
+          setSearchSignal={setSearchSignal}
+          setSearchTerm={setSearchTerm}
+        />
+      </div>
       <div className="classtab">
         <Tabs defaultActiveKey="email-cate" items={tabsItems} />
       </div>

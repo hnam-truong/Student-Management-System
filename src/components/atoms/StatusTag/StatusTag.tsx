@@ -13,7 +13,7 @@ import Sizes from "../../../constants/Sizes";
 import SizesResponsive from "../../../constants/SizesResponsive";
 
 interface StatusProps {
-  status: boolean | string | null;
+  status: number | boolean | string | null;
   content?: string;
   customWidth?: string; // Prop for custom width
   isBorder?: boolean;
@@ -33,14 +33,21 @@ const StatusTag: React.FC<StatusProps> = ({
   switch (status) {
     // For Status tag
     case true:
+    case 1:
     case "Active":
+    case "Passed":
+    case "Done":
+    case "Excellent":
+    case "Received":
     case "Finish":
       backgroundColor = Colors.DarkGreen;
       fontWeight = FontWeights.SemiBold;
       textColor = Colors.LightWhite;
       break;
-
     case false:
+    case 0:
+    case "Not passed":
+    case "Fail":
       backgroundColor = Colors.Red;
       fontWeight = FontWeights.SemiBold;
       textColor = Colors.LightWhite;
@@ -53,18 +60,24 @@ const StatusTag: React.FC<StatusProps> = ({
       break;
 
     case "Disable":
+    case "Not yet":
       backgroundColor = Colors.SlateGray;
       fontWeight = FontWeights.Normal;
       textColor = Colors.LightWhite;
       break;
 
     case "In class":
+    case "Score":
       backgroundColor = Colors.LightGreen;
       fontWeight = FontWeights.Normal;
       textColor = Colors.LightWhite;
       break;
 
     case "Reserve":
+    case "Reservation":
+    case "Waiting":
+    case "Average":
+    case "Is suspended":
       backgroundColor = Colors.Yellow;
       fontWeight = FontWeights.Normal;
       textColor = Colors.LightWhite;
@@ -103,6 +116,8 @@ const StatusTag: React.FC<StatusProps> = ({
       break;
 
     case "Closed":
+    case "Poor":
+    case "Remind":
       backgroundColor = Colors.LightOrange;
       fontWeight = FontWeights.Medium;
       textColor = Colors.LightWhite;
@@ -117,7 +132,22 @@ const StatusTag: React.FC<StatusProps> = ({
       break;
 
     case "Trainer":
+    case "Other":
       backgroundColor = Colors.Third;
+      fontWeight = FontWeights.Medium;
+      textColor = Colors.LightWhite;
+      break;
+
+    case "Good":
+    case "Inform":
+    case "Student":
+      backgroundColor = Colors.LightBlue;
+      fontWeight = FontWeights.Medium;
+      textColor = Colors.LightWhite;
+      break;
+
+    case "Very good":
+      backgroundColor = Colors.Blue;
       fontWeight = FontWeights.Medium;
       textColor = Colors.LightWhite;
       break;

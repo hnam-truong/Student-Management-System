@@ -1,80 +1,76 @@
 import React from "react";
 import "./StudentDetailScoreInfo.scss";
 import { Card, Space, Table } from "antd";
-import { IStudent } from "../../../interfaces/student.interface";
-import { IScore } from "../../../interfaces/score.interface";
 import "../../../styles/main.scss";
 import StatusTag from "../StatusTag/StatusTag";
 import { getCourseStatus } from "../../../utils/GenerateStatus";
+import { IModuleAssignmentScore } from "../../../interfaces/module-assignment-score.interface";
+import generateScoreDetailColumn from "../../../utils/GenerateScoreDetailColumn";
 
 interface StudentDetailScoreInfoProps {
-  studentDetail: IStudent;
-  studentScore: IScore;
+  studentScore: IModuleAssignmentScore[] | null;
+  className: string;
+  classId: string;
+  isEdit?: boolean;
 }
 
 const StudentDetailScoreInfo: React.FC<StudentDetailScoreInfoProps> = ({
-  studentDetail,
   studentScore,
+  className,
+  classId,
+  isEdit,
 }) => {
   if (!studentScore) {
     return null;
   }
 
-  const feeTables = [
-    {
-      title: "ASM",
-      data: [
-        { title: "ASM", dataIndex: "ASM" },
-        { title: "Practice 1", dataIndex: "Practice1" },
-        { title: "Practice 2", dataIndex: "Practice2" },
-        { title: "Practice 3", dataIndex: "Practice3" },
-        { title: "Practice (Average)", dataIndex: "AvgASM" },
-      ],
-    },
-    {
-      title: "Quiz",
-      data: [
-        { title: "HTML", dataIndex: "HTML" },
-        { title: "CSS", dataIndex: "CSS" },
-        { title: "Quiz 3", dataIndex: "Quiz3" },
-        { title: "Quiz 5", dataIndex: "Quiz5" },
-        { title: "Quiz 6", dataIndex: "Quiz6" },
-        { title: "Quiz (Average)", dataIndex: "AvgQuiz" },
-      ],
-    },
-    {
-      title: "Final",
-      data: [
-        { title: "Module Final", dataIndex: "FinalModule" },
-        { title: "Quiz Final", dataIndex: "QuizFinal" },
-        { title: "Practice Final", dataIndex: "PracticeFinal" },
-        { title: "Audit", dataIndex: "Audit" },
-        { title: "GPA", dataIndex: "GPAModule" },
-        { title: "Level", dataIndex: "LevelModule" },
-      ],
-    },
-  ];
+  // Initialize empty arrays for different ModuleType
+  const feeScores: IModuleAssignmentScore[] = [];
+  const mockScores: IModuleAssignmentScore[] = [];
 
-  const mockTable = [
-    {
-      title: "Mock",
-      data: [
-        { title: "Mock", dataIndex: "Mock" },
-        { title: "Final", dataIndex: "MockFinalModule" },
-        { title: "GPA", dataIndex: "MockGPAModule" },
-        { title: "Level", dataIndex: "MockLevelModule" },
-      ],
-    },
-  ];
+  // Iterate through the data array
+  studentScore?.forEach((score) => {
+    // Destructure the score
+    const { ModuleType } = score;
+
+    // Push score to corresponding array based on ModuleType
+    if (ModuleType === "1") {
+      feeScores.push(score);
+    } else if (ModuleType === "2") {
+      mockScores.push(score);
+    }
+  });
+  const finalStatus =
+    feeScores
+      .find(
+        (feeItem) =>
+          feeItem.AssignmentScore.find(
+            (ass) => ass.AssignmentName === "Final Status"
+          )?.ScoreValue
+      )
+      ?.AssignmentScore.find((ass) => ass.AssignmentName === "Final Status")
+      ?.ScoreValue || -1;
+  const mockStatus =
+    mockScores
+      .find(
+        (mockItem) =>
+          mockItem.AssignmentScore.find(
+            (ass) => ass.AssignmentName === "Mock Status"
+          )?.ScoreValue
+      )
+      ?.AssignmentScore.find((ass) => ass.AssignmentName === "Mock Status")
+      ?.ScoreValue ??
+    mockScores[0]?.AssignmentScore.find(
+      (ass) => ass.AssignmentName === "Mock Status"
+    )?.ScoreValue ??
+    -1;
 
   return (
     <div className="score-table-container">
       {/* Basic Information */}
       <Space className="class-code" direction="vertical">
-        <div className="heading-h5 student-class">{studentDetail?.Class}</div>
-        <div className="subtitle1-bold class-code">
-          {studentDetail?.ClassCode}
-        </div>
+        <div className="headingh5 student-class">{className}</div>
+        <div className="subtitle1-bold class-code">{classId}</div>
       </Space>
       <hr className="class-code-divider" />
       {/* Score Tables */}
@@ -84,23 +80,26 @@ const StudentDetailScoreInfo: React.FC<StudentDetailScoreInfoProps> = ({
           <div className="table-status">
             <div className="subtitle1-bold table-status-name">FEE</div>
             <StatusTag
-              status={studentScore.Status}
-              content={getCourseStatus(studentScore.Status)}
+              status={finalStatus}
+              content={getCourseStatus(finalStatus)}
             />
           </div>
           <div className="fee-tables">
-            {feeTables.map((table) => (
-              <div className="table-in-fee" key={table.title}>
+            {feeScores.map((feeScore) => (
+              <div className="table-in-fee" key={feeScore.ModuleName}>
                 <Card className="quiz-table">
-                  <div className="ant-card-head">{table.title}</div>
+                  <div className="ant-card-head">{feeScore.ModuleName}</div>
                   <div className="table-data">
                     <Table
-                      dataSource={[{ key: "1", ...studentScore }]}
-                      columns={table.data.map((item) => ({
-                        title: item.title,
-                        dataIndex: item.dataIndex,
-                        render: (score) => score,
-                      }))}
+                      dataSource={Array({
+                        ...feeScore,
+                        key: `${feeScore.ModuleName}_${feeScore.Email}_${feeScore.ModuleType}`,
+                      })}
+                      columns={
+                        isEdit
+                          ? generateScoreDetailColumn(feeScore, isEdit)
+                          : generateScoreDetailColumn(feeScore)
+                      }
                       pagination={false}
                     />
                   </div>
@@ -114,23 +113,26 @@ const StudentDetailScoreInfo: React.FC<StudentDetailScoreInfoProps> = ({
           <div className="table-status">
             <div className="subtitle1-bold table-status-name">MOCK</div>
             <StatusTag
-              status={studentScore.MockStatus}
-              content={getCourseStatus(studentScore.MockStatus)}
+              status={mockStatus}
+              content={getCourseStatus(mockStatus)}
             />
           </div>
           <div className="mock-table">
-            {mockTable.map((table) => (
-              <div className="table-in-mock" key={table.title}>
+            {mockScores.map((mockScore) => (
+              <div className="table-in-mock" key={mockScore.ModuleName}>
                 <Card className="quiz-table">
-                  <div className="ant-card-head">{table.title}</div>
+                  <div className="ant-card-head">{mockScore.ModuleName}</div>
                   <div className="table-data">
                     <Table
-                      dataSource={[{ key: "1", ...studentScore }]}
-                      columns={table.data.map((item) => ({
-                        title: item.title,
-                        dataIndex: item.dataIndex,
-                        render: (score) => score,
-                      }))}
+                      dataSource={Array({
+                        ...mockScore,
+                        key: `${mockScore.ModuleName}_${mockScore.Email}_${mockScore.ModuleType}`,
+                      })}
+                      columns={
+                        isEdit
+                          ? generateScoreDetailColumn(mockScore, isEdit)
+                          : generateScoreDetailColumn(mockScore)
+                      }
                       pagination={false}
                     />
                   </div>
@@ -142,6 +144,10 @@ const StudentDetailScoreInfo: React.FC<StudentDetailScoreInfoProps> = ({
       </div>
     </div>
   );
+};
+
+StudentDetailScoreInfo.defaultProps = {
+  isEdit: false,
 };
 
 export default StudentDetailScoreInfo;

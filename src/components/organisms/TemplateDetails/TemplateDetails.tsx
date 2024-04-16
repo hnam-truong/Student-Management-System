@@ -19,38 +19,50 @@ const TemplateDetails: React.FC<TemplateDetailsProps> = ({
 }) => {
   const formItemLayout = {
     labelCol: {
+      lg: { span: 3 },
+      md: { span: 4 },
+      sm: { span: 6 },
       xs: { span: 6 },
-      sm: { span: 3 },
     },
     wrapperCol: {
+      lg: { span: 21 },
+      md: { span: 20 },
+      sm: { span: 18 },
       xs: { span: 18 },
-      sm: { span: 21 },
     },
   };
 
   const formItemLayoutGrid = {
     labelCol: {
-      xs: { span: 6 },
+      lg: { span: 6 },
+      md: { span: 8 },
       sm: { span: 6 },
+      xs: { span: 6 },
     },
     wrapperCol: {
-      xs: { span: 18 },
+      lg: { span: 14 },
+      md: { span: 12 },
       sm: { span: 18 },
+      xs: { span: 18 },
     },
   };
 
   const cateOption = [
     {
-      value: "Reserve",
-      label: "Reserve",
+      value: "Reservation",
+      label: "Reservation",
     },
     {
-      value: "Notice",
-      label: "Notice",
+      value: "Inform",
+      label: "Inform",
     },
     {
       value: "Remind",
       label: "Remind",
+    },
+    {
+      value: "Score",
+      label: "Score",
     },
     {
       value: "Others",
@@ -60,8 +72,8 @@ const TemplateDetails: React.FC<TemplateDetailsProps> = ({
 
   const applyOption = [
     {
-      value: "Trainee",
-      label: "Trainee",
+      value: "Student",
+      label: "Student",
     },
     {
       value: "Trainer",
@@ -71,17 +83,22 @@ const TemplateDetails: React.FC<TemplateDetailsProps> = ({
 
   return (
     <div>
-      <TableHeader isHeaderBottom={false} title="Template details" />
+      <TableHeader
+        isHeaderBottom={false}
+        title="Template details"
+        setSearchSignal={() => {}}
+        setSearchTerm={() => {}}
+      />
       <div className="mt-2">{}</div>
       {/* Show CreatedBy and CreatedOn */}
       {isEdit && (
         <div className="template-detail-col">
-          <Col xs={24} sm={12}>
+          <Col lg={12} md={12} sm={24} xs={24}>
             <Form.Item {...formItemLayoutGrid} label="Created by" colon>
               {createdByData}
             </Form.Item>
           </Col>
-          <Col xs={24} sm={12}>
+          <Col lg={12} md={12} sm={24} xs={24}>
             <Form.Item {...formItemLayoutGrid} label="Created on" colon>
               {createdOnData}
             </Form.Item>
@@ -111,11 +128,11 @@ const TemplateDetails: React.FC<TemplateDetailsProps> = ({
 
       <div className="template-detail-col">
         {/* Field for Category */}
-        <Col xs={24} sm={8}>
+        <Col lg={12} md={12} sm={24} xs={24}>
           <Form.Item
             {...formItemLayoutGrid}
             label="Category"
-            name="Category"
+            name="Type"
             rules={[{ required: true }]}
           >
             <Select
@@ -127,7 +144,7 @@ const TemplateDetails: React.FC<TemplateDetailsProps> = ({
         </Col>
 
         {/* Field for Apply to */}
-        <Col xs={24} sm={8}>
+        <Col lg={12} md={12} sm={24} xs={24}>
           <Form.Item
             {...formItemLayoutGrid}
             label="Apply to"
@@ -137,19 +154,16 @@ const TemplateDetails: React.FC<TemplateDetailsProps> = ({
             <Select options={applyOption} placeholder="Select role to apply" />
           </Form.Item>
         </Col>
-
-        {/* Field for Status */}
-        <Col xs={24} sm={5}>
-          <Form.Item
-            {...formItemLayoutGrid}
-            label="Active"
-            name="Status"
-            valuePropName="checked"
-          >
-            <Switch />
-          </Form.Item>
-        </Col>
       </div>
+      {/* Field for Status */}
+      <Form.Item
+        {...formItemLayout}
+        label="Active"
+        name="Status"
+        valuePropName="checked"
+      >
+        <Switch />
+      </Form.Item>
     </div>
   );
 };

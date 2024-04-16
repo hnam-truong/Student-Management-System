@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import type { MenuProps } from "antd";
-import { Dropdown } from "antd";
+import { Button, Dropdown } from "antd";
 import DisableStudent from "../DisableStudent/DisableStudent";
 import EditUser from "../../organisms/EditUser/EditUser";
 import DisableUser from "../../atoms/DisableUser/DisableUser";
@@ -11,6 +11,8 @@ import {
 } from "../../atoms/CustomButton/CustomButton";
 import DisableStudentInClass from "../../atoms/DisableStudentInClass/DisableStudentInClass";
 import DeleteEmail from "../../atoms/DeleteEmail/DeleteEmail";
+import EditStudentInClass from "../../templates/EditStudentInClass/EditStudentInClass";
+import { useSingleUserStore } from "../../../store/UserStore";
 
 interface CustomDropdownProps {
   handleDataChange: () => void;
@@ -25,6 +27,9 @@ interface CustomDropdownProps {
   isEdit?: boolean;
   isDeleteStudentInClass?: boolean;
   isDeleteEmail?: boolean;
+  classId?: string;
+  isEditStudentInClass?: boolean;
+  isEnableUser?: boolean;
 }
 const CustomDropdown: React.FC<CustomDropdownProps> = ({
   id,
@@ -39,15 +44,22 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
   isEdit,
   isDeleteStudentInClass,
   isDeleteEmail,
+  classId,
+  isEditStudentInClass,
+  isEnableUser,
 }) => {
+  const { putSingleUser } = useSingleUserStore();
+  const data = [{ path: `/Status`, value: "Active", op: "replace" }];
+
+  const handleEnableUser = () => {
+    putSingleUser(data, id ?? "");
+    handleDataChange();
+  };
   let items: MenuProps["items"] = [
     {
       key: "1",
       label: id ? (
-        <Link
-          to={viewLink === "/class100" ? `${viewLink}` : `${viewLink}/${id}`}
-          rel="noopener noreferrer"
-        >
+        <Link to={`${viewLink}/${id}`} rel="noopener noreferrer">
           <CommonButton text={textView || "View"} />
         </Link>
       ) : (
@@ -61,14 +73,7 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
       {
         key: "2",
         label: id ? (
-          <Link
-            to={
-              editLink === "/class100/scores"
-                ? `${editLink}`
-                : `${editLink}/${id}`
-            }
-            rel="noopener noreferrer"
-          >
+          <Link to={`${editLink}/${id}`} rel="noopener noreferrer">
             <CommonButton text={textEdit || "Edit"} />
           </Link>
         ) : (
@@ -119,11 +124,26 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
       },
     ];
   }
-  if (isDeleteUser) {
+  if (isEditStudentInClass) {
     items = [
       ...items,
       {
         key: "5",
+        label: (
+          <EditStudentInClass
+            handleDataChange={handleDataChange}
+            studentId={id ?? ""}
+            classId={classId ?? ""}
+          />
+        ),
+      },
+    ];
+  }
+  if (isDeleteUser) {
+    items = [
+      ...items,
+      {
+        key: "6",
         label: (
           <DisableUser
             id={id !== undefined ? id : ""}
@@ -133,20 +153,39 @@ const CustomDropdown: React.FC<CustomDropdownProps> = ({
       },
     ];
   }
+  if (isEnableUser) {
+    items = [
+      ...items,
+      {
+        key: "5",
+        label: (
+          <Button
+            id={id !== undefined ? id : ""}
+            onClick={handleEnableUser}
+            className="btn btn--enable"
+          >
+            Enable
+          </Button>
+        ),
+      },
+    ];
+  }
   if (isDeleteStudentInClass) {
     items = [
       ...items,
       {
-        key: "6",
+        key: "7",
         label: (
           <DisableStudentInClass
             id={id !== undefined ? id : ""}
+            classId={classId !== undefined ? classId : ""}
             handleDataChange={handleDataChange}
           />
         ),
       },
     ];
   }
+
   const getPopupContainer = (triggerNode: HTMLElement) =>
     triggerNode.parentNode as HTMLElement;
   return (
@@ -176,5 +215,8 @@ CustomDropdown.defaultProps = {
   isEdit: true,
   isDeleteStudentInClass: false,
   isDeleteEmail: false,
+  classId: "",
+  isEditStudentInClass: false,
+  isEnableUser: false,
 };
 export default CustomDropdown;

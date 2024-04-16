@@ -10,18 +10,18 @@ const DisableUser: React.FC<DisableStudentProps> = ({
   id,
   handleDataChange,
 }) => {
-  const { deleteSingleUser } = useSingleUserStore();
-
+  const { putSingleUser } = useSingleUserStore();
+  const data = [{ path: `/Status`, value: "Inactive", op: "replace" }];
   const handleOk = () => {
-    deleteSingleUser(id);
+    putSingleUser(data, id);
     handleDataChange();
   };
 
   return (
     <DisableModal
-      buttonText="Delete"
+      buttonText="Disable"
       handleOk={handleOk}
-      modalTitle="Delete user"
+      modalTitle="Disable user"
     />
   );
 };

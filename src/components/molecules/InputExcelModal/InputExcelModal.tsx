@@ -1,12 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Modal } from "antd";
+import { VscError } from "react-icons/vsc";
 import FileUpload from "../../atoms/FileUpload/FileUpload";
 import FormFooter from "../FormFooter/FormFooter";
+import Sizes from "../../../constants/Sizes";
+import Colors from "../../../constants/Colors";
 
 interface InputExcelModalProps {
   isModalOpen: boolean;
   handleCancel: () => void;
-  excelUpload: (excelData: any) => void;
+  excelUpload: (file: File, id?: string) => void;
+  importId: string;
   href: string;
   fileDownload: string;
 }
@@ -15,6 +19,7 @@ const InputExcelModal = ({
   isModalOpen,
   handleCancel,
   excelUpload,
+  importId,
   href,
   fileDownload,
 }: InputExcelModalProps) => (
@@ -35,9 +40,10 @@ const InputExcelModal = ({
       </div>
     }
     className="custom-modal-content"
+    closeIcon={<VscError size={Sizes.LgMedium} color={Colors.White} />}
   >
     <div className="modal-content-custom">
-      <FileUpload excelUpload={excelUpload} />
+      <FileUpload excelUpload={excelUpload} importId={importId} />
     </div>
   </Modal>
 );

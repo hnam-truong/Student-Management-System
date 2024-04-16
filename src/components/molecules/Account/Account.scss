@@ -4,10 +4,16 @@
   gap: $small;
 }
 
-.avatar-img {
-  width: $large;
-  height: $large;
-  flex-shrink: 0;
+.avatar-header-container {
+  width: $lg-large;
+  height: $lg-large;
+  border-radius: 50%;
+}
+
+.avatar-header-initial {
+  color: $white;
+  font-size: $font-size-lg-medium;
+  font-weight: $fw-bold;
 }
 
 .user-name {

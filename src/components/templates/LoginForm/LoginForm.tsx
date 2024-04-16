@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import { Button, Checkbox, Form, Input, Card } from "antd";
 import "./LoginForm.scss";

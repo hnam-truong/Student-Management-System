@@ -1,103 +1,40 @@
-import { render, screen, waitFor } from "@testing-library/react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import ClassDetailInfo from "./ClassDetailInfo";
-import { IClass } from "../../../interfaces/class.interface";
+import MockClass from "../../../test-data/Classes/MockClass";
 
-describe("ClassDetailInfo Component", () => {
-  const mockClassDetail: IClass = {
-    ClassName: "Fresher Developer Legacy Security Developer",
-    StartDate: "01/03/2023",
-    EndDate: "10/04/2023",
-    CreatedDate: "15/02/2023",
-    CreatedBy: "Ngư Hữu Khanh",
-    UpdatedDate: "25/04/2023",
-    UpdatedBy: "Chu Thiện Phước",
-    Duration: 41,
-    Location: "Hồ Chí Minh",
-    Status: "Closed",
-    ProgramID: "91ab0aab-fc7c-4ada-9c37-38c76e8c116c",
-    StartTime: "09:00",
-    EndTime: "12:00",
-    Trainers: ["3", "5"],
-    FSU: "FHM",
-    SpecificLocation: [
-      {
-        ID: "1",
-        Name: "FTown 1",
-      },
-      {
-        ID: "2",
-        Name: "FTown 2",
-      },
-    ],
-    Reviewer: "Lý Minh Nhân",
-    Approver: "Võ Trọng Bình",
-    ReviewDate: "09/02/2023",
-    ApproveDate: "20/02/2023",
-    ClassID: "1",
-  };
+// Mocking localStorage
+const localStorageMock = {
+  getItem: vi.fn(),
+  setItem: vi.fn(),
+  clear: vi.fn(),
+};
+(global as any).localStorage = localStorageMock;
 
-  test("renders class detail information correctly", async () => {
-    render(<ClassDetailInfo classDetail={mockClassDetail} />);
+describe("ClassDetailInfo component", () => {
+  beforeEach(() => {
+    localStorageMock.getItem.mockClear();
+  });
 
-    // Wait for the ClassDetailInfo component to render
-    await waitFor(() => {
-      const classDetailInfo = screen.getByTestId("class-detail-info");
-      expect(classDetailInfo).toBeInTheDocument();
-    });
+  it("renders class details and tabs", () => {
+    // Mocking the user info stored in localStorage
+    const userInfo = {
+      /* Your mock user info object */
+    };
+    localStorageMock.getItem.mockReturnValue(JSON.stringify(userInfo));
 
-    // Debugging: log HTML structure to the console
-    // eslint-disable-next-line testing-library/no-debugging-utils
-    screen.debug();
+    render(
+      <MemoryRouter>
+        <ClassDetailInfo classDetail={MockClass[0]} />
+      </MemoryRouter>
+    );
 
-    // Assert that ClassDetailHeader is present
-    const classDetailHeader = screen.queryByTestId("class-detail-header");
+    expect(screen.getByTestId("class-detail-info")).toBeInTheDocument();
+    expect(screen.getByText(MockClass[0].ClassName)).toBeInTheDocument();
 
-    // Check if classDetailHeader is not null before asserting
-    if (classDetailHeader) {
-      // Check if classDetailHeader is in the document
-      expect(classDetailHeader).toBeInTheDocument();
-
-      // Check if duration, location, created date, and updated date are rendered
-      const durationElement = screen.getByText("Duration");
-      const locationElement = screen.getByText("Location");
-      const createdDateElement = screen.getByText("Created on");
-      const updatedDateElement = screen.getByText("Updated on");
-
-      expect(durationElement).toBeInTheDocument();
-      expect(locationElement).toBeInTheDocument();
-      expect(createdDateElement).toBeInTheDocument();
-      expect(updatedDateElement).toBeInTheDocument();
-
-      // Check if the corresponding class detail data is rendered
-      const durationDataElement = screen.getByText(
-        `${mockClassDetail.Duration} days`
-      );
-      const locationDataElement = screen.getByText(mockClassDetail.Location);
-      const createdDateDataElement = screen.getByText(
-        mockClassDetail.CreatedDate
-      );
-      const updatedDateDataElement = screen.getByText(
-        mockClassDetail.UpdatedDate
-      );
-
-      expect(durationDataElement).toBeInTheDocument();
-      expect(locationDataElement).toBeInTheDocument();
-      expect(createdDateDataElement).toBeInTheDocument();
-      expect(updatedDateDataElement).toBeInTheDocument();
-
-      const createdByElement = screen.getByText(
-        `by ${mockClassDetail.CreatedBy}`
-      );
-      const updatedByElement = screen.getByText(
-        `by ${mockClassDetail.UpdatedBy}`
-      );
-
-      expect(createdByElement).toBeInTheDocument();
-      expect(updatedByElement).toBeInTheDocument();
-
-      // Check if the Tabs component is rendered
-      const tabsElement = screen.getByTestId("class-tabs");
-      expect(tabsElement).toBeInTheDocument();
-    }
+    expect(screen.getByTestId("class-tabs")).toBeInTheDocument();
+    expect(screen.getByText("Students In Class")).toBeInTheDocument();
+    expect(screen.getByText("Students Scores")).toBeInTheDocument();
   });
 });

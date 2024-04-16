@@ -1,11 +1,14 @@
 export interface IUser {
-  ID: string;
+  Id: string;
   Email: string;
-  Name: string;
+  FullName: string;
   Gender: boolean;
-  DateOfBirth: string;
-  UserType: string;
-  Status: boolean;
+  DOB: string;
+  Address: string;
+  Role: string;
+  Status: string;
   Phone: string;
   ImageUrl: string;
+  Username: string;
+  Password: string;
 }

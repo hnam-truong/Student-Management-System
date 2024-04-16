@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import "./DetailGeneralInfo.scss";
 
@@ -8,7 +9,7 @@ interface StudentDetailGeneralInfoProps {
       key: string;
       children: Array<{
         key: string;
-        name: string | React.ReactElement | number;
+        name: any;
       }>;
     }>;
   }>;

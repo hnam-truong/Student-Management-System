@@ -1,8 +1,8 @@
 import { create } from "zustand";
 import { IDashboard } from "../interfaces/dashboard.interface";
-import GetAllDataDashboard from "../services/api/ApiCaller8";
 import { errorNotify } from "../components/atoms/Notify/Notify";
 import { generateErrorMessage } from "../utils/GenerateErrorMessage";
+import GetAllDataDashboard from "../services/api/api-caller/DashboardCaller";
 
 interface DashboardStoreProps {
   dashboard: IDashboard | null;

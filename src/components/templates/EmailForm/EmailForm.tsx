@@ -1,17 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import { Card, Form, FormInstance } from "antd";
 import { useNavigate } from "react-router";
 import TemplateDetails from "../../organisms/TemplateDetails/TemplateDetails";
-import TemplateSender from "../../organisms/TemplateSender/TemplateSender";
 import TemplateContent from "../../organisms/TemplateContent/TemplateContent";
 import TemplateScore from "../../organisms/TemplateScore/TemplateScore";
 import FormFooter from "../../molecules/FormFooter/FormFooter";
 import { IEmail } from "../../../interfaces/email.interface";
 import TableHeader from "../../organisms/TableHeader/TableHeader";
-import { BackButton } from "../../atoms/CustomButton/CustomButton";
 import "./EmailForm.scss";
 
 interface EmailFormProps {
+  initialValues?: object;
   title: string;
   form: FormInstance<IEmail>;
   formName: string;
@@ -25,15 +24,19 @@ interface EmailFormProps {
   createdOnData?: string;
   moduleScores?: string[];
   onModuleScoresChange: (ModuleScores: string[]) => void;
+  type: string;
+  onChangeCategory: (value: string) => void;
 }
 const emailFormDefaultProps: Partial<EmailFormProps> = {
   isEdit: false,
   createdByData: "",
   createdOnData: "",
   moduleScores: [],
+  initialValues: {},
 };
 
 const EmailForm: React.FC<EmailFormProps> = ({
+  initialValues,
   title,
   form,
   formName,
@@ -46,6 +49,8 @@ const EmailForm: React.FC<EmailFormProps> = ({
   createdByData,
   createdOnData,
   moduleScores,
+  type,
+  onChangeCategory,
   onModuleScoresChange,
 }) => {
   const navigate = useNavigate();
@@ -53,20 +58,14 @@ const EmailForm: React.FC<EmailFormProps> = ({
     navigate("/emails");
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-
-  // Handle check category to show module score
-  const handleCategoryChange = (value: string) => {
-    setSelectedCategory(value);
-  };
-
   return (
     <div className="email-form">
-      <div className="back-btn">
-        <BackButton />
-      </div>
-      <TableHeader isHeaderBottom={false} title={title} />
+      <TableHeader
+        isHeaderBottom={false}
+        title={title}
+        setSearchSignal={() => {}}
+        setSearchTerm={() => {}}
+      />
       <Form
         form={form}
         name={formName}
@@ -75,25 +74,25 @@ const EmailForm: React.FC<EmailFormProps> = ({
         labelAlign="left"
         requiredMark={false}
         colon={false}
+        initialValues={initialValues}
       >
         <Card hoverable className="email-form-card">
           <TemplateDetails
             isEdit={isEdit || false}
             createdByData={createdByData || ""}
             createdOnData={createdOnData || ""}
-            onCategoryChange={handleCategoryChange}
+            onCategoryChange={onChangeCategory}
           />
         </Card>
         <Card hoverable className="email-form-card">
-          <TemplateSender />
-        </Card>
-        <Card hoverable className="email-form-card">
           <TemplateContent
+            type={type}
+            isEdit={isEdit}
             bodyValue={bodyValue}
             onChangeBodyValue={onChangeBodyValue}
           />
         </Card>
-        {selectedCategory !== "" && (
+        {type === "Score" && (
           <Card hoverable className="email-form-card">
             <TemplateScore
               moduleScores={moduleScores || []}

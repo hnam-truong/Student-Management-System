@@ -34,7 +34,7 @@ describe("DisableUser Component", () => {
     render(<DisableUser id={mockId} handleDataChange={mockHandleDataChange} />);
 
     // Act
-    const deleteButton = screen.getByText("Delete");
+    const deleteButton = screen.getByText("Disable");
     fireEvent.click(deleteButton);
 
     // Assert

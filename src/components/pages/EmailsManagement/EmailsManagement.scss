@@ -1,6 +1,7 @@
 @import "../../../styles/main.scss";
 
 .classtab {
+  padding: 0 $md-medium $md-medium $md-medium;
   .ant-tabs-tab {
     font-weight: bold;
     padding: 0;
@@ -31,5 +32,8 @@
   }
   .ant-tabs-nav .ant-tabs-nav-wrap {
     margin-top: $medium;
+  }
+  .table-container__content {
+    padding: 0;
   }
 }

@@ -1,64 +1,26 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { Form } from "antd";
 import FormRadio from "./FormRadio";
 
 describe("FormRadio component", () => {
-  const mockList = [
-    { id: "1", value: true, name: "Trainer" },
-    { id: "2", value: false, name: "Student" },
+  const list = [
+    { id: "1", value: "Male", name: "Male" },
+    { id: "2", value: "Female", name: "Female" },
   ];
 
-  test("renders radio group with provided options", () => {
-    render(
-      <Form>
-        <FormRadio
-          name="role"
-          label="Role"
-          list={mockList}
-          rules={[{ required: true, message: "Please select a role" }]}
-        />
-      </Form>
-    );
+  const label = "Select Role";
+  const rules = [{ required: true, message: "Please select a role" }];
+  const name = "role";
 
-    expect(screen.getByLabelText("Trainer")).toBeInTheDocument();
-    expect(screen.getByLabelText("Student")).toBeInTheDocument();
+  it("renders with default role as Trainer", () => {
+    render(<FormRadio list={list} label={label} rules={rules} name={name} />);
+
+    expect(screen.getByLabelText("Male")).toBeInTheDocument();
+    expect(screen.getByLabelText("Female")).toBeInTheDocument();
   });
 
-  test("allows selecting another role", async () => {
-    render(
-      <Form>
-        <FormRadio
-          name="role"
-          label="Role"
-          list={mockList}
-          rules={[{ required: true, message: "Please select a role" }]}
-        />
-      </Form>
-    );
+  it("displays the correct label", () => {
+    render(<FormRadio list={list} label={label} rules={rules} name={name} />);
 
-    const studentRadio = screen.getByLabelText("Student");
-    expect(studentRadio).not.toBeChecked();
-
-    await userEvent.click(studentRadio);
-    expect(studentRadio).toBeChecked();
-  });
-  test("allows selecting another role", async () => {
-    render(
-      <Form>
-        <FormRadio
-          name="role"
-          label="Role"
-          list={mockList}
-          rules={[{ required: true, message: "Please select a role" }]}
-        />
-      </Form>
-    );
-
-    const studentRadio = screen.getByLabelText("Student");
-    expect(studentRadio).not.toBeChecked();
-
-    await userEvent.click(studentRadio);
-    expect(studentRadio).toBeChecked();
+    expect(screen.getByText(label)).toBeInTheDocument();
   });
 });

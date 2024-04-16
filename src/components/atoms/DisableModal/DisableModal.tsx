@@ -41,6 +41,7 @@ const DisableModal: React.FC<DisableStudentProps> = ({
         open={isModalOpen}
         centered
         className="disable-modal"
+        data-testid="delete-email-form"
         footer={
           <FormFooter
             text={buttonText}

@@ -1,17 +1,21 @@
 import React from "react";
 import { IStudent } from "../../../interfaces/student.interface";
 import DetailGeneralInfo from "../../atoms/DetailGeneralInfo/DetailGeneralInfo";
-import generateGender from "../../../utils/GenerateGender";
 import StatusTag from "../../atoms/StatusTag/StatusTag";
+import Gender from "../../atoms/Gender/Gender";
+import {
+  handleFirstLetterUpperCaseAndBackspace,
+  handleStringShown,
+} from "../../../utils/HandleDataShown";
+import { IStudentClass } from "../../../interfaces/student-class.interface";
 
 interface StudentDetailGeneralInfoProps {
-  studentDetail: IStudent;
+  studentDetail: IStudent | IStudentClass;
 }
 
 const StudentDetailGeneralInfo: React.FC<StudentDetailGeneralInfoProps> = ({
   studentDetail,
 }) => {
-  const gender = generateGender({ gender: studentDetail?.Gender });
   const infos = [
     {
       key: "1",
@@ -21,19 +25,23 @@ const StudentDetailGeneralInfo: React.FC<StudentDetailGeneralInfoProps> = ({
           children: [
             { key: "1", name: <strong>Phone</strong> },
             { key: "2", name: <strong>Email</strong> },
-            { key: "3", name: <strong>Gender</strong> },
-            { key: "4", name: <strong>Date of Birth</strong> },
+            { key: "3", name: <strong>Date of Birth</strong> },
+            { key: "4", name: <strong>Gender</strong> },
           ],
         },
         {
           key: "2",
           children: [
-            { key: "1", name: studentDetail?.Phone },
-            { key: "2", name: studentDetail?.Email },
-            { key: "3", name: gender },
+            { key: "1", name: handleStringShown(studentDetail?.Phone) },
+            { key: "2", name: handleStringShown(studentDetail?.Email) },
+            { key: "3", name: handleStringShown(studentDetail?.DOB) },
             {
               key: "4",
-              name: studentDetail?.DateOfBirth,
+              name: (
+                <div className="gender-in-general">
+                  <Gender gender={studentDetail?.Gender} />
+                </div>
+              ),
             },
           ],
         },
@@ -45,8 +53,8 @@ const StudentDetailGeneralInfo: React.FC<StudentDetailGeneralInfoProps> = ({
         {
           key: "3",
           children: [
-            { key: "1", name: <strong>Permanent Residence </strong> },
-            { key: "2", name: <strong>Location </strong> },
+            { key: "1", name: <strong>Area </strong> },
+            { key: "2", name: <strong>Address </strong> },
             { key: "3", name: <strong>Status</strong> },
           ],
         },
@@ -55,18 +63,22 @@ const StudentDetailGeneralInfo: React.FC<StudentDetailGeneralInfoProps> = ({
           children: [
             {
               key: "1",
-              name: studentDetail?.PermanentResidence,
+              name: handleStringShown(studentDetail?.Area),
             },
             {
               key: "2",
-              name: studentDetail?.Location,
+              name: handleStringShown(studentDetail?.Address),
             },
             {
               key: "3",
               name: (
                 <StatusTag
-                  status={studentDetail?.AttendingStatus}
-                  content={studentDetail?.AttendingStatus}
+                  status={handleFirstLetterUpperCaseAndBackspace(
+                    studentDetail?.Status
+                  )}
+                  content={handleFirstLetterUpperCaseAndBackspace(
+                    studentDetail?.Status
+                  )}
                 />
               ),
             },

@@ -2,7 +2,7 @@ import { PieChart, Pie, Cell, Tooltip } from "recharts";
 import { PieChartDataProps } from "../../../interfaces/dashboard.interface";
 import "./PercentChart.scss";
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#CC8021"];
 const COLORS_RESULT = ["#00C49F", "#dc4e4e"];
 
 const RADIAN = Math.PI / 180;
@@ -49,7 +49,7 @@ const PercentChart = ({
 }) => {
   const COLORS_CHOOSE = isResult ? COLORS_RESULT : COLORS;
   return (
-    <div className="wrapper-chart">
+    <div className="wrapper-chart" data-testid="percent-chart">
       <PieChart width={200} height={200}>
         <Pie
           data={data}

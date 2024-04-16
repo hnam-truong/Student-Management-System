@@ -31,7 +31,7 @@ const ReservingReason: React.FC<ReservingReasonProps> = ({
         onChange={handleSelectOptionChange}
       >
         {reservingReason?.map((reason) => (
-          <Select.Option key={reason?.ID} value={reason?.ID}>
+          <Select.Option key={reason?.Id} value={reason?.Id}>
             {reason?.Name}
           </Select.Option>
         ))}

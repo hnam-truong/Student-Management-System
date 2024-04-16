@@ -8,76 +8,96 @@
  * status active reservation and student information (StudentID, ClassName, ClassCode,
  * Current Modules). And post this to reserved-students api.
  */
-import { Form, FormInstance } from "antd";
+import { Empty, Form } from "antd";
 import React, { useEffect, useState } from "react";
-import { IReservedStudent } from "../../../interfaces/reserved-student.interface";
-import useReservingCondition from "../../../store/ReservingConditionStore";
-import useReservingReason from "../../../store/ReservingReasonStore";
-import { useReservedStudentSingleStore } from "../../../store/ReservedStudentStore";
-import SwitchStatus from "../../atoms/SwitchStatus/SwitchStatus";
+import dayjs from "dayjs";
 import ReservingCondition from "../../atoms/ReservingCondition/ReservingCondition";
 import ReservingReason from "../../atoms/ReservingReason/ReservingReason";
 import ReservingPeriod from "../../atoms/ReservingPeriod/ReservingPeriod";
 import ReservingStudentSearch from "../../atoms/ReservingStudentSearch/ReservingStudentSearch";
 import { useSingleStudentStore } from "../../../store/StudentStore";
+import ReservingReasons from "../../../constants/ReservingReasons";
+import { IReservingCondition } from "../../../interfaces/reserving-condition.interface";
 import { IStudent } from "../../../interfaces/student.interface";
+import { useStudentClassStore } from "../../../store/StudentClassStore";
+import { IStudentClassStatus } from "../../../interfaces/student-class-status.interface";
+import { IClassStudent } from "../../../interfaces/class-student.interface";
+import ClassSelection from "../../atoms/ClassSelection/ClassSelection";
+import EmptyDescription from "../../../constants/EmptyDescription";
 
 type ReservingFormType = {
-  ID: string;
-  Class: string;
-  ClassID: string;
-  CurrentModules: string;
+  StudentId: string;
+  ClassId: string;
   ReservingReasonSelect: string;
   ReservingReasonTextArea: string;
   ReservingPeriod: [null, null];
-  ReservingConditions: string[];
+  Conditions: IReservingCondition[];
   ActivateReserving: boolean;
 };
 
 interface AddReservingStudentProps {
-  form: FormInstance<any>;
   handleOk: () => void;
+  student?: IStudent | null;
+  isReset: boolean;
+  setIsReset: React.Dispatch<React.SetStateAction<boolean>>;
   id?: string;
   isAddNew?: boolean;
-  onAttendingStatusChange: () => void;
 }
 
 const AddReservingStudentForm: React.FC<AddReservingStudentProps> = ({
   id,
   handleOk,
-  form,
+  student,
   isAddNew,
-  onAttendingStatusChange,
+  isReset,
+  setIsReset,
 }) => {
   // USE STATE
   const [isTextAreaHidden, setIsTextAreaHidden] = useState(true);
 
   // USE STORES
-  const { fetchReservedStudentByID, aReservedStudent, postReservedStudent } =
-    useReservedStudentSingleStore();
-  const { fetchReservingCondition, reservingCondition } =
-    useReservingCondition();
-  const { fetchReservingReason, reservingReason } = useReservingReason();
-  const { aStudent, putSingleStudent } = useSingleStudentStore();
+  const { aStudent, getStudentByID } = useSingleStudentStore();
+  const { putStudentClassStatus } = useStudentClassStore();
+
+  const [searchStudentId, setSearchStudentId] = useState<string>("");
+  const [selectedClassId, setSelectedClassId] = useState<string>("");
+  const [chosenClassId, setChosenClassId] = useState<string>("");
+  const [currentStatus, setCurrentStatus] = useState<string>("");
+  const [studentDetail, setStudentDetail] = useState<IStudent | null>(
+    student || null
+  );
+
+  const [classes, setClasses] = useState<IClassStudent[]>([]);
+  const [classErrorMessage, setClassErrorMessage] = useState("");
+  const [form] = Form.useForm();
 
   useEffect(() => {
     isAddNew &&
       id !== undefined &&
       id !== "" &&
       id === null &&
-      fetchReservedStudentByID(id);
-    fetchReservingCondition();
-    fetchReservingReason();
-  }, [
-    fetchReservedStudentByID,
-    fetchReservingCondition,
-    fetchReservingReason,
-    id,
-    isAddNew,
-  ]);
+      !student &&
+      getStudentByID(id);
+  }, [getStudentByID, id, isAddNew]);
+
   useEffect(() => {
-    id && fetchReservedStudentByID(id);
-  }, [fetchReservedStudentByID]);
+    id && setSearchStudentId(id);
+  }, [id]);
+  useEffect(() => {
+    aStudent && setStudentDetail(aStudent);
+  }, [aStudent]);
+
+  useEffect(() => {
+    searchStudentId === "" && setStudentDetail(null);
+    searchStudentId && searchStudentId === "" && setClasses([]);
+  }, [searchStudentId]);
+
+  // useEffect to update studentDetail when student prop changes
+  useEffect(() => {
+    if (student) {
+      setStudentDetail(student);
+    }
+  }, [student]);
 
   /** Function handles selecting reserved reason,
    *  if user do not select available option but choose others
@@ -93,70 +113,48 @@ const AddReservingStudentForm: React.FC<AddReservingStudentProps> = ({
     form.validateFields(["ReservingReasonTextArea"]);
   };
 
+  // Reset form values
+  const resetFormValue = () => {
+    form.resetFields();
+    // setClasses([]);
+    setSearchStudentId("");
+    setChosenClassId("");
+    setCurrentStatus("");
+    setIsReset(false);
+  };
+
   // Function handles form submit, get value and send this to api,
   // then reset form fields and close modal
   const onFinish = (values: ReservingFormType) => {
-    const selectedReasonKey = values.ReservingReasonSelect;
+    const selectedReasonKey = values?.ReservingReasonSelect;
     const selectedReason =
       selectedReasonKey === "Others"
-        ? values.ReservingReasonTextArea
-        : reservingReason?.find(
-            (reason: { ID: string }) => reason?.ID === selectedReasonKey
+        ? values?.ReservingReasonTextArea
+        : ReservingReasons?.find(
+            (reason: { Id: string }) => reason?.Id === selectedReasonKey
           )?.Name;
-    const endDate = values.ReservingPeriod[1] || undefined;
-    const startDate = values.ReservingPeriod[0] || undefined;
-    const conditions: string[] = values.ReservingConditions || [];
-    const reservationData: IReservedStudent = {
-      ID: "",
-      Class: values.Class,
-      ClassID: values.ClassID,
-      CurrentModules: values.CurrentModules,
-      StudentID: (aReservedStudent as IReservedStudent)?.StudentID,
-      Reason: selectedReason || "",
-      ReservedStartDate: startDate,
-      ReservedEndDate: endDate,
-      Conditions: conditions,
-      Status: values.ActivateReserving
-        ? "Reserve"
-        : (aReservedStudent as IReservedStudent)?.Status,
-      FullName: (aReservedStudent as IReservedStudent)?.FullName,
-      Gender: (aReservedStudent as IReservedStudent)?.Gender,
-      DateOfBirth: (aReservedStudent as IReservedStudent)?.DateOfBirth,
-      Hometown: (aReservedStudent as IReservedStudent)?.Hometown,
-      ReservedModule: (aReservedStudent as IReservedStudent)?.ReservedModule,
-      Email: (aReservedStudent as IReservedStudent)?.Email,
-    };
-    postReservedStudent(reservationData);
-    const studentID = (aReservedStudent as IReservedStudent)?.StudentID;
+    const conditions: IReservingCondition[] = values?.Conditions || [];
 
-    // Update the student status to "Reserve"
-    if (studentID) {
-      const updatedStudent: IStudent = {
-        Status: aStudent?.Status || "",
-        ID: aStudent?.ID || "",
-        Name: aStudent?.Name || "",
-        Gender: aStudent?.Gender || true,
-        DateOfBirth: aStudent?.DateOfBirth || "",
-        Phone: aStudent?.Phone || "",
-        Email: aStudent?.Email || "",
-        PermanentResidence: aStudent?.PermanentResidence || "",
-        Location: aStudent?.Location || "",
-        University: aStudent?.University || "",
-        Major: aStudent?.Major || "",
-        RECer: aStudent?.RECer || "",
-        GPA: aStudent?.GPA || 0,
-        GraduationTime: aStudent?.GraduationTime || "",
-        ClassCode: aStudent?.ClassCode || "",
-        ClassStartDate: aStudent?.ClassStartDate || "",
-        ImageUrl: aStudent?.ImageUrl || "",
-        Class: aStudent?.Class || "",
-        StudentClasses: aStudent?.StudentClasses || [],
-        AttendingStatus: "Reserve",
-      };
-      putSingleStudent(updatedStudent, studentID);
-      onAttendingStatusChange();
+    if (!chosenClassId || !currentStatus) {
+      setClassErrorMessage("Please choose a class.");
+      return; // Prevent form submission
     }
+    // Clear any existing error message
+    setClassErrorMessage("");
+
+    const reservationData: IStudentClassStatus[] = [
+      {
+        ClassId: chosenClassId,
+        StudentId: values.StudentId,
+        CurrentStatus: currentStatus ?? "InClass",
+        NewStatus: "Reserve",
+        Reason: selectedReason ?? "",
+        Conditions: conditions,
+      },
+    ];
+    putStudentClassStatus(reservationData);
     handleOk();
+    resetFormValue();
   };
 
   /** This useEffect will run whenever user input new student id
@@ -164,16 +162,33 @@ const AddReservingStudentForm: React.FC<AddReservingStudentProps> = ({
    * set class, class id, current modules values after fetching data
    */
 
+  // useEffect(() => {
+  //   console.log("aReservedStudent:", aReservedStudent);
+  //   form.setFieldsValue({
+  //     StudentId: (aReservedStudent as IReservedStudent)?.StudentId || "",
+  //     ClassId: (aReservedStudent as IReservedStudent)?.ClassId || "",
+  //   });
+  // }, [aReservedStudent, form, id]);
+
   useEffect(() => {
-    console.log("aReservedStudent:", aReservedStudent);
-    form.setFieldsValue({
-      ID: (aReservedStudent as IReservedStudent)?.ID || "",
-      Class: (aReservedStudent as IReservedStudent)?.Class || "",
-      ClassID: (aReservedStudent as IReservedStudent)?.ClassID || "",
-      CurrentModules:
-        (aReservedStudent as IReservedStudent)?.CurrentModules || "",
-    });
-  }, [aReservedStudent, form, id]);
+    studentDetail && setClasses(studentDetail?.Classes);
+  }, [studentDetail]);
+
+  const handleChooseClass = (chosenId: string, chosenStatus: string) => {
+    setChosenClassId(chosenId);
+    setCurrentStatus(chosenStatus);
+    setSelectedClassId(chosenId);
+    console.log(chosenId, chosenStatus);
+  };
+
+  useEffect(() => {
+    isReset && resetFormValue();
+  }, [isReset]);
+
+  console.log(studentDetail);
+  console.log(searchStudentId);
+  console.log(classes);
+  console.log(isReset);
 
   return (
     <Form
@@ -182,16 +197,17 @@ const AddReservingStudentForm: React.FC<AddReservingStudentProps> = ({
       onFinish={onFinish}
       name="AddReserving"
       initialValues={{
-        ID: (aReservedStudent as IReservedStudent)?.ID,
-        Class: (aReservedStudent as IReservedStudent)?.Class,
-        ClassID: (aReservedStudent as IReservedStudent)?.ClassID,
-        CurrentModules: (aReservedStudent as IReservedStudent)?.CurrentModules,
-        ReservingReason: "",
-        ReservingPeriod: 0,
-        ReservingConditions: [],
-        ActivateReserving: false,
+        StudentId: id ?? searchStudentId ?? "",
+        CurrentStatus: currentStatus ?? "",
+        NewStatus: "Reserve",
+        Reason: "",
+        Conditions: [],
         ReservingReasonSelect: "",
         ReservingReasonTextArea: "",
+        ReservingPeriod: [
+          dayjs(new Date()), // Start date
+          dayjs(new Date()).add(6, "month").subtract(1, "day"), // End date, 6 months - 1 day from now
+        ],
       }}
       variant="filled"
       preserve={false}
@@ -200,23 +216,32 @@ const AddReservingStudentForm: React.FC<AddReservingStudentProps> = ({
     >
       <ReservingStudentSearch
         id={id}
-        fetchReservedStudentByID={fetchReservedStudentByID}
+        getStudentByID={getStudentByID}
+        setSearchStudentId={setSearchStudentId}
       />
+      {studentDetail && classes?.length === 0 ? (
+        <Empty description={EmptyDescription?.ClassReservingInformation} />
+      ) : (
+        studentDetail &&
+        classes?.map((classDetail, index) => (
+          <ClassSelection
+            key={classDetail?.ClassId ?? index}
+            classDetail={classDetail}
+            handleChooseClass={handleChooseClass}
+            isSelected={classDetail.ClassId === selectedClassId}
+          />
+        ))
+      )}
+      {classErrorMessage !== "" && (
+        <div className="error-message">{classErrorMessage}</div>
+      )}
       <ReservingPeriod />
       <ReservingReason
-        reservingReason={reservingReason}
+        reservingReason={ReservingReasons}
         isOtherReasonHidden={isTextAreaHidden}
         handleSelectOptionChange={handleSelectOptionChange}
       />
-      <ReservingCondition
-        reservingCondition={reservingCondition}
-        disable={false}
-      />
-      <SwitchStatus
-        name="ActivateReserving"
-        label="Activate reserving"
-        valuePropName="checked"
-      />
+      <ReservingCondition disable={false} />
     </Form>
   );
 };
@@ -224,5 +249,6 @@ const AddReservingStudentForm: React.FC<AddReservingStudentProps> = ({
 AddReservingStudentForm.defaultProps = {
   id: "",
   isAddNew: true,
+  student: null,
 };
 export default AddReservingStudentForm;

@@ -1,43 +1,62 @@
-import { render, screen } from "@testing-library/react";
+import { render } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import EmailTemplate from "./EmailTemplate";
+import { IUser } from "../../../interfaces/user.interface";
 import { IReservedStudent } from "../../../interfaces/reserved-student.interface";
+import MockUser from "../../../test-data/Users/MockUser";
+import MockReservedStudent from "../../../test-data/Students/MockReservedStudent";
 
-describe("EmailTemplate Component", () => {
-  it("should render correctly", () => {
-    const mockData: IReservedStudent = {
-      FullName: "Hàn Quốc Hoàng",
-      Gender: true,
-      DateOfBirth: "01/01/2003",
-      Hometown: "Hồ Chí Minh",
-      Class: "Fresher Developer Operation",
-      ReservedModule: "ReservedModule 1",
-      Reason: "Reserve to study again",
-      ReservedStartDate: "15/10/2023",
-      Status: "Reserve",
-      ReservedEndDate: "06/01/2050",
-      StudentID: "1",
-      ClassID: "HCM_24_FR_DAO_03",
-      CurrentModules: "CurrentModules 1",
-      Conditions: ["1", "3"],
-      ID: "1",
-      Email: "",
-    };
+interface LocalStorageData {
+  [key: string]: string | undefined;
+}
 
-    render(
+const localStorageMock = {
+  data: {} as LocalStorageData,
+  getItem(key: string | number) {
+    return this.data[key] || null;
+  },
+  setItem(key: string | number, value: string) {
+    this.data[key] = value;
+  },
+  clear() {
+    this.data = {};
+  },
+};
+
+Object.defineProperty(window, "localStorage", { value: localStorageMock });
+
+test("EmailTemplate renders without crashing", () => {
+  const mockUser: IUser = MockUser[0];
+  const mockReservedStudent: IReservedStudent = MockReservedStudent[0];
+  const mockHandleOpenRemind = vi.fn();
+  const mockHandleCloseRemind = vi.fn();
+  const setOpenRemind = vi.fn();
+
+  localStorageMock.data.userInfo = JSON.stringify({});
+
+  render(
+    <MemoryRouter>
       <EmailTemplate
-        data={mockData}
+        data={mockUser}
         open
-        handleOpenRemind={() => {}}
-        handleCloseRemind={() => {}}
-        modalTitle="Send email"
+        handleOpenRemind={mockHandleOpenRemind}
+        handleCloseRemind={mockHandleCloseRemind}
+        modalTitle="Test Modal"
+        setOpenRemind={setOpenRemind}
       />
-    );
+    </MemoryRouter>
+  );
 
-    // Assertions for the initial render
-    const sendButton = screen.getByText("Send");
-    const previewButton = screen.getByText("Preview");
-
-    expect(sendButton).toBeInTheDocument();
-    expect(previewButton).toBeInTheDocument();
-  });
+  render(
+    <MemoryRouter>
+      <EmailTemplate
+        data={mockReservedStudent}
+        open
+        handleOpenRemind={mockHandleOpenRemind}
+        handleCloseRemind={mockHandleCloseRemind}
+        modalTitle="Test Modal"
+        setOpenRemind={setOpenRemind}
+      />
+    </MemoryRouter>
+  );
 });

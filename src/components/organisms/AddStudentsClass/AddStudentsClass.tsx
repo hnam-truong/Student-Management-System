@@ -2,41 +2,44 @@ import React, { useEffect, useState } from "react";
 import { Modal, Form, Input } from "antd";
 import { VscError } from "react-icons/vsc";
 import { SearchProps } from "antd/es/input";
-import { errorNotify, successNotify } from "../../atoms/Notify/Notify";
+import { useParams } from "react-router";
 import { IStudent } from "../../../interfaces/student.interface";
 import FormFooter from "../../molecules/FormFooter/FormFooter";
 import { AddButton } from "../../atoms/CustomButton/CustomButton";
 import Sizes from "../../../constants/Sizes";
 import Colors from "../../../constants/Colors";
 import { useSingleStudentStore } from "../../../store/StudentStore";
-import { useSingleClassStore } from "../../../store/StudentClassStore";
+import { useSingleStudentClassStore } from "../../../store/StudentClassStore";
 
 const { Search } = Input;
+interface AddStudentsClassProps {
+  handleDataChange: () => void;
+}
 
-const AddStudentsClass: React.FC = () => {
+const AddStudentsClass: React.FC<AddStudentsClassProps> = ({
+  handleDataChange,
+}) => {
   const [open, setOpen] = useState(false);
   const [studentId, setStudentId] = useState("");
-  const [classId] = useState("");
-  const { getStudentByID, aStudent, putSingleStudent } =
-    useSingleStudentStore();
-  const { postSingleStudentInClass } = useSingleClassStore();
+  const { id } = useParams();
+  const { getStudentByID, aStudent } = useSingleStudentStore();
+  const { postSingleStudentToClass } = useSingleStudentClassStore();
   const [form] = Form.useForm();
 
+  const initialValues = {
+    FullName: "",
+    Email: "",
+    GPA: null,
+    Status: "",
+    Major: "",
+    StudentId: "",
+  };
   const resetFormValue = () => {
     form.resetFields();
-    form.setFieldsValue({
-      ID: "",
-      Name: "",
-      RECer: "",
-      Email: "",
-      Status: "",
-      GPA: "",
-    });
+    form.setFieldsValue(initialValues);
   };
-
   const showModal = () => {
     setOpen(true);
-    resetFormValue();
   };
 
   const handleCancel = () => {
@@ -45,74 +48,49 @@ const AddStudentsClass: React.FC = () => {
   };
 
   const handleOk = async () => {
-    try {
-      if (!studentId) {
-        errorNotify("Please input a student ID");
-        resetFormValue();
-        return;
-      }
-
-      if (!aStudent) {
-        errorNotify("Student not found");
-        resetFormValue();
-        return;
-      }
-
-      if (aStudent.StudentClasses.includes(classId)) {
-        errorNotify("Student already exists in the class.");
-        setOpen(false);
-        resetFormValue();
-        return;
-      }
-
-      aStudent.StudentClasses.push(classId);
-      await putSingleStudent(aStudent, studentId);
-
-      await postSingleStudentInClass({
-        ID: studentId,
-        FullName: aStudent.Name,
-        Phone: aStudent.Phone,
-        Email: aStudent.Email,
-        Status: "In Class",
-        DateOfBirth: aStudent.DateOfBirth,
-        GPA: aStudent.GPA,
-        RECer: aStudent.RECer,
-      });
-
-      successNotify("Student added to class successfully");
-      setOpen(false);
-    } catch (error) {
-      console.error("API Error: ", error);
-      errorNotify("An error occurred while adding the student to class.");
-    }
-
     resetFormValue();
+    setOpen(false);
   };
   const onSearch: SearchProps["onSearch"] = async (value) => {
     setStudentId(value);
-    getStudentByID(value);
   };
 
   useEffect(() => {
     form.setFieldsValue({
-      ID: (aStudent as IStudent)?.ID || "",
-      Name: (aStudent as IStudent)?.Name || "",
+      StudentId: (aStudent as IStudent)?.StudentId ?? studentId ?? "",
+      FullName: (aStudent as IStudent)?.FullName || "",
       Email: (aStudent as IStudent)?.Email || "",
+      Major: (aStudent as IStudent)?.Major || "",
       Status: (aStudent as IStudent)?.Status || "",
-      RECer: (aStudent as IStudent)?.RECer || "",
-      GPA: (aStudent as IStudent)?.GPA || 0,
+      GPA: (aStudent as IStudent)?.GPA ?? null,
     });
-    form.validateFields([studentId]);
   }, [aStudent, form, studentId]);
 
-  const initialValues = { Name: "", Email: "", ReCer: "", GPA: "", Status: "" };
+  useEffect(() => {
+    studentId !== "" && getStudentByID(studentId);
+  }, [getStudentByID, studentId]);
+
+  useEffect(() => {
+    studentId === "" && resetFormValue();
+  }, [studentId]);
+
+  type AddStudentToClassProps = {
+    StudentId: string;
+  };
+  const onFinish = (values: AddStudentToClassProps) => {
+    console.log(values);
+    id && id !== "" && postSingleStudentToClass(id, values?.StudentId);
+    handleDataChange();
+    handleOk();
+  };
+
   return (
     <div>
       <AddButton text="Add new" onClick={showModal} />
       <Modal
         title={
           <div className="modal-header-custom centered">
-            Add Student to Class
+            Add Student To Class
           </div>
         }
         forceRender
@@ -122,7 +100,10 @@ const AddStudentsClass: React.FC = () => {
         centered
         footer={
           <div className="centered">
-            <FormFooter handleCancel={handleCancel} handleOk={handleOk} />
+            <FormFooter
+              handleCancel={handleCancel}
+              formName="AddStudentClass"
+            />
           </div>
         }
         className="add-reserving-form"
@@ -135,9 +116,17 @@ const AddStudentsClass: React.FC = () => {
           form={form}
           name="AddStudentClass"
           initialValues={initialValues}
+          onFinish={onFinish}
         >
           <div className="form-row">
-            <Form.Item label="Student ID" className="form-item">
+            <Form.Item
+              label="Student ID"
+              className="form-item"
+              name="StudentId"
+              rules={[
+                { required: true, message: "Please search a student ID" },
+              ]}
+            >
               <Search
                 placeholder="Input Student ID"
                 allowClear
@@ -145,15 +134,19 @@ const AddStudentsClass: React.FC = () => {
                 loading={false}
               />
             </Form.Item>
-            <Form.Item label="Student Name" className="form-item" name="Name">
+            <Form.Item
+              label="Student Name"
+              className="form-item"
+              name="FullName"
+            >
               <Input disabled />
             </Form.Item>
           </div>
           <div className="form-row">
-            <Form.Item label="RECer" className="form-item" name="RECer">
+            <Form.Item label="Email" className="form-item" name="Email">
               <Input disabled />
             </Form.Item>
-            <Form.Item label="Email" className="form-item" name="Email">
+            <Form.Item label="Major" className="form-item" name="Major">
               <Input disabled />
             </Form.Item>
           </div>

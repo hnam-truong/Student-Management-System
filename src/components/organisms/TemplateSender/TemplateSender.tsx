@@ -1,8 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 
 import React from "react";
-import { Form, Select } from "antd";
+import { Form, Input } from "antd";
 import TableHeader from "../TableHeader/TableHeader";
+import { boldText } from "../../../utils/EnhanceText";
 
 interface TemplateSenderProps {}
 
@@ -18,30 +19,23 @@ const TemplateSender: React.FC<TemplateSenderProps> = () => {
     },
   };
 
-  const senderOption = [
-    {
-      value: "1",
-      label: "1",
-    },
-    {
-      value: "2",
-      label: "2",
-    },
-  ];
-
   return (
     <div>
-      <TableHeader isHeaderBottom={false} title="Sender" />
+      <TableHeader
+        isHeaderBottom={false}
+        title="Sender"
+        setSearchSignal={() => {}}
+        setSearchTerm={() => {}}
+      />
 
       {/* Field for Sender */}
       <Form.Item
         {...formItemLayout}
         className="mt-2"
-        label="From"
+        label={boldText("From")}
         name="Sender"
-        rules={[{ required: true }]}
       >
-        <Select options={senderOption} placeholder="Select sender" />
+        <Input placeholder={localStorage.getItem("email") ?? ""} disabled />
       </Form.Item>
     </div>
   );

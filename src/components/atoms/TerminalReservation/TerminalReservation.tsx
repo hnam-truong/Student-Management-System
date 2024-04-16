@@ -4,11 +4,11 @@ import { Button, Popover } from "antd";
 import { FaRegHandPaper } from "react-icons/fa";
 import { MdOutlineMail, MdOutlinePauseCircle } from "react-icons/md";
 import "./TerminalReservation.scss";
-import { useReservedStudentSingleStore } from "../../../store/ReservedStudentStore";
 import { IReservedStudent } from "../../../interfaces/reserved-student.interface";
 import Sizes from "../../../constants/Sizes";
 import ModalFindClass from "../../molecules/ModalFindClass/ModalFindClass";
 import EmailTemplate from "../../molecules/EmailTemplate/EmailTemplate";
+import { useStudentClassStore } from "../../../store/StudentClassStore";
 
 interface ContentProps {
   closeFn: () => void;
@@ -20,11 +20,11 @@ const Content: React.FC<ContentProps> = ({
   data,
   handleDataChange,
 }) => {
-  const [status, setStatus] = useState<string>(data.Status);
+  // const [status, setStatus] = useState<string>(data.Status);
   const [loadingDrop, setLoadingDrop] = useState<boolean>(false);
   const [openRemind, setOpenRemind] = useState<boolean>(false);
   const [openReservingModal, setOpenReservingModal] = useState<boolean>(false);
-  const { putReservedStudent } = useReservedStudentSingleStore();
+  const { putStudentClassStatus } = useStudentClassStore();
   const handleOpenRemind = useCallback(() => {
     setOpenRemind(true);
   }, []);
@@ -33,27 +33,22 @@ const Content: React.FC<ContentProps> = ({
   }, []);
   const handleReClass = () => {
     setOpenReservingModal(true);
-    // putReservedStudent(data?.ID, {
-    //   ...data,
-    //   Status: "In class",
-    // });
-    // setStatus("In class");
-    // handleDataChange();
-    // setLoadingRe(true);
-    // setTimeout(() => {
-    //   setLoadingRe(false);
-    //   closeFn();
-    // }, 500);
   };
   const updateStatusInClass = useCallback(() => {
-    setStatus("In class");
+    // setStatus("In class");
   }, []);
   const handleDrop = () => {
-    putReservedStudent(data?.ID, {
-      ...data,
-      Status: "Drop out",
-    });
-    setStatus("Drop out");
+    putStudentClassStatus([
+      {
+        ClassId: data.ClassId,
+        StudentId: data.StudentId,
+        CurrentStatus: data.Status,
+        NewStatus: "DropOut",
+        Reason: "",
+        Conditions: [],
+      },
+    ]);
+    // setStatus("Drop out");
     handleDataChange();
     setLoadingDrop(true);
     setTimeout(() => {
@@ -71,12 +66,8 @@ const Content: React.FC<ContentProps> = ({
 
   return (
     <div className="wrapper">
-      {!(status === "In class") && (
-        <Button
-          className="item-pop"
-          onClick={handleReClass}
-          // loading={loandingRe}
-        >
+      {!(data.Status === "InClass") && (
+        <Button className="item-pop" onClick={handleReClass}>
           <div className="icon">
             <FaRegHandPaper size={Sizes.LgMedium} />
           </div>
@@ -89,7 +80,7 @@ const Content: React.FC<ContentProps> = ({
         </div>
         <div className="subtitle1">Remind</div>
       </Button>
-      {!(status === "Drop out") && (
+      {!(data.Status === "DropOut") && (
         <Button className="item-pop" onClick={handleDrop} loading={loadingDrop}>
           <div className="icon">
             <MdOutlinePauseCircle size={Sizes.LgMedium} />
@@ -97,16 +88,19 @@ const Content: React.FC<ContentProps> = ({
           <div className="subtitle1">Drop out</div>
         </Button>
       )}
-      {openRemind && (
-        <EmailTemplate
-          open={openRemind}
-          handleOpenRemind={handleOpenRemind}
-          handleCloseRemind={handleCloseRemind}
-          data={data}
-          modalTitle="Send remind email"
-          type="Student"
-        />
-      )}
+
+      <EmailTemplate
+        open={openRemind}
+        handleOpenRemind={handleOpenRemind}
+        handleCloseRemind={handleCloseRemind}
+        data={data}
+        modalTitle="Send remind email"
+        type="Student"
+        isIndividual
+        setOpenRemind={setOpenRemind}
+        isCC
+      />
+
       {openReservingModal && (
         <ModalFindClass
           data={data}
@@ -134,9 +128,9 @@ const ModalReservation: React.FC<Props> = ({
   data,
   handleDataChange,
 }) => {
-  const handleClose = useCallback(() => {
+  const handleClose = () => {
     setIsShow(false);
-  }, [setIsShow]);
+  };
   return (
     <Popover
       content={

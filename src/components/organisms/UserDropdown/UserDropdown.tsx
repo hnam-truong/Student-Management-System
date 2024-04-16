@@ -1,18 +1,29 @@
 import React, { useCallback, useState } from "react";
-import { Dropdown, MenuProps } from "antd";
+import { Button, Popover } from "antd";
 import { Link } from "react-router-dom";
 import { FaPhoneVolume } from "react-icons/fa6";
 import { MdOutlineMailOutline } from "react-icons/md";
-import { IoSend } from "react-icons/io5";
+import { IoMdInformationCircleOutline } from "react-icons/io";
 import { IUser } from "../../../interfaces/user.interface";
 import RouterEndpoints from "../../../constants/RouterEndpoints";
 import EmailTemplate from "../../molecules/EmailTemplate/EmailTemplate";
-import { CommonButton } from "../../atoms/CustomButton/CustomButton";
+import "./UserDropdown.scss";
+import Sizes from "../../../constants/Sizes";
+import { SendMailButton } from "../../atoms/CustomButton/CustomButton";
+import { getUserInfo } from "../../../utils/JWTAuth";
 
 interface UserDropdownProps {
-  user: IUser;
+  userId: string;
+  fullName: string;
+  phone: string;
+  email: string;
 }
-const UserDropdown: React.FC<UserDropdownProps> = ({ user }) => {
+const UserDropdown: React.FC<UserDropdownProps> = ({
+  userId,
+  fullName,
+  phone,
+  email,
+}) => {
   const [openRemind, setOpenRemind] = useState<boolean>(false);
   const handleOpenRemind = useCallback(() => {
     setOpenRemind(true);
@@ -20,37 +31,42 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ user }) => {
   const handleCloseRemind = useCallback(() => {
     setOpenRemind(false);
   }, []);
-  // const handleRemind = () => {
-  //   handleOpenRemind();
-  //   // closeFn();
-  // };
-  console.log(openRemind);
-  const items: MenuProps["items"] = [
-    {
-      key: "1",
-      label: (
-        <a rel="noopener noreferrer" href={`tel:${user.Phone}`}>
-          {user.Phone}
-        </a>
-      ),
-      icon: <FaPhoneVolume />,
-    },
-    {
-      key: "2",
-      label: (
-        <a rel="noopener noreferrer" href={`mailto:${user.Email}`}>
-          {user.Email}
-        </a>
-      ),
-      icon: <MdOutlineMailOutline />,
-    },
-    {
-      key: "3",
-      label: (
+  const user: IUser = {
+    Id: userId,
+    FullName: fullName,
+    Email: email,
+    Gender: false,
+    DOB: "",
+    Address: "",
+    Role: "",
+    Status: "",
+    Phone: phone,
+    ImageUrl: "",
+    Username: "",
+    Password: "",
+  };
+  const content = (
+    <>
+      <div className="popover-item">
+        <Button className="popover-item__btn" type="text">
+          <a rel="noopener noreferrer" href={`tel:${phone}`}>
+            <FaPhoneVolume />
+            {phone}
+          </a>
+        </Button>
+      </div>
+      <div className="popover-item">
+        <Button className="popover-item__btn" type="text">
+          <a rel="noopener noreferrer" href={`mailto:${email}`}>
+            <MdOutlineMailOutline />
+            {email}
+          </a>
+        </Button>
+      </div>
+      {getUserInfo().role === "Admin" && (
         <div>
-          <CommonButton onClick={handleOpenRemind} text="Send Email" />
-
-          {openRemind && (
+          <div className="user-email-container">
+            <SendMailButton onClick={handleOpenRemind} text="Send Email" />
             <EmailTemplate
               open={openRemind}
               handleOpenRemind={handleOpenRemind}
@@ -59,22 +75,31 @@ const UserDropdown: React.FC<UserDropdownProps> = ({ user }) => {
               modalTitle="Select email template"
               type="Trainer"
               isIndividual
+              setOpenRemind={setOpenRemind}
             />
-          )}
+          </div>
         </div>
-      ),
-      icon: <IoSend />,
-    },
-  ];
+      )}
+    </>
+  );
   return (
-    <Dropdown key={user.ID} menu={{ items }} className="user-link-container">
-      <Link
-        to={`${RouterEndpoints.UserDetailGeneral}${user.ID}`}
-        className="user-link-container__item"
-      >
-        {user?.Name}
-      </Link>
-    </Dropdown>
+    <div className="user-link-container">
+      {getUserInfo().role === "Admin" ? (
+        <Link
+          to={`${RouterEndpoints.UserDetailGeneral}${userId}`}
+          className="user-link-container__item"
+        >
+          {fullName}
+        </Link>
+      ) : (
+        <div>{fullName}</div>
+      )}
+      <Popover content={content} placement="rightTop">
+        <div className="btn btn--add-circle btn--information">
+          <IoMdInformationCircleOutline size={Sizes.LgMedium} />
+        </div>
+      </Popover>
+    </div>
   );
 };
 

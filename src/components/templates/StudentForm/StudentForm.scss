@@ -19,9 +19,9 @@
   width: $xxl-sm-large;
 }
 
-label {
-  padding-right: $xxx-large;
-}
+// label {
+//   padding-right: $xxx-large;
+// }
 .custom-label-id {
   margin-left: $xs-medium;
 }
@@ -135,12 +135,11 @@ label {
   display: flex;
   justify-content: space-between;
   padding: $small;
-  justify-content: end;
 
   .open-popup {
     cursor: pointer;
-    margin-right: $medium;
-    background-color: $primary-color !important;
+    margin-left: auto;
+    background-color: $primary-color;
     color: $white;
     padding: $small;
     border-radius: $xs-small;
@@ -148,4 +147,29 @@ label {
       background-color: $third-color;
     }
   }
+}
+
+.update-status {
+  display: grid;
+  // grid-template-columns: 15% 15% 70%;
+  padding: $small 0;
+  .title-update {
+    font-weight: $fw-semi-bold;
+  }
+  .open-popup {
+    cursor: pointer;
+    background-color: $light-white;
+    padding: $xs-small;
+    border-radius: $xs-small;
+    &:hover {
+      background-color: $fifth-color;
+    }
+  }
+}
+
+.add-new-reserving-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: $small;
 }

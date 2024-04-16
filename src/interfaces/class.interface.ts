@@ -1,5 +1,11 @@
+export interface ITrainer {
+  Email: string;
+  FullName: string;
+  Phone: string;
+  UserID: string;
+}
 export interface IClass {
-  ClassID: string;
+  Id: string;
   ClassName: string;
   StartDate: string;
   EndDate: string;
@@ -9,13 +15,10 @@ export interface IClass {
   UpdatedBy: string;
   Duration: number;
   Location: string;
-  Status: string;
-  ProgramID: string;
-  StartTime: string;
-  EndTime: string;
-  Trainers: string[];
-  FSU: string;
-  SpecificLocation: { ID: string; Name: string }[];
+  StatusClass: string;
+  Trainer: ITrainer;
+  Fsu: string;
+  SpecificLocation: string;
   Reviewer: string;
   Approver: string;
   ReviewDate: string;

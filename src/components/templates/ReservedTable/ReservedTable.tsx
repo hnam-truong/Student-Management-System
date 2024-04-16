@@ -13,12 +13,12 @@ import Gender from "../../atoms/Gender/Gender";
 import FontSizes from "../../../constants/FontSizes";
 import StatusTag from "../../atoms/StatusTag/StatusTag";
 import ActionTitle from "../../atoms/ActionTitle/ActionTitle";
+import { GenderFilters } from "../../../constants/TableFilters";
 
 interface ReservedTableProps {
   reservedStudent: IReservedStudent[] | null;
   loading: boolean;
   isExport: boolean;
-  isImport: boolean;
   completedExport: () => void;
   handleDataChange: () => void;
 }
@@ -27,17 +27,24 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
   reservedStudent,
   loading,
   isExport = false,
-  isImport = false,
   completedExport,
   handleDataChange,
 }) => {
   const [isShow, setIsShow] = useState<boolean>(false);
-  const [rowClick, setRowClick] = useState<string>("");
+  const [rowClick, setRowClick] = useState<number>();
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [selectedRows, setSelectedRows] = useState<IReservedStudent[]>([]);
   console.log(reservedStudent);
 
   const columns: TableColumnsType<IReservedStudent> = [
+    {
+      title: "Student ID",
+      dataIndex: "StudentId",
+      key: "StudentId",
+      fixed: "left",
+      sorter: (a: { StudentId: string }, b: { StudentId: string }) =>
+        a.StudentId.localeCompare(b.StudentId),
+    },
     {
       title: "Full name",
       dataIndex: "FullName",
@@ -47,46 +54,40 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
         a.FullName.localeCompare(b.FullName),
     },
     {
-      title: "Student code",
-      dataIndex: "StudentID",
-      key: "StudentID",
-      fixed: "left",
-      sorter: (a: { StudentID: string }, b: { StudentID: string }) =>
-        a.StudentID.localeCompare(b.StudentID),
-    },
-    {
       title: "Gender",
       dataIndex: "Gender",
       key: "Gender",
-      render: (_value, record) => (
+      render: (_value: boolean, record) => (
         <Gender gender={record.Gender} customFontSize={FontSizes.XsLarger} />
       ),
+      filters: GenderFilters,
+      filterSearch: true,
+      filterMode: "tree",
+      onFilter: (value, record) => record.Gender === value,
     },
 
     {
       title: "Birthday",
-      dataIndex: "DateOfBirth",
-      key: "DateOfBirth",
+      dataIndex: "DOB",
+      key: "DOB",
       sorter: (
-        a: { DateOfBirth: { toString: () => string } },
-        b: { DateOfBirth: { toString: () => string } }
-      ) => a.DateOfBirth.toString().localeCompare(b.DateOfBirth.toString()),
-      render: (dateOfBirth: string) => dateOfBirth,
+        a: { DOB: { toString: () => string } },
+        b: { DOB: { toString: () => string } }
+      ) => a.DOB.toString().localeCompare(b.DOB.toString()),
     },
     {
       title: "Hometown",
-      dataIndex: "Hometown",
-      key: "Hometown",
+      dataIndex: "Area",
+      key: "Area",
+      sorter: (a: { Area: string }, b: { Area: string }) =>
+        a.Area.localeCompare(b.Area),
     },
     {
-      title: "Class",
-      dataIndex: "Class",
-      key: "Class",
-    },
-    {
-      title: "Reserve module",
-      dataIndex: "ReservedModule",
-      key: "ReservedModule",
+      title: "Class ID",
+      dataIndex: "ClassId",
+      key: "ClassId",
+      sorter: (a: { ClassId: string }, b: { ClassId: string }) =>
+        a.ClassId.localeCompare(b.ClassId),
     },
     {
       title: "Reason",
@@ -97,15 +98,11 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
     },
     {
       title: "Reserve start date",
-      dataIndex: "ReservedStartDate",
-      key: "ReservedStartDate",
+      dataIndex: "StartDate",
+      key: "StartDate",
       sorter: (a: IReservedStudent, b: IReservedStudent) => {
-        const dateA = a.ReservedStartDate
-          ? new Date(a.ReservedStartDate)
-          : new Date(0);
-        const dateB = b.ReservedStartDate
-          ? new Date(b.ReservedStartDate)
-          : new Date(0);
+        const dateA = a.StartDate ? new Date(a.StartDate) : new Date(0);
+        const dateB = b.StartDate ? new Date(b.StartDate) : new Date(0);
         return dateA.getTime() - dateB.getTime();
       },
 
@@ -113,22 +110,19 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
     },
     {
       title: "Reserve end date",
-      dataIndex: "ReservedEndDate",
-      key: "ReservedEndDate",
+      dataIndex: "EndDate",
+      key: "EndDate",
       sorter: (a: IReservedStudent, b: IReservedStudent) =>
-        (a?.ReservedEndDate?.toString() || "").localeCompare(
-          b?.ReservedEndDate?.toString() || ""
+        (a?.EndDate?.toString() || "").localeCompare(
+          b?.EndDate?.toString() || ""
         ),
 
-      render: (ReservedEndDate: string) => ReservedEndDate,
+      render: (EndDate: string) => EndDate,
     },
     {
       title: "Status",
       dataIndex: "Status",
       key: "Status",
-      sorter: (a: { Status: string }, b: { Status: string }) =>
-        a.Status.localeCompare(b.Status),
-
       render: (status: string) => (
         <StatusTag status={status} content={status} />
       ),
@@ -137,18 +131,15 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
       title: <ActionTitle />,
       key: "operation",
       width: 80,
-      render: (record: IReservedStudent) => (
+      render: (record: IReservedStudent, _, index) => (
         <div className="centered">
           <ModalReservation
-            isShow={isShow && rowClick === record?.ID}
+            isShow={isShow && rowClick === index}
             setIsShow={setIsShow}
             data={record}
             handleDataChange={handleDataChange}
           >
-            <Button
-              className="btn-more"
-              onClick={() => setRowClick(record?.ID)}
-            >
+            <Button className="btn-more" onClick={() => setRowClick(index)}>
               <MdMoreHoriz />
             </Button>
           </ModalReservation>
@@ -171,9 +162,10 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
   };
 
   const scoresWithKeys = Array.isArray(reservedStudent)
-    ? reservedStudent?.map((_reservedStudent) => ({
-        ..._reservedStudent,
-        key: _reservedStudent.ID,
+    ? reservedStudent?.map((student, index) => ({
+        ...student,
+        Id: `${student.StudentId}_${student.ClassId}`,
+        key: `${student?.StudentId}_${student?.ClassId}_${student?.StartDate}_${student?.Reason}_${index}`,
       }))
     : [];
 
@@ -199,7 +191,6 @@ const ReservedTable: React.FC<ReservedTableProps> = ({
       completedExport();
     }, 200);
   }
-  console.log("isImport", isImport);
   return (
     <div
       style={{

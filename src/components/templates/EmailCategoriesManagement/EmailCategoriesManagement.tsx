@@ -1,6 +1,5 @@
 import React from "react";
 import EmailTable from "../EmailTable/EmailTable";
-import TableHeader from "../../organisms/TableHeader/TableHeader";
 import { IEmail } from "../../../interfaces/email.interface";
 
 interface EmailCategoriesManagementProps {
@@ -14,20 +13,12 @@ const EmailCategoriesManagement: React.FC<EmailCategoriesManagementProps> = ({
   loading,
   handleDataChange,
 }) => (
-  <div className="table-container">
-    <TableHeader
-      title="Email List"
-      isExport={false}
-      isImport={false}
-      isAddEmail
+  <div className="table-container__content">
+    <EmailTable
+      email={emailData ?? []}
+      loading={loading}
+      handleDataChange={handleDataChange}
     />
-    <div className="table-container__content">
-      <EmailTable
-        email={emailData ?? []}
-        loading={loading}
-        handleDataChange={handleDataChange}
-      />
-    </div>
   </div>
 );
 

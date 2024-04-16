@@ -1,6 +1,12 @@
+// NOTE:
+// 1: define interfaces/type for store
+// 2: create store with the correct type/interface
+// 3: use (state) => state.<state name> to access the current state value
+// 4: use set(newState) to update state value
+
 import { create } from "zustand";
 import { IModuleScore } from "../interfaces/module-score";
-import { getModuleScores } from "../services/api/ApiCaller5";
+import getModuleScores from "../services/api/api-caller/ModuleScoreApiCaller";
 
 interface ModuleScoreProps {
   moduleScore: IModuleScore[] | null;

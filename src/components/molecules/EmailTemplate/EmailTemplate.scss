@@ -72,10 +72,11 @@
   background-color: $grey;
 }
 
-.email-template {
+.email-form {
   padding: $lg-small;
   display: flex;
   flex-direction: column;
+
   label {
     padding-right: 0 !important;
     width: $x-ex-md-larger;
@@ -84,8 +85,19 @@
 }
 
 .email-input {
-  width: $ex-lg-larger;
-  font-weight: $fw-bold;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  padding: 2px;
+
+  p {
+    font-weight: $fw-bold;
+    grid-column: span 1 / span 1;
+  }
+  h4,
+  div {
+    grid-column: span 4 / span 4;
+    font-weight: $fw-normal;
+  }
 }
 .input-default {
   display: flex;

@@ -3,7 +3,7 @@
  * <EditStudent/>
  */
 import { Spin } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import dayjs from "dayjs";
 import { IStudent } from "../../../interfaces/student.interface";
@@ -11,74 +11,59 @@ import formatDate from "../../../utils/DateFormatting";
 import TableHeader from "../../organisms/TableHeader/TableHeader";
 import { useSingleStudentStore } from "../../../store/StudentStore";
 import StudentForm from "../../templates/StudentForm/StudentForm";
-import { BackButton } from "../../atoms/CustomButton/CustomButton";
+import CustomBreadcrumb from "../../atoms/CustomBreadcrumb/CustomBreadcrumb";
 
-interface EditStudentProps {
-  handleDataChange: () => void;
-}
-
-const EditStudent: React.FC<EditStudentProps> = ({ handleDataChange }) => {
+const EditStudent: React.FC = () => {
   const { id } = useParams();
+  const [isDataChange, setIsDataChange] = useState<boolean>(false);
+  const handleDataChange = () => {
+    setIsDataChange((pre) => !pre);
+  };
 
   // USE STORES
   const { aStudent, getStudentByID, putSingleStudent, loading } =
     useSingleStudentStore();
+  console.log(aStudent);
 
   const initialValues = {
-    ID: aStudent?.ID,
-    Name: aStudent?.Name,
+    StudentId: aStudent?.StudentId,
+    FullName: aStudent?.FullName,
     Gender: aStudent?.Gender,
     Email: aStudent?.Email,
-    DateOfBirth: dayjs(aStudent?.DateOfBirth, "DD/MM/YYYY"),
+    DOB: dayjs(aStudent?.DOB, "DD/MM/YYYY"),
     Phone: aStudent?.Phone,
     Status: aStudent?.Status,
-    AttendingStatus: aStudent?.AttendingStatus,
-    ImageUrl: aStudent?.ImageUrl,
-    PermanentResidence: aStudent?.PermanentResidence,
-    Location: aStudent?.Location,
+    AvatarUrl: aStudent?.AvatarUrl,
+    Area: aStudent?.Area,
+    Address: aStudent?.Address,
     University: aStudent?.University,
     Major: aStudent?.Major,
-    RECer: aStudent?.RECer,
     GPA: aStudent?.GPA,
-    GraduationTime: dayjs(aStudent?.GraduationTime, "DD/MM/YYYY"),
-    ClassCode: aStudent?.ClassCode,
+    GraduatedDate: dayjs(aStudent?.GraduatedDate, "DD/MM/YYYY"),
     ClassStartDate: dayjs(aStudent?.ClassStartDate, "DD/MM/YYYY"),
     Class: aStudent?.Class,
-    StudentClasses: aStudent?.StudentClasses,
+    Classes: aStudent?.Classes,
+    FAAccount: aStudent?.FAAccount,
   };
 
   useEffect(() => {
-    getStudentByID(id ?? "");
-  }, [id, getStudentByID]);
+    setTimeout(() => getStudentByID(id ?? ""), 500);
+  }, [id, getStudentByID, isDataChange]);
 
   const handleOk = () => {
-    handleDataChange();
+    setTimeout(() => handleDataChange(), 500);
   };
 
   // Function handles form submit, get value and send this to api,
   // then reset form fields and close modal
   const onFinish = (values: IStudent) => {
     const userData: IStudent = {
-      ID: aStudent?.ID || "",
-      Name: values.Name,
-      Gender: values.Gender,
-      Email: values.Email,
-      DateOfBirth: formatDate(values.DateOfBirth),
-      Phone: values.Phone,
-      Status: values.Status,
-      ImageUrl: aStudent?.ImageUrl || "",
-      PermanentResidence: values.PermanentResidence,
-      Location: values.Location,
-      University: values.University,
-      Major: values.Major,
-      RECer: values.RECer,
-      GPA: values.GPA,
-      GraduationTime: formatDate(values.GraduationTime),
-      ClassCode: values.ClassCode,
+      ...values,
+      StudentId: aStudent?.StudentId || "",
+      DOB: formatDate(values.DOB),
+      AvatarUrl: aStudent?.AvatarUrl || "",
+      GraduatedDate: formatDate(values.GraduatedDate),
       ClassStartDate: formatDate(values.ClassStartDate),
-      Class: values.Class,
-      StudentClasses: values.StudentClasses,
-      AttendingStatus: values.AttendingStatus,
     };
     putSingleStudent(userData, id || "");
     handleOk();
@@ -86,10 +71,15 @@ const EditStudent: React.FC<EditStudentProps> = ({ handleDataChange }) => {
 
   return (
     <div className="table-container">
-      <div className="back-btn">
-        <BackButton />
+      <div className="breadcrumb-frame-custom">
+        <CustomBreadcrumb />
       </div>
-      <TableHeader isHeaderBottom={false} title="Edit Student" />
+      <TableHeader
+        isHeaderBottom={false}
+        title="Edit Student"
+        setSearchSignal={() => {}}
+        setSearchTerm={() => {}}
+      />
       <div className="table-container__content table-container__class">
         {loading ? (
           <div className="spin-container">
@@ -97,11 +87,11 @@ const EditStudent: React.FC<EditStudentProps> = ({ handleDataChange }) => {
           </div>
         ) : (
           <StudentForm
+            handleDataChange={handleDataChange}
             onFinish={onFinish}
             formName={`EditStudent_${id}`}
             isEdit
             data={aStudent || null}
-            onAttendingStatusChange={() => {}}
             initialValues={initialValues}
           />
         )}

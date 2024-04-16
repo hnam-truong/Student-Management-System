@@ -1,17 +1,20 @@
 export interface IEmail {
-  ID: string;
+  Id: string;
   Name: string;
   Description: string;
   ApplyTo: string;
-  Category: string;
-  Status: boolean;
+  Type: string;
+  Status: string;
   Subject: string;
-  CreatedOn: string;
   CreatedBy: string;
+  CreatedDate: string;
+  UpdatedBy: string;
+  UpdatedDate: string;
   Sender: string;
   Receiver: string;
+  UserId: string;
   Cc: string;
   DearName: boolean;
-  Body: string;
-  ModuleScores: Array<string>;
+  Content: string;
+  ModuleScore: Array<string>;
 }

@@ -1,52 +1,53 @@
-import React, { useEffect } from "react";
-import { Card, Spin } from "antd";
+import React from "react";
+import { Collapse } from "antd";
+import type { CollapseProps } from "antd";
 import { CiCalendar } from "react-icons/ci";
 import { TfiAlarmClock } from "react-icons/tfi";
 import { BiBuildingHouse } from "react-icons/bi";
 import { RiUserVoiceLine } from "react-icons/ri";
 import { GiAlliedStar } from "react-icons/gi";
-import { IoIosArrowDropdown } from "react-icons/io";
 import { IClass } from "../../../interfaces/class.interface";
 import "./ClassGeneralCard.scss";
-import { useSingleUserStore } from "../../../store/UserStore";
 import UserDropdown from "../../organisms/UserDropdown/UserDropdown";
+import { handleStringShown } from "../../../utils/HandleDataShown";
 
 interface ClassGeneralCardProps {
   classInfo: IClass;
 }
 
 const ClassGeneralCard: React.FC<ClassGeneralCardProps> = ({ classInfo }) => {
-  const { getUserByID, users, loading } = useSingleUserStore();
+  console.log(classInfo);
   const infos = [
     {
       id: "1",
       icon: <TfiAlarmClock />,
       title: "Class Time",
-      description: `${classInfo.StartTime} - ${classInfo.EndTime}`,
+      description: "08:30 - 09:00",
     },
     {
       id: "2",
       icon: <BiBuildingHouse />,
       title: "Location",
-      description: classInfo?.SpecificLocation?.map((location) => (
-        <div key={location?.ID}>{location?.Name}</div>
-      )),
+      description: handleStringShown(classInfo?.SpecificLocation),
     },
     {
       id: "3",
       icon: <RiUserVoiceLine />,
       title: "Trainers",
-      description: loading ? (
-        <Spin />
-      ) : (
-        users.map((user) => <UserDropdown user={user} key={user.ID} />)
+      description: classInfo && (
+        <UserDropdown
+          userId={classInfo?.Trainer?.UserID}
+          fullName={classInfo?.Trainer?.FullName}
+          email={classInfo?.Trainer?.Email}
+          phone={classInfo?.Trainer?.Phone}
+        />
       ),
     },
     {
       id: "4",
       icon: <GiAlliedStar />,
-      title: "FSU",
-      description: classInfo.FSU,
+      title: "Fsu",
+      description: classInfo.Fsu,
     },
   ];
   const references = [
@@ -67,52 +68,43 @@ const ClassGeneralCard: React.FC<ClassGeneralCardProps> = ({ classInfo }) => {
     },
   ];
 
-  useEffect(() => {
-    classInfo.Trainers.forEach(async (trainerId) => {
-      getUserByID(trainerId);
-    });
-  }, [classInfo.Trainers, getUserByID]);
-
-  return (
-    <Card
-      type="inner"
-      title={
+  const items: CollapseProps["items"] = [
+    {
+      key: "General",
+      label: (
         <div className="class-general-card__title">
           <CiCalendar />
           <strong className="class-general-card__title--text">General</strong>
         </div>
-      }
-      className="class-general-card"
-      extra={
-        <span className="class-general-card__title class-general-card__extra-icon">
-          <IoIosArrowDropdown />
-        </span>
-      }
-    >
-      <div>
-        {infos.map((info) => (
-          <div key={info.id} className="class-general-card__info">
-            <div className="class-general-card__info--header">
-              {info.icon}
-              <div className="class-general-card__info--title">
-                {info.title}
+      ),
+      children: (
+        <div>
+          {infos?.map((info) => (
+            <div key={info.id} className="class-general-card__info">
+              <div className="class-general-card__info--header">
+                {info.icon}
+                <div className="class-general-card__info--title">
+                  {info.title}
+                </div>
               </div>
+              <span>
+                <strong>{info.description}</strong>
+              </span>
             </div>
-            <span>
-              <strong>{info.description}</strong>
-            </span>
-          </div>
-        ))}
-        <hr className="class-general-card__divider" />
-        {references.map((ref) => (
-          <div key={ref.id} className="class-general-card__info">
-            <div className="class-general-card__info--header">{ref.role}</div>
-            <span>{ref.description}</span>
-          </div>
-        ))}
-      </div>
-    </Card>
-  );
+          ))}
+          <hr className="class-general-card__divider" />
+          {references?.map((ref) => (
+            <div key={ref.id} className="class-general-card__info">
+              <div className="class-general-card__info--header">{ref.role}</div>
+              <span>{ref.description}</span>
+            </div>
+          ))}
+        </div>
+      ),
+    },
+  ];
+
+  return <Collapse items={items} defaultActiveKey={["General"]} />;
 };
 
 export default ClassGeneralCard;

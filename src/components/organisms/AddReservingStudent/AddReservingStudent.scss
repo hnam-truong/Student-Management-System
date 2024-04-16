@@ -67,6 +67,23 @@
   .ant-form-item-control {
     width: 100%;
   }
+  .error-message {
+    color: $red;
+    margin: $small 0;
+  }
+  .class-selection-container {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: $small 0;
+    border: $xxs-small solid $link-color;
+    &:hover {
+      border: $xxs-small solid $dark-green !important;
+    }
+  }
+  .selected-class {
+    border: $xxs-small solid $dark-green;
+  }
 }
 .add-reserving-modal::-webkit-scrollbar {
   width: 0 !important;

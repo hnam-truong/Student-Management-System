@@ -1,17 +1,16 @@
-// AddStudentUI.tsx
-import React, { useEffect, useState } from "react";
-import { Form } from "antd";
+// StudentForm component that is used for Add student and Edit student information.tsx
+import React from "react";
+import { Empty, Form } from "antd";
 import { useNavigate } from "react-router-dom";
 import GeneralInfo from "../../atoms/GeneralInfo/GeneralInfo";
 import OtherInfo from "../../atoms/OtherInfo/OtherInfo";
 import "./StudentForm.scss";
 import { IStudent } from "../../../interfaces/student.interface";
 import FormFooter from "../../molecules/FormFooter/FormFooter";
-import FormClassInfo from "../../atoms/FormClassInfo/FormClassInfo";
 import AddReservingStudent from "../../organisms/AddReservingStudent/AddReservingStudent";
-import StudentReservingInformation from "../../molecules/StudentReservingInformation/StudentReservingInformation";
-import TerminalReservation from "../../atoms/TerminalReservation/TerminalReservation";
-import { useReservedStudentSingleStore } from "../../../store/ReservedStudentStore";
+import { useReservedStudentStore } from "../../../store/ReservedStudentStore";
+import AddClassToStudent from "../../atoms/AddClassToStudent/AddClassToStudent";
+import EmptyDescription from "../../../constants/EmptyDescription";
 
 interface StudentFormProps {
   onFinish: (values: IStudent) => void;
@@ -20,7 +19,8 @@ interface StudentFormProps {
   isEdit?: boolean;
   data?: IStudent | null;
   isAbleAdd?: boolean;
-  onAttendingStatusChange: () => void;
+  isAddSuccess?: boolean;
+  handleDataChange: () => void;
 }
 const StudentForm: React.FC<StudentFormProps> = ({
   onFinish,
@@ -29,25 +29,41 @@ const StudentForm: React.FC<StudentFormProps> = ({
   isEdit,
   data,
   isAbleAdd,
-  onAttendingStatusChange,
+  isAddSuccess,
+  handleDataChange,
 }) => {
   const [form] = Form.useForm();
-  const [student, setStudent] = useState<IStudent | null>(null);
   const navigate = useNavigate();
-  const [isShow, setIsShow] = useState<boolean>(false);
-  const { fetchReservedStudentByID, aReservedStudent } =
-    useReservedStudentSingleStore();
+  const { reservedStudent, loading } = useReservedStudentStore();
 
   const handleCancel = () => {
     form.resetFields();
     navigate("/students");
   };
 
-  useEffect(() => {
-    setStudent(data || null);
-    fetchReservedStudentByID(student?.ID ?? "");
-  }, [data, fetchReservedStudentByID, student?.ID]);
+  !loading && console.log(reservedStudent);
+  const renderReservingInformation = () => {
+    if (!data) return null;
 
+    const hasNoClasses = data?.Classes?.length === 0;
+    const isInClass = data?.Classes?.some(
+      (studentClass) => studentClass.AttendingStatus === "InClass"
+    );
+
+    if (hasNoClasses || !isInClass) {
+      return <Empty description={EmptyDescription.ReservingWithoutInClass} />;
+    }
+    return (
+      <div className="add-new-reserving-container">
+        <AddReservingStudent
+          handleDataChange={handleDataChange}
+          id={data?.StudentId}
+          isAddNew
+          student={data}
+        />
+      </div>
+    );
+  };
   return (
     <>
       <Form
@@ -58,9 +74,10 @@ const StudentForm: React.FC<StudentFormProps> = ({
         onFinish={onFinish}
         layout="horizontal"
         initialValues={initialValues}
+        disabled={isAddSuccess}
       >
         <div className="Title">General</div>
-        <GeneralInfo isEdit={isEdit} />
+        <GeneralInfo isEdit={isEdit} isAddSuccess={isAddSuccess} />
 
         <div className="Title">Other</div>
         <OtherInfo />
@@ -69,41 +86,19 @@ const StudentForm: React.FC<StudentFormProps> = ({
           <FormFooter formName={formName} handleCancel={handleCancel} />
         </div>
       </Form>
-      {student !== null && student !== undefined && (
+      {!isAbleAdd && data && (
         <>
-          <div className="Title">Class Information</div>
-          {student !== null && student !== undefined && (
-            <FormClassInfo data={student} isDisabled={!student} />
-          )}
-          <div className="Title">Reserving Information</div>
-          <div className="">
-            {!isAbleAdd || student.AttendingStatus === "Reserve" ? (
-              <div className="container-update">
-                {aReservedStudent && (
-                  <div className="update-status">
-                    <TerminalReservation
-                      isShow={isShow}
-                      setIsShow={setIsShow}
-                      data={aReservedStudent}
-                      handleDataChange={() => {}}
-                    >
-                      <div className="open-popup centered">Change status</div>
-                    </TerminalReservation>
-                  </div>
-                )}
-                <StudentReservingInformation studentDetailID={student?.ID} />
-              </div>
-            ) : (
-              student !== null &&
-              student !== undefined && (
-                <AddReservingStudent
-                  handleDataChange={() => {}}
-                  id={student?.ID}
-                  isAddNew={false}
-                  onAttendingStatusChange={onAttendingStatusChange}
-                />
-              )
-            )}
+          <div>
+            <div className="Title">Class Information</div>
+            <AddClassToStudent
+              data={data}
+              isDisabled={!data}
+              handleDataChange={handleDataChange}
+            />
+          </div>
+          <div>
+            <div className="Title">Reserving Information</div>
+            {renderReservingInformation()}
           </div>
         </>
       )}
@@ -116,6 +111,7 @@ StudentForm.defaultProps = {
   initialValues: {},
   isEdit: false,
   isAbleAdd: false,
+  isAddSuccess: false,
 };
 
 export default StudentForm;

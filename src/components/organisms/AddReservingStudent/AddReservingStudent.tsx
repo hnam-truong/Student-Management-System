@@ -9,7 +9,7 @@
  * Usage:
  * <AddReservingStudent id={id}/> with id is optional
  */
-import { Form, Modal } from "antd";
+import { Modal } from "antd";
 import React, { useState } from "react";
 import { VscError } from "react-icons/vsc";
 import { AddButton } from "../../atoms/CustomButton/CustomButton";
@@ -18,35 +18,24 @@ import FormFooter from "../../molecules/FormFooter/FormFooter";
 import Sizes from "../../../constants/Sizes";
 import AddReservingStudentForm from "../../molecules/AddReservingStudentForm/AddReservingStudentForm";
 import Colors from "../../../constants/Colors";
+import { IStudent } from "../../../interfaces/student.interface";
 
 interface AddReservingStudentProps {
   id?: string;
+  student?: IStudent | null;
   handleDataChange: () => void;
   isAddNew?: boolean;
-  onAttendingStatusChange: () => void;
 }
 
 const AddReservingStudent: React.FC<AddReservingStudentProps> = ({
   id,
+  student,
   handleDataChange,
   isAddNew,
-  onAttendingStatusChange,
 }) => {
-  const [form] = Form.useForm();
   // USE STATE
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  // Reset form values
-  const resetFormValue = () => {
-    form.resetFields();
-    isAddNew &&
-      form.setFieldsValue({
-        ID: "",
-        Class: "",
-        ClassID: "",
-        CurrentModules: "",
-      });
-  };
+  const [isReset, setIsReset] = useState(false);
 
   // Functions handles modals and form reset fields
   const showModal = () => {
@@ -56,12 +45,11 @@ const AddReservingStudent: React.FC<AddReservingStudentProps> = ({
   const handleOk = () => {
     setIsModalOpen(false);
     handleDataChange();
-    resetFormValue();
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
-    resetFormValue();
+    setIsReset(true);
   };
 
   return (
@@ -102,10 +90,11 @@ const AddReservingStudent: React.FC<AddReservingStudentProps> = ({
         <div className="add-reserving-modal-content modal-content-custom">
           <AddReservingStudentForm
             id={id}
-            form={form}
+            student={student}
             handleOk={handleOk}
             isAddNew={isAddNew}
-            onAttendingStatusChange={onAttendingStatusChange}
+            isReset={isReset}
+            setIsReset={setIsReset}
           />
         </div>
       </Modal>
@@ -116,5 +105,6 @@ const AddReservingStudent: React.FC<AddReservingStudentProps> = ({
 AddReservingStudent.defaultProps = {
   id: "",
   isAddNew: true,
+  student: null,
 };
 export default AddReservingStudent;

@@ -1,30 +1,13 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import ModalFindClass from "./ModalFindClass";
-import { IReservedStudent } from "../../../interfaces/reserved-student.interface";
+import MockReservedStudent from "../../../test-data/Students/MockReservedStudent";
 
 describe("ModalFindClass Component", () => {
   it("renders ModalFindClass component", () => {
-    const mockData: IReservedStudent = {
-      FullName: "Hàn Quốc Hoàng",
-      Gender: true,
-      DateOfBirth: "01/01/2003",
-      Hometown: "Hồ Chí Minh",
-      Class: "Fresher Developer Operation",
-      ReservedModule: "ReservedModule 1",
-      Reason: "Reserve to study again",
-      ReservedStartDate: "15/10/2023",
-      Status: "Reserve",
-      ReservedEndDate: "06/01/2050",
-      StudentID: "1",
-      ClassID: "HCM_24_FR_DAO_03",
-      CurrentModules: "CurrentModules 1",
-      Conditions: ["1", "3"],
-      ID: "1",
-      Email: "test@gmail.com",
-    };
+    const reservedStudent = MockReservedStudent[0];
 
     const mockProps = {
-      data: mockData,
+      data: reservedStudent,
       open: true,
       handleDataChange: () => {},
       updateStatusInClass: () => {},

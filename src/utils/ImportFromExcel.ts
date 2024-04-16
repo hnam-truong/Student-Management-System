@@ -1,119 +1,44 @@
-/* eslint-disable import/prefer-default-export */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import * as XLSX from "xlsx";
-import { useStudentStore } from "../store/StudentStore";
-import { useReservedStudentStore } from "../store/ReservedStudentStore";
-import { useScoreStore } from "../store/ScoreStore";
-import { useStudentClassStore } from "../store/StudentClassStore";
-import { useUserStore } from "../store/UserStore";
+import ImportStore from "../store/ImportStore";
+import { getUserInfo } from "./JWTAuth";
 
-export const ImportFromExcel = () => {
-  const { postStudent, loading: studentLoading } = useStudentStore();
-  const { postReservedStudent, loading: reservedStudentLoading } =
-    useReservedStudentStore();
-  const { postScore, loading: scoreLoading } = useScoreStore();
-  const { postStudentClass, loading: studentClassLoading } =
-    useStudentClassStore();
-  const { postUser, loading: userLoading } = useUserStore();
+const ImportFromExcel = () => {
+  const {
+    postStudentImport,
+    postStudentClassImport,
+    postStudentScoreImport,
+    postUserImport,
+    loading,
+  } = ImportStore();
 
-  const readExcelFile = (file: any, setExcelFile: any) => {
-    const reader = new FileReader();
-
-    reader.onload = (e) => {
-      e.preventDefault();
-      const data = e.target?.result;
-      if (data !== null) {
-        const workbook = XLSX.read(data, { type: "buffer" });
-        const worksheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[worksheetName];
-        const excelData = XLSX.utils.sheet_to_json(worksheet);
-        setExcelFile(excelData);
-      }
-    };
-    reader.readAsArrayBuffer(file);
+  const handleExcelStudent = async (file: File) => {
+    postStudentImport(file);
+    // window.location.reload();
   };
 
-  const handleExcelStudent = async (excelData: any) => {
-    const transformedData = excelData.map((item: any) => {
-      const { StudentClasses, ...rest } = item;
-      let studentClassesArray = [];
-
-      if (Array.isArray(StudentClasses)) {
-        studentClassesArray = StudentClasses;
-      } else if (typeof StudentClasses === "string") {
-        studentClassesArray = StudentClasses.split(",").map((aClass: string) =>
-          aClass.trim()
-        );
-      }
-
-      return {
-        ...rest,
-        StudentClasses: studentClassesArray,
-      };
-    });
-
-    postStudent(transformedData);
+  const handleExcelStudentScore = async (file: File, classId?: string) => {
+    const id = classId || "";
+    postStudentScoreImport(file, id);
+    // window.location.reload();
   };
-  const handleExcelReservedStudent = async (excelData: any) => {
-    const transformedData = excelData.map((item: any) => {
-      const { Conditions, ...rest } = item;
-      let conditionsArray = [];
 
-      if (Array.isArray(Conditions)) {
-        conditionsArray = Conditions;
-      } else if (typeof Conditions === "string") {
-        conditionsArray = Conditions.split(",").map((aClass: string) =>
-          aClass.trim()
-        );
-      }
+  const handleExcelStudentClass = async (file: File) => {
+    postStudentClassImport(file);
+    // window.location.reload();
+  };
 
-      return {
-        ...rest,
-        Conditions: conditionsArray,
-      };
-    });
-    postReservedStudent(transformedData);
-  };
-  const handleExcelStudentScore = async (excelData: any) => {
-    const transformedData = excelData.map((item: any) => {
-      const { ...rest } = item;
-      return {
-        ...rest,
-      };
-    });
-    postScore(transformedData);
-  };
-  const handleExcelStudentClass = async (excelData: any) => {
-    const transformedData = excelData.map((item: any) => {
-      const { ...rest } = item;
-      return {
-        ...rest,
-      };
-    });
-    postStudentClass(transformedData);
-  };
-  const handleExcelUser = async (excelData: any) => {
-    const transformedData = excelData.map((item: any) => {
-      const { ...rest } = item;
-      return {
-        ...rest,
-      };
-    });
-    postUser(transformedData);
+  const handleExcelUser = async (file: File) => {
+    const id = getUserInfo().uid;
+    postUserImport(file, id);
+    // window.location.reload();
   };
 
   return {
-    readExcelFile,
     handleExcelStudent,
-    handleExcelReservedStudent,
     handleExcelStudentScore,
     handleExcelStudentClass,
     handleExcelUser,
-    loading:
-      studentLoading ||
-      reservedStudentLoading ||
-      scoreLoading ||
-      studentClassLoading ||
-      userLoading,
+    loading,
   };
 };
+
+export default ImportFromExcel;

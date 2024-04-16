@@ -18,74 +18,41 @@
  * Note: This component assumes the availability of Ant Design components.
  */
 
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { AutoComplete, Input } from "antd";
-import type { SelectProps } from "antd";
-import { IoIosSearch } from "react-icons/io";
 import Sizes from "../../../constants/Sizes";
 import "../../../styles/main.scss";
 
-const getRandomInt = (max: number, min = 0) =>
-  Math.floor(Math.random() * (max - min + 1)) + min;
+interface SearchInputProps {
+  setSearchTerm: React.Dispatch<React.SetStateAction<string>>;
+  setSearchSignal: React.Dispatch<
+    React.SetStateAction<AbortSignal | undefined>
+  >;
+}
 
-const searchResult = (query: string) =>
-  new Array(getRandomInt(5))
-    .join(".")
-    .split(".")
-    .map((_, idx) => {
-      const category = `${query}${idx}`;
-      return {
-        value: category,
-        label: (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-            }}
-          >
-            <span>
-              Found {query} on{" "}
-              <a
-                href={`https://s.taobao.com/search?q=${query}`}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {category}
-              </a>
-            </span>
-            <span>{getRandomInt(200, 100)} results</span>
-          </div>
-        ),
-      };
-    });
+const SearchInput: React.FC<SearchInputProps> = ({
+  setSearchTerm,
+  setSearchSignal,
+}) => {
+  const searchControllerRef = useRef<AbortController>();
+  const handleSearch = async (value: string) => {
+    value ? setSearchTerm(value) : setSearchTerm("");
 
-const SearchInput: React.FC = () => {
-  const [options, setOptions] = useState<SelectProps<object>["options"]>([]);
-
-  const handleSearch = (value: string) => {
-    setOptions(value ? searchResult(value) : []);
-  };
-
-  const onSelect = (value: string) => {
-    console.log("onSelect", value);
+    if (searchControllerRef.current) {
+      searchControllerRef.current.abort();
+    }
+    searchControllerRef.current = new AbortController();
+    const searchSignal = searchControllerRef.current.signal;
+    setSearchSignal(searchSignal);
   };
 
   return (
     <AutoComplete
       popupMatchSelectWidth={Sizes.PopUpSearchLarge}
-      options={options}
-      onSelect={onSelect}
       onSearch={handleSearch}
-      className="search-input-container"
       data-testid="search-input-autocomplete"
     >
-      <Input.Search
-        placeholder="Search"
-        enterButton
-        prefix={<IoIosSearch size={Sizes.LgMedium} />}
-        allowClear
-        size="large"
-      />
+      <Input.Search placeholder="Search" enterButton allowClear size="large" />
     </AutoComplete>
   );
 };

@@ -5,7 +5,7 @@
 // 4: use set(newState) to update state value
 import { create } from "zustand";
 import { IProvince } from "../interfaces/province.interface";
-import getLocationProvinces from "../services/api/ApiCaller6";
+import getLocationProvinces from "../services/api/api-caller/ProvinceApiCaller";
 
 // STUDENT STORE
 interface IProvinceStore {

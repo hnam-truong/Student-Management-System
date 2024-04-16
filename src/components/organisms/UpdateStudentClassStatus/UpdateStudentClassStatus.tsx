@@ -1,27 +1,39 @@
 import { useState } from "react";
 import UpdateStudentStatusDropdown from "../../molecules/UpdateStudentStatusDropdown/UpdateStudentStatusDropdown";
 import UpdateStudentStatusModal from "../../molecules/UpdateStudentStatusModal/UpdateStudentStatusModal";
-import { IStudent } from "../../../interfaces/student.interface";
 import { IStudentClass } from "../../../interfaces/student-class.interface";
+import { useStudentClassStore } from "../../../store/StudentClassStore";
 
 interface UpdateStudentStatusProps {
-  studentSelect: IStudent[] | IStudentClass[];
+  studentSelect: IStudentClass[];
   isSelectedStudent?: boolean;
+  handleDataChange: () => void;
 }
 
 const UpdateStudentClassStatus = ({
   studentSelect,
   isSelectedStudent,
+  handleDataChange,
 }: UpdateStudentStatusProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [statusStudent, setStatusStudent] = useState("Finish");
+  const { putStudentClassStatus } = useStudentClassStore();
 
   const showModal = () => {
     setIsModalOpen(true);
   };
   const handleOk = () => {
-    console.log("Student in class:", studentSelect);
-    console.log("Status is:", statusStudent);
+    const studentNeedUpdateStatusInClass = studentSelect?.map((student) => ({
+      ClassId: student.ClassId,
+      StudentId: student.StudentId,
+      CurrentStatus: student.AttendingStatus,
+      NewStatus: statusStudent,
+      Reason: "",
+      Conditions: [],
+    }));
+
+    putStudentClassStatus(studentNeedUpdateStatusInClass);
+    handleDataChange();
     setIsModalOpen(false);
   };
 

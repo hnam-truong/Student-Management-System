@@ -29,15 +29,17 @@ const EditUser: React.FC<EditUserProps> = ({ id, handleDataChange }) => {
   const { aUser, getUserByID, putSingleUser, loading } = useSingleUserStore();
 
   const initialValues = {
-    ID: aUser?.ID,
-    Name: aUser?.Name,
+    ID: aUser?.Id,
+    FullName: aUser?.FullName,
     Gender: aUser?.Gender,
     Email: aUser?.Email,
-    DateOfBirth: dayjs(aUser?.DateOfBirth, "DD/MM/YYYY"),
+    DOB: dayjs(aUser?.DOB, "DD/MM/YYYY"),
     Phone: aUser?.Phone,
-    Status: aUser?.Status,
-    UserType: aUser?.UserType,
+    Status: aUser?.Status === "Active" && "checked",
+    UserType: aUser?.Role,
     ImageUrl: aUser?.ImageUrl,
+    Address: aUser?.Address,
+    Username: aUser?.Username,
   };
 
   // const updateUserFormValues = () => {
@@ -69,18 +71,25 @@ const EditUser: React.FC<EditUserProps> = ({ id, handleDataChange }) => {
   // Function handles form submit, get value and send this to api,
   // then reset form fields and close modal
   const onFinish = (values: IUser) => {
-    const userData: IUser = {
-      ID: aUser?.ID || "",
-      Name: values.Name,
+    const userData: Omit<IUser, "Id" | "Role" | "ImageUrl" | "Password"> = {
+      FullName: values.FullName,
       Gender: values.Gender,
       Email: values.Email,
-      DateOfBirth: formatDate(values.DateOfBirth),
+      DOB: formatDate(values.DOB),
       Phone: values.Phone,
-      Status: values.Status,
-      UserType: values.UserType,
-      ImageUrl: aUser?.ImageUrl || "",
+      Status: values.Status ? "Active" : "Inactive",
+      Address: values.Address,
+      Username: values.Username,
     };
-    putSingleUser(userData, id);
+    const dataPatch = Object.keys(userData).map((key) => ({
+      op: "replace",
+      path: `/${key}`,
+      value:
+        userData[
+          key as keyof Omit<IUser, "Id" | "Role" | "ImageUrl" | "Password">
+        ],
+    }));
+    putSingleUser(dataPatch, id);
     handleOk();
   };
 
@@ -119,7 +128,7 @@ const EditUser: React.FC<EditUserProps> = ({ id, handleDataChange }) => {
                 onFinish={onFinish}
                 formName={`EditUser_${id}`}
                 isEdit
-                isAdmin={aUser?.UserType === "Admin"}
+                isAdmin={aUser?.Role === "Admin"}
                 isReset={isReset}
                 setIsReset={setIsReset}
                 initialValues={initialValues}

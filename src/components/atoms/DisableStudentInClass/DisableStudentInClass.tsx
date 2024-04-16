@@ -1,20 +1,22 @@
 import React from "react";
 import DisableModal from "../DisableModal/DisableModal";
-import { useSingleClassStore } from "../../../store/StudentClassStore";
+import { useSingleStudentClassStore } from "../../../store/StudentClassStore";
 
 interface DisableStudentInClassrops {
   id: string;
+  classId: string;
   handleDataChange: () => void;
 }
 const DisableStudentInClass: React.FC<DisableStudentInClassrops> = ({
   id,
+  classId,
   handleDataChange,
 }) => {
-  const { deleteSingleStudentInClass } = useSingleClassStore();
+  const { deleteSingleStudentInClass } = useSingleStudentClassStore();
 
   const handleOk = () => {
     handleDataChange();
-    deleteSingleStudentInClass(id);
+    deleteSingleStudentInClass(id, classId);
   };
 
   return (

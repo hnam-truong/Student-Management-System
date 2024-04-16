@@ -1,9 +1,7 @@
 import React from "react";
 import { Space } from "antd";
-import { IStudent } from "../../../interfaces/student.interface";
 import Colors from "../../../constants/Colors";
 import "../../../styles/main.scss";
-import { IUser } from "../../../interfaces/user.interface";
 
 const generateColor = (name: string): string => {
   const colors = [
@@ -22,27 +20,32 @@ const generateColor = (name: string): string => {
 };
 
 interface AvatarImageProps {
-  detail: IStudent | IUser | null;
+  ImageUrl: string | null;
+  FullName: string;
   isImage: boolean;
 }
 
-const AvatarImage: React.FC<AvatarImageProps> = ({ detail, isImage }) => (
+const AvatarImage: React.FC<AvatarImageProps> = ({
+  ImageUrl,
+  FullName,
+  isImage,
+}) => (
   <Space>
-    {isImage && detail?.ImageUrl !== "" && detail?.ImageUrl ? (
+    {isImage && ImageUrl !== "" && ImageUrl ? (
       <img
-        src={detail.ImageUrl}
-        alt={detail?.Name}
+        src={ImageUrl}
+        alt={FullName}
         className="avatar-container"
         data-testid="avatar-image"
       />
     ) : (
       <div
         className="centered avatar-container"
-        style={{ backgroundColor: generateColor(detail?.Name || "") }}
+        style={{ backgroundColor: generateColor(FullName || "") }}
       >
-        {detail?.Name && (
+        {FullName && (
           <span className="avatar-initial">
-            {detail.Name.slice(0, 2).toUpperCase()}
+            {FullName.slice(0, 2).toUpperCase()}
           </span>
         )}
       </div>

@@ -51,7 +51,21 @@
     width: 100%;
     padding: 0 $medium;
     .class-general-calendar__card {
-      width: 32%;
+      width: 50%;
+      .ant-collapse {
+        .ant-collapse-header {
+          background-color: $primary-color !important;
+          display: flex;
+          align-items: center;
+          border-radius: 0;
+          .ant-collapse-expand-icon {
+            position: absolute;
+            right: 0;
+            color: $white;
+            font-size: $font-size-lg-medium;
+          }
+        }
+      }
     }
   }
 

@@ -7,14 +7,15 @@ import { Form, Radio } from "antd";
 interface FormRadioProps {
   name: string;
   label: string;
-  list: { id: string; value: boolean; name: string }[];
+  list: { id: string; value: string; name: string }[];
   rules: { required: boolean; message: string }[];
+  onChange?: (value: string) => void;
 }
 const FormRadio: React.FC<FormRadioProps> = ({ list, label, rules, name }) => (
   <Form.Item label={label} rules={rules} name={name}>
     <Radio.Group>
       {list.map((item) => (
-        <Radio key={item.id} value={item.value}>
+        <Radio key={item.id} value={item.value === "Male"}>
           {item.name}
         </Radio>
       ))}

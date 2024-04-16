@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import EmailTable from "../EmailTable/EmailTable";
-import TableHeader from "../../organisms/TableHeader/TableHeader";
 import { IEmail } from "../../../interfaces/email.interface";
 
 interface EmailOtherManagementProps {
@@ -22,29 +21,22 @@ const EmailOtherManagement: React.FC<EmailOtherManagementProps> = ({
     if (emailData) {
       const filteredEmails: any = emailData.filter(
         (item) =>
-          item.Category !== "Reserve" &&
-          item.Category !== "Notice" &&
-          item.Category !== "Remind"
+          item.Type !== "Reservation" &&
+          item.Type !== "Inform" &&
+          item.Type !== "Remind" &&
+          item.Type !== "Score"
       );
       setCateEmails(filteredEmails);
     }
   }, [emailData]);
 
   return (
-    <div className="table-container">
-      <TableHeader
-        title="Email List"
-        isExport={false}
-        isImport={false}
-        isAddEmail
+    <div className="table-container__content">
+      <EmailTable
+        email={cateEmails}
+        loading={loading}
+        handleDataChange={handleDataChange}
       />
-      <div className="table-container__content">
-        <EmailTable
-          email={cateEmails}
-          loading={loading}
-          handleDataChange={handleDataChange}
-        />
-      </div>
     </div>
   );
 };

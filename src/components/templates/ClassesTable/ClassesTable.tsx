@@ -5,6 +5,8 @@ import CustomDropdown from "../../molecules/CustomDropdown/CustomDropdown";
 import { IClass } from "../../../interfaces/class.interface";
 import StatusTag from "../../atoms/StatusTag/StatusTag";
 import ActionTitle from "../../atoms/ActionTitle/ActionTitle";
+import RouterEndpoints from "../../../constants/RouterEndpoints";
+import { ClassStatusFilters } from "../../../constants/TableFilters";
 
 interface ClassTableProps {
   classes: IClass[];
@@ -14,17 +16,18 @@ interface ClassTableProps {
 const ClassTable: React.FC<ClassTableProps> = ({ classes, loading }) => {
   const columns: TableColumnsType<IClass> = [
     {
-      title: "Class",
+      title: "Class ID",
+      dataIndex: "Id",
+      key: "Id",
+      fixed: "left",
+      sorter: (a, b) => a.Id.localeCompare(b.Id),
+    },
+    {
+      title: "Class Name",
       dataIndex: "ClassName",
       key: "ClassName",
       fixed: "left",
       sorter: (a, b) => a.ClassName.localeCompare(b.ClassName),
-    },
-    {
-      title: "Class Code",
-      dataIndex: "ClassID",
-      key: "ClassID",
-      sorter: (a, b) => a.ClassID.localeCompare(b.ClassID),
     },
     {
       title: "Created on",
@@ -48,24 +51,15 @@ const ClassTable: React.FC<ClassTableProps> = ({ classes, loading }) => {
     },
     {
       title: "Status",
-      dataIndex: "Status",
-      key: "Status",
+      dataIndex: "StatusClass",
+      key: "StatusClass",
       width: 90,
-      filters: [
-        {
-          text: "Opening",
-          value: true,
-        },
-        {
-          text: "Completed",
-          value: false,
-        },
-      ],
+      filters: ClassStatusFilters,
       filterSearch: true,
       filterMode: "tree",
-      onFilter: (value, record) => record.Status === value,
+      onFilter: (value, record) => record.StatusClass === value,
       render: (_value, record) => (
-        <StatusTag status={record.Status} content={record.Status} />
+        <StatusTag status={record.StatusClass} content={record.StatusClass} />
       ),
     },
     {
@@ -81,8 +75,8 @@ const ClassTable: React.FC<ClassTableProps> = ({ classes, loading }) => {
       render: (_value, record) => (
         <div className="centered">
           <CustomDropdown
-            id={record?.ClassID}
-            viewLink="/class"
+            id={record?.Id}
+            viewLink={RouterEndpoints.ClassesManagement}
             textView="View"
             isEdit={false}
             handleDataChange={() => {}}
@@ -94,7 +88,7 @@ const ClassTable: React.FC<ClassTableProps> = ({ classes, loading }) => {
 
   const scoresWithKeys = classes.map((_class) => ({
     ..._class,
-    key: _class.ClassID,
+    key: _class.Id,
   }));
 
   return (

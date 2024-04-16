@@ -1,22 +1,23 @@
+import { IClassStudent } from "./class-student.interface";
+
 export interface IStudent {
-  ID: string;
-  Name: string;
+  StudentId: string;
+  FullName: string;
   Gender: boolean;
-  DateOfBirth: string;
+  DOB: string;
   Status: string;
   Phone: string;
   Email: string;
-  PermanentResidence: string;
-  Location: string;
+  Area: string;
+  Address: string;
   University: string;
   Major: string;
-  RECer: string;
   GPA: number;
-  GraduationTime: string;
-  ClassCode: string;
+  GraduatedDate: string;
   ClassStartDate: string;
-  ImageUrl: string;
+  AvatarUrl: string;
   Class: string;
-  StudentClasses: Array<string>;
-  AttendingStatus: string;
+  Classes: IClassStudent[];
+  FAAccount: string;
+  JoinedDate: string;
 }

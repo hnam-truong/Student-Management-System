@@ -37,6 +37,7 @@ export interface IDashboard {
   TotalEmailReserve: number;
   TotalEmailRemind: number;
   TotalEmailNotice: number;
+  TotalEmailScore: number;
 }
 export interface PieChartDataProps {
   name: string;

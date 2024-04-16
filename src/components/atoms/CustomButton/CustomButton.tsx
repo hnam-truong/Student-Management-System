@@ -12,6 +12,7 @@ import { FaPlusCircle } from "react-icons/fa";
 import { RiDownloadCloud2Line } from "react-icons/ri";
 import { CiExport } from "react-icons/ci";
 import { IoMdFunnel, IoMdArrowBack } from "react-icons/io";
+import { IoSend } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import "./CustomButton.scss";
 import Sizes from "../../../constants/Sizes";
@@ -61,7 +62,7 @@ const backDefaultProps: Partial<BackButtonProps> = {
   text: "Back",
 };
 
-export const CommonButton = ({ onClick, text }: ButtonProps) => (
+export const CommonButton = ({ onClick = () => {}, text }: ButtonProps) => (
   <Button
     type="text"
     onClick={onClick}
@@ -211,6 +212,19 @@ export const SendEmailButton = ({ onClick, text }: ButtonProps) => (
   </Button>
 );
 
+export const SendMailButton = ({ onClick = () => {}, text }: ButtonProps) => (
+  <Button type="text" onClick={onClick} className="btn--send-mail">
+    <div className="btn--send-mail__content">
+      <div className="btn--send-mail__content--icon">
+        <IoSend />
+      </div>
+
+      <div className="btn--send-mail__content--text">
+        <span>{text}</span>
+      </div>
+    </div>
+  </Button>
+);
 AddButton.defaultProps = defaultProps;
 DeleteButton.defaultProps = defaultProps;
 DefaultDeleteButton.defaultProps = defaultProps;
@@ -226,3 +240,4 @@ SubmitButton.defaultProps = submitDefaultProps;
 DownloadButton.defaultProps = downloadDefaultProps;
 BackButton.defaultProps = backDefaultProps;
 SendEmailButton.defaultProps = defaultProps;
+SendMailButton.defaultProps = defaultProps;

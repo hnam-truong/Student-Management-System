@@ -1,12 +1,15 @@
 @import "../../../styles/main.scss";
 
+.form-container {
+  padding: $medium;
+}
 .form-wrapper {
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: $xs-large $md-larger;
+  // padding: $xs-large $md-larger;
   gap: $medium;
 
   &__container {
@@ -77,11 +80,5 @@
     .ant-form-item-explain {
       font-size: $font-size-lg-small;
     }
-  }
-}
-
-@media screen and (max-width: $sm) {
-  .form-wrapper {
-    padding: $xs-large $small;
   }
 }

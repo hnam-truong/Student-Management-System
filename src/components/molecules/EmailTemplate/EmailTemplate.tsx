@@ -1,18 +1,25 @@
-import React, { useEffect, useState } from "react";
-import { Button, Form, Modal, Select } from "antd";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import { Button, Form, Input, Modal, Select } from "antd";
 import "./EmailTemplate.scss"; // Import the styles
 import { VscError } from "react-icons/vsc";
+import ReactQuill from "react-quill";
+import { useLocation } from "react-router";
 import dayjs from "dayjs";
 import { IReservedStudent } from "../../../interfaces/reserved-student.interface";
 import Sizes from "../../../constants/Sizes";
 import Colors from "../../../constants/Colors";
 import { useEmailStore } from "../../../store/EmailStore";
-import { useSingleActivityLogStore } from "../../../store/ActivityLogStore";
-import { errorNotify } from "../../atoms/Notify/Notify";
+import {
+  useActivityLogStore,
+  useSingleActivityLogStore,
+} from "../../../store/ActivityLogStore";
 import { IActivityLog } from "../../../interfaces/activity-log.interface";
-import { IEmail } from "../../../interfaces/email.interface";
+import { errorNotify } from "../../atoms/Notify/Notify";
 import { IUser } from "../../../interfaces/user.interface";
 import formatDate from "../../../utils/DateFormatting";
+import { IAccount } from "../../../interfaces/account.interface";
+import { IEmail } from "../../../interfaces/email.interface";
+import { validateEmail } from "../../../utils/Validations";
 
 interface EmailTemplateProps {
   data: IReservedStudent | IUser;
@@ -22,6 +29,8 @@ interface EmailTemplateProps {
   modalTitle: string;
   type?: string;
   isIndividual?: boolean;
+  setOpenRemind: React.Dispatch<React.SetStateAction<boolean>>;
+  isCC?: boolean;
 }
 
 const { Option } = Select;
@@ -33,68 +42,146 @@ const EmailTemplate: React.FC<EmailTemplateProps> = ({
   modalTitle,
   type,
   isIndividual,
+  setOpenRemind,
+  isCC,
 }) => {
+  console.log(isIndividual);
+
+  console.log(data.Email);
+  const path = useLocation().pathname;
+  const classId = path?.split("/")[2];
+  const [typeTemplate, setTypeTemplate] = useState<IEmail | null>();
   const [previewModal, setPreviewModal] = useState<boolean>(false);
-  const { email, getEmail } = useEmailStore();
-  const { postActivityLog, loadingActivityLog } = useSingleActivityLogStore();
-  const [receiver, setReceiver] = useState<string>("All");
-  const [template, setTemplate] = useState<IEmail | null>(email && email[0]);
-  const showPreviewModal = () => {
-    setPreviewModal(true);
+  const { email, getEmailByType } = useEmailStore();
+  const [isChooseType, setIsChooseType] = useState<boolean>(false);
+  const { postActivityLog, loadingActivityLog, postActivityLogForTrainer } =
+    useSingleActivityLogStore();
+  const { postActivityLogByClassID } = useActivityLogStore();
+  const [receiver, setReceiver] = useState<string>(classId ?? data.Email);
+  const [CC, setCC] = useState<string>("");
+  const [isModalOpen, setModalOpen] = useState<boolean>(open ?? false);
+
+  useEffect(() => {
+    setModalOpen(open);
+  }, [open]);
+  const handleClose = () => {
+    setModalOpen(false);
+    setOpenRemind((prev) => !prev);
   };
 
+  const [form] = Form.useForm();
+  const userInfo = JSON.parse(
+    localStorage.getItem("userInfo") ?? ""
+  ) as IAccount | null;
   const hidePreviewModal = () => {
     setPreviewModal(false);
   };
+  const showPreviewModal = () => {
+    form.validateFields().then(() => {
+      setPreviewModal(true);
+    });
+  };
   const handleTemplateChange = (value: string) => {
-    const chooseTemplate = email?.find((item) => item.ID === value);
-    setTemplate(chooseTemplate ?? null);
+    const chooseTemplate = email?.find((el) => el.Id === value);
+    setTypeTemplate(chooseTemplate);
   };
   const handleReceiverChange = (value: string) => {
     setReceiver(value);
   };
-  const handleSendRemind = () => {
-    const dataActivityLog: IActivityLog = {
-      ID: "",
-      TemplateID: template?.ID ?? "1",
-      Category: "Reservation",
-      DateTime: formatDate(dayjs(Date.now()).toString()),
-      Sender: "vivi@gmail.com",
-      Receiver: receiver?.toString() ?? "All",
-      Cc: "vivi@gmail.com",
-    };
-    try {
-      postActivityLog(dataActivityLog);
+  const handleChangeCC = (e: ChangeEvent<HTMLInputElement>) => {
+    setCC(e.target.value);
+  };
 
-      setTimeout(() => {
-        hidePreviewModal();
-        handleCloseRemind();
-      }, 1000);
-    } catch (error) {
-      errorNotify("An error occurred while send email remind student");
-      console.error("Error remind:", error);
-    }
+  const handleSendRemind = () => {
+    form.validateFields().then((values: IActivityLog) => {
+      console.log(values);
+      const ReceiverArray = !Array.isArray(values.Receiver)
+        ? [values.Receiver]
+        : values.Receiver;
+      const ArrayCC = CC !== "" ? CC.split(",") : [];
+
+      console.log(ReceiverArray);
+
+      const dataActivityLog: IActivityLog = {
+        EmailType: values.EmailType,
+        EmailTemplateId: values.EmailTemplateId ?? "",
+        SenderId: userInfo?.uid ?? "",
+        Receiver: values.Receiver,
+        Id: "",
+        SendDate: formatDate(dayjs(Date.now()).toString()),
+        ReceiverType: values.ReceiverType,
+        EmailTemplateName: "",
+        CC: ArrayCC,
+        To: ReceiverArray,
+        UserEmail: [],
+      };
+      try {
+        console.log(dataActivityLog);
+        console.log(classId, data.Email);
+        if (type === "Trainer") {
+          dataActivityLog.UserEmail = dataActivityLog.To;
+          postActivityLogForTrainer(dataActivityLog);
+        } else {
+          classId && !data.Email
+            ? postActivityLogByClassID(dataActivityLog, classId)
+            : postActivityLog(dataActivityLog);
+        }
+
+        setTimeout(() => {
+          hidePreviewModal();
+          handleCloseRemind();
+        }, 200);
+      } catch (error) {
+        errorNotify("An error occurred while send email remind student");
+        console.error("Error remind:", error);
+      }
+    });
   };
   console.log(open);
 
-  useEffect(() => {
-    getEmail();
-  }, [getEmail]);
-
   const emailTemplateInitialValues = {
-    Receiver: isIndividual ? data?.Email : "All",
-    TemplateID: (email && email[0]?.Name) ?? "Select template name",
-    Applier: type,
+    Receiver: isIndividual ? data?.Email : classId,
+    ReceiverType: type ?? "Student",
   };
+  console.log(type);
 
+  const applyTo: string = type === "Trainer" ? "Trainer" : "Student";
+  const handleChooseType = async (value: string) => {
+    setIsChooseType(true);
+    await getEmailByType(value, applyTo);
+  };
+  console.log(email);
+
+  const typeOptions = [
+    {
+      value: "Reservation",
+      label: "Reservation",
+    },
+    {
+      value: "Inform",
+      label: "Inform",
+    },
+    {
+      value: "Score",
+      label: "Score",
+    },
+    {
+      value: "Remind",
+      label: "Remind",
+    },
+    {
+      value: "Other",
+      label: "Other",
+    },
+  ];
   return (
     <>
       <Modal
         title={<div className="modal-title">{modalTitle}</div>}
-        open={open}
+        open={isModalOpen}
         closeIcon={<VscError size={Sizes.LgMedium} color={Colors.White} />}
-        onOk={handleOpenRemind}
-        onCancel={handleCloseRemind}
+        onOk={handleClose}
+        onCancel={handleClose}
         className="email-modal"
         cancelText="Send"
         okText="Preview"
@@ -119,120 +206,195 @@ const EmailTemplate: React.FC<EmailTemplateProps> = ({
           </div>,
         ]}
       >
-        <Form name="RemindForm" initialValues={emailTemplateInitialValues}>
-          <div className="email-template">
-            <div className="input-default">
-              <p className="input-title">Categories</p>
-              <p>Reservation</p>
-            </div>
-            <Form.Item label="Apply to" name="Applier">
+        <Form
+          name="RemindForm"
+          initialValues={emailTemplateInitialValues}
+          onFinish={handleSendRemind}
+          form={form}
+        >
+          <div className="email-form">
+            <Form.Item
+              label="Category"
+              name="EmailType"
+              rules={[{ required: true }]}
+            >
               <Select
                 style={{ width: 300 }}
-                placeholder="Select send to"
-                onChange={handleReceiverChange}
-                disabled={type !== ""}
+                placeholder="Select category"
+                onChange={(value) => handleChooseType(value)}
+                options={typeOptions}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Apply to"
+              name="ReceiverType"
+              rules={[{ required: true }]}
+            >
+              <Select
+                style={{ width: 300 }}
+                placeholder="Select apply to"
+                // onChange={handleApplyChange}
+                disabled={isIndividual || type !== "Trainer"}
               >
-                {!isIndividual && (
-                  <>
-                    <Option value="Student">Student</Option>
-                    <Option value="Trainer">Trainer</Option>
-                  </>
+                {type === "Trainer" ? (
+                  <Option value="Trainer">Trainer</Option>
+                ) : (
+                  <Option value="Student">Student</Option>
                 )}
+                {/* {isIndividual ? (
+                  <Option value="Student">Student</Option>
+                ) : (
+                  <Option value="Trainer">Trainer</Option>
+                )} */}
               </Select>
             </Form.Item>
-            <Form.Item label="Send to" name="Receiver">
+            <Form.Item
+              label="Send to"
+              name="Receiver"
+              rules={[{ required: true }]}
+            >
               <Select
                 style={{ width: 300 }}
                 placeholder="Select send to"
                 onChange={handleReceiverChange}
-                disabled={isIndividual}
+                disabled={isIndividual || type !== "Trainer"}
               >
-                {!isIndividual && <Option value="All">All</Option>}
-                {data?.Email !== "" && (
+                {classId && <Option value={classId}>{classId}</Option>}
+                {!isIndividual && (
                   <Option value={data?.Email}>{data?.Email}</Option>
                 )}
               </Select>
             </Form.Item>
-            <Form.Item label="Template name" name="TemplateID">
+
+            <Form.Item
+              label="Template name"
+              name="EmailTemplateId"
+              rules={[{ required: true }]}
+            >
               <Select
                 style={{ width: 300 }}
                 onChange={handleTemplateChange}
-                defaultActiveFirstOption
+                placeholder="Select template name"
+                disabled={!isChooseType}
               >
                 {email?.map((item) => (
-                  <Option value={item.ID} key={item.ID}>
+                  <Option value={item.Id} key={item.Id}>
                     {item.Name}
                   </Option>
                 ))}
               </Select>
             </Form.Item>
+            {isCC && (
+              <Form.Item
+                label="CC"
+                name="CC"
+                rules={[
+                  ({ getFieldValue }) => ({
+                    validator: (_, value) => {
+                      const fieldValue = getFieldValue("CC");
+                      if (fieldValue) {
+                        return validateEmail(value)
+                          ? Promise.resolve()
+                          : Promise.reject(
+                              new Error("Please enter a valid email address!")
+                            );
+                      }
+                      return Promise.resolve();
+                    },
+                  }),
+                ]}
+              >
+                <Input
+                  placeholder="Type email cc"
+                  style={{ width: "300px" }}
+                  type="email"
+                  onChange={(e) => handleChangeCC(e)}
+                />
+              </Form.Item>
+            )}
           </div>
         </Form>
       </Modal>
-      {previewModal && (
-        <Modal
-          title={<div className="modal-title">Email Preview</div>}
-          open={previewModal}
-          closeIcon={
-            <VscError
-              style={{
-                color: Colors.White,
+
+      {/* Preview modal show the content of email will be sent */}
+      <Modal
+        title={<div className="modal-title">Email Preview</div>}
+        open={previewModal}
+        closeIcon={
+          <VscError
+            style={{
+              color: Colors.White,
+            }}
+          />
+        }
+        onCancel={hidePreviewModal}
+        width={900}
+        className="email-modal"
+        footer={[
+          <div className="modal-footer" key="modalFooter">
+            <Button
+              onClick={() => {
+                hidePreviewModal();
+                handleOpenRemind();
               }}
-            />
-          }
-          onCancel={hidePreviewModal}
-          width={900}
-          className="email-modal"
-          footer={[
-            <div className="modal-footer" key="modalFooter">
-              <Button
-                onClick={() => {
-                  hidePreviewModal();
-                  handleOpenRemind();
-                }}
-                className="btn-preview-btn"
-              >
-                Back
-              </Button>
-              <Button
-                key="Send"
-                onClick={handleSendRemind}
-                className="ant-btn-primary"
-                loading={loadingActivityLog}
-              >
-                Send
-              </Button>
-            </div>,
-          ]}
-        >
-          <div className="email-form">
-            <div className="email-input">
-              <p>Template name</p>
-              <h4>{template?.Name}</h4>
-            </div>
-            <div className="email-input">
-              <p>From</p>
-              <h4>Vi Vi (vivi@gmail.com)</h4>
-            </div>
-            <div className="email-input">
-              <p>To</p>
-              <h4>{receiver}</h4>
-            </div>
+              className="btn-preview-btn"
+            >
+              Back
+            </Button>
+            <Button
+              key="Send"
+              onClick={handleSendRemind}
+              className="ant-btn-primary"
+              loading={loadingActivityLog}
+            >
+              Send
+            </Button>
+          </div>,
+        ]}
+      >
+        <div className="email-form">
+          <div className="email-input">
+            <p>Template name</p>
+            <h4>{typeTemplate?.Name}</h4>
+          </div>
+          <div className="email-input">
+            <p>From</p>
+            <h4>{userInfo?.email}</h4>
+          </div>
+          <div className="email-input">
+            <p>To</p>
+            <h4>{receiver}</h4>
+          </div>
+          {isCC && (
             <div className="email-input">
               <p>Cc</p>
-              <h4>vivi@gmail.com</h4>
+              <h4>{CC}</h4>
             </div>
-            <div className="email-input">
-              <p>Subject</p>
-              <h4>Lorem ipsum</h4>
-            </div>
-            <div className="email-input">
-              <p>Body</p>
-              <h4>{template?.Description}</h4>
+          )}
+          <div className="email-input">
+            <p>Subject</p>
+            <h4>Lorem ipsum</h4>
+          </div>
+          <div className="email-input">
+            <p>Body</p>
+            <div>
+              {typeTemplate?.Type === "Score" ? (
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: typeTemplate?.Content ?? "",
+                  }}
+                />
+              ) : (
+                <ReactQuill
+                  value={typeTemplate?.Content}
+                  readOnly
+                  style={{ width: "100%", height: "fit-content" }}
+                />
+              )}
             </div>
           </div>
-        </Modal>
-      )}
+        </div>
+      </Modal>
     </>
   );
 };
@@ -240,6 +402,7 @@ const EmailTemplate: React.FC<EmailTemplateProps> = ({
 EmailTemplate.defaultProps = {
   isIndividual: false,
   type: "",
+  isCC: false,
 };
 
 export default EmailTemplate;

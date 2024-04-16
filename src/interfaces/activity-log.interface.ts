@@ -1,9 +1,13 @@
 export interface IActivityLog {
-  ID: string;
-  TemplateID: string;
-  Category: string;
-  DateTime: string;
-  Sender: string;
+  Id: string;
+  SendDate: string;
+  ReceiverType: string;
   Receiver: string;
-  Cc: string;
+  EmailTemplateId: string;
+  SenderId: string;
+  EmailType: string;
+  EmailTemplateName: string;
+  CC: string[];
+  To: string[];
+  UserEmail: string[];
 }

@@ -1,5 +1,6 @@
 import React from "react";
 import { Table, TableColumnsType } from "antd";
+import dayjs from "dayjs";
 import { IActivityLog } from "../../../interfaces/activity-log.interface";
 
 interface ReservationEmailTableProps {
@@ -11,39 +12,39 @@ const ReservationEmailTable: React.FC<ReservationEmailTableProps> = ({
   activityLogs,
   loading,
 }) => {
-  let counterID = 0;
   const columns: TableColumnsType<IActivityLog> = [
     {
       title: "ID",
       dataIndex: "ID",
       key: "ID",
       fixed: "left",
-      // eslint-disable-next-line no-return-assign
-      render: () => (counterID += 1),
+      render: (_, __, index) => index + 1,
     },
     {
-      title: "DateTime",
-      dataIndex: "DateTime",
-      key: "DateTime",
-      sorter: (a, b) => a.DateTime.localeCompare(b.DateTime),
+      title: "Send Date",
+      dataIndex: "SendDate",
+      key: "SendDate",
+      // sorter: (a, b) => a.SendDate.getTime() - b.SendDate.getTime(),
+      render: (_value: unknown, record: IActivityLog) =>
+        dayjs(record.SendDate).format("DD/MM/YYYY hh:mm:ss"),
     },
     {
-      title: "Modified by",
-      dataIndex: "Sender",
-      key: "Sender",
-      sorter: (a, b) => a.Sender.localeCompare(b.Sender),
+      title: "Email Type",
+      dataIndex: "EmailType",
+      key: "EmailType",
+      render: (_value, record) => record.EmailType,
     },
     {
-      title: "Action",
-      dataIndex: "Action",
-      key: "Action",
+      title: "Email Content",
+      dataIndex: "EmailContent",
+      key: "EmailContent",
       render: (_value, record) =>
-        `Send ${record.Category} email to ${record.Receiver}`,
+        `Send ${record.EmailType} email to ${record.Receiver}`,
     },
   ];
-  const scoresWithKeys = activityLogs.map((e) => ({
-    ...e,
-    key: e.ID,
+  const scoresWithKeys = activityLogs.map((record, index) => ({
+    ...record,
+    key: index + 1,
   }));
   return (
     <div className="ant-table-container">

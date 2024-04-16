@@ -5,6 +5,7 @@
 // 4: use set(newState) to update state value
 
 import { create } from "zustand";
+import { AxiosError } from "axios";
 import { IEmail } from "../interfaces/email.interface";
 import {
   getEmails,
@@ -12,8 +13,9 @@ import {
   getEmailByID,
   postSingleEmail,
   putSingleEmail,
-  deleteSingleEmail,
-} from "../services/api/ApiCaller7";
+  getEmailByTypeName,
+  patchSingleEmail,
+} from "../services/api/api-caller/EmailApiCaller";
 import { errorNotify, successNotify } from "../components/atoms/Notify/Notify";
 import {
   generateErrorMessage,
@@ -24,20 +26,34 @@ import {
 interface IEmailStore {
   email: IEmail[] | null;
   loading: boolean;
-  getEmail: () => void;
+  getEmail: (searchTerm?: string, searchSignal?: AbortSignal) => void;
+  getEmailByType: (type: string, applyTo: string) => Promise<void>;
   postEmail: (data: IEmail[]) => Promise<void>;
 }
 
 export const useEmailStore = create<IEmailStore>((set) => ({
   email: [],
   loading: false,
-  getEmail: async () => {
+  getEmail: async (searchTerm?: string, searchSignal?: AbortSignal) => {
     set((state) => ({ ...state, loading: true }));
     try {
-      const data = await getEmails();
+      const data = await getEmails(searchTerm, searchSignal);
       set((state) => ({ ...state, email: data }));
     } catch (error) {
-      console.error("API Error: ", error);
+      // Catch & log error
+      set((state) => ({ ...state, email: [] }));
+    } finally {
+      set((state) => ({ ...state, loading: false }));
+    }
+  },
+  getEmailByType: async (type: string, applyTo: string) => {
+    set((state) => ({ ...state, loading: true }));
+    try {
+      const data = await getEmailByTypeName({ type, applyTo });
+      set((state) => ({ ...state, email: data }));
+    } catch (error) {
+      // Catch & log error
+      set((state) => ({ ...state, email: [] }));
     } finally {
       set((state) => ({ ...state, loading: false }));
     }
@@ -47,14 +63,22 @@ export const useEmailStore = create<IEmailStore>((set) => ({
     // Set Loading true
     set((state) => ({ ...state, loading: true }));
     try {
-      await postEmail({ data });
+      const response = await postEmail({ data });
       successNotify(
-        generateSuccessMessage("has been created", "Email template information")
+        response && response !== ""
+          ? response
+          : generateSuccessMessage(
+              "has been created",
+              "Email template information"
+            )
       );
     } catch (err) {
       // Catch & log error
-      console.log("API Error:", err);
-      errorNotify(generateErrorMessage("create", "new email template"));
+      const axiosError = err as AxiosError;
+      errorNotify(
+        axiosError?.response?.data?.toString() ??
+          generateErrorMessage("post", "the email")
+      );
     } finally {
       // Set loading false
       set((state) => ({ ...state, loading: false }));
@@ -90,12 +114,21 @@ export const useSingleEmailStore = create<ISingleEmailStore>((set) => ({
   postSingleEmail: async (data: IEmail) => {
     set((state) => ({ ...state, loading: true }));
     try {
-      await postSingleEmail({ data });
+      const response = await postSingleEmail({ data });
       successNotify(
-        generateSuccessMessage("has been created", "Email template information")
+        response && response !== ""
+          ? response
+          : generateSuccessMessage(
+              "has been created",
+              "Email template information"
+            )
       );
     } catch (error) {
-      errorNotify(generateErrorMessage("create", "a new email template"));
+      const axiosError = error as AxiosError;
+      errorNotify(
+        axiosError?.response?.data?.toString() ??
+          generateErrorMessage("create", "a new email template")
+      );
     } finally {
       set((state) => ({ ...state, loading: false }));
     }
@@ -104,12 +137,22 @@ export const useSingleEmailStore = create<ISingleEmailStore>((set) => ({
   putSingleEmail: async (data: IEmail, id: string) => {
     set((state) => ({ ...state, loading: true }));
     try {
-      await putSingleEmail({ data, id });
+      const response = await putSingleEmail({ data, id });
       successNotify(
-        generateSuccessMessage("has been changed", "Email template information")
+        response && response !== ""
+          ? response
+          : generateSuccessMessage(
+              "has been changed",
+              "Email template information"
+            )
       );
     } catch (error) {
-      errorNotify(generateErrorMessage("edit", "the email template"));
+      // Catch & log error
+      const axiosError = error as AxiosError;
+      errorNotify(
+        axiosError?.response?.data?.toString() ??
+          generateErrorMessage("edit", "the email template")
+      );
     } finally {
       set((state) => ({ ...state, loading: false }));
     }
@@ -118,12 +161,19 @@ export const useSingleEmailStore = create<ISingleEmailStore>((set) => ({
   deleteSingleEmail: async (id: string) => {
     set((state) => ({ ...state, loading: true }));
     try {
-      await deleteSingleEmail({ id });
+      const response = await patchSingleEmail({ id });
       successNotify(
-        generateSuccessMessage("deleted", "The email template was")
+        response && response !== ""
+          ? response
+          : generateSuccessMessage("deleted", "The email template was")
       );
     } catch (error) {
-      errorNotify(generateErrorMessage("delete", "the email template"));
+      // Catch & log error
+      const axiosError = error as AxiosError;
+      errorNotify(
+        axiosError?.response?.data?.toString() ??
+          generateErrorMessage("delete", "the email template")
+      );
     } finally {
       set((state) => ({ ...state, loading: false }));
     }

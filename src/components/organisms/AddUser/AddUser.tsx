@@ -27,15 +27,18 @@ const AddUser: React.FC<AddUserProps> = ({ handleDataChange }) => {
   const { postSingleUser } = useSingleUserStore();
 
   const initialValues: IUser = {
-    ID: "",
-    Name: "",
+    Id: "",
+    FullName: "",
     Gender: true,
     Email: "",
-    DateOfBirth: "",
+    DOB: "",
     Phone: "",
-    Status: false,
-    UserType: "Trainer",
+    Status: "Active",
+    Role: "Trainer",
     ImageUrl: "",
+    Address: "",
+    Username: "",
+    Password: "",
   };
 
   // Functions handles modals and form reset fields
@@ -58,15 +61,18 @@ const AddUser: React.FC<AddUserProps> = ({ handleDataChange }) => {
   // then reset form fields and close modal
   const onFinish = (values: IUser) => {
     const userData: IUser = {
-      ID: "",
-      Name: values.Name,
+      Id: "",
+      FullName: values.FullName,
       Gender: values.Gender,
       Email: values.Email,
-      DateOfBirth: formatDate(values.DateOfBirth),
+      DOB: formatDate(values.DOB),
       Phone: values.Phone,
       Status: values.Status,
-      UserType: values.UserType,
-      ImageUrl: "",
+      Role: values.Role,
+      Address: values.Address,
+      Username: values.Username,
+      ImageUrl: values.ImageUrl,
+      Password: values.Password,
     };
     postSingleUser(userData);
     handleOk();

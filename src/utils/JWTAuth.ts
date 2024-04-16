@@ -1,42 +1,67 @@
-/* eslint-disable no-param-reassign */
 import { jwtDecode } from "jwt-decode";
-import { convertDate } from "./TakeCurrentTime";
-
-interface JwtDecodeI {
-  uid: string;
-  role: string;
-  username: string;
-  exp: number;
-}
+import { IAccount } from "../interfaces/account.interface";
+import { getCompareConvertDate, getCompareCurrentTime } from "./CompareTime";
 
 export const decodeToken = () => {
-  const token = localStorage.getItem("token");
   let decodedToken;
+  const token = localStorage.getItem("token");
   if (token) {
-    decodedToken = jwtDecode<JwtDecodeI>(token);
+    decodedToken = jwtDecode<IAccount>(token);
   }
   try {
-    console.log(decodedToken);
     if (decodedToken) {
-      const { uid, role, username } = decodedToken;
-      localStorage.setItem("id", uid);
-      localStorage.setItem("role", role);
-      localStorage.setItem("userName", username);
+      const { exp } = decodedToken;
+      const expDate = getCompareConvertDate(exp).toString();
+      localStorage.setItem("userInfo", JSON.stringify(decodedToken));
+      localStorage.setItem("exp", expDate);
     }
-    convertDate(decodedToken?.exp);
   } catch (error) {
     console.error("Error decoding token:", error);
   }
 };
 
+export const getUserInfo = (): IAccount => {
+  const userInfoString: string | null = localStorage.getItem("userInfo");
+  if (!userInfoString) {
+    return {} as IAccount;
+  }
+  const userInfo: IAccount = JSON.parse(userInfoString);
+  return userInfo;
+};
+
 export const Authenticate = () => {
   const token = localStorage.getItem("token");
+  const userRole = getUserInfo().role;
   if (token) {
-    window.location.href = "/dashboard";
+    if (userRole === "Admin") {
+      window.location.href = "/dashboard";
+    } else {
+      window.location.href = "/classes";
+    }
   }
 };
 
 export const isAuthenticated = () => {
   const token = localStorage.getItem("token");
   return !!token;
+};
+
+export const checkExpire = () => {
+  const expItem = localStorage.getItem("exp");
+  const currentTime = getCompareCurrentTime();
+  if (expItem !== null && expItem < currentTime) {
+    localStorage.clear();
+    window.location.href = "/";
+  }
+};
+
+// check if the user is authorized based on roles
+export const isAuthorized = (requiredRoles: string[]): boolean => {
+  const token = localStorage.getItem("token");
+  const user = getUserInfo();
+  if (token && user) {
+    const userRole = user.role;
+    return requiredRoles.includes(userRole);
+  }
+  return false;
 };

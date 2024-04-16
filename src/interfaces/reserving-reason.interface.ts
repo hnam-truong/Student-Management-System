@@ -1,4 +1,4 @@
 export interface IReservingReason {
-  ID: string;
+  Id: string;
   Name: string;
 }

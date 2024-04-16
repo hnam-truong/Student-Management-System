@@ -2,7 +2,10 @@
 import { create } from "zustand";
 import { ILogin } from "../interfaces/login.interface";
 import { errorNotify, successNotify } from "../components/atoms/Notify/Notify";
-import { postLogin, postLogout } from "../services/api/ApiCaller9";
+import {
+  postLogin,
+  postLogout,
+} from "../services/api/api-caller/AuthApiCaller";
 
 interface IAuthStore {
   loading: boolean;

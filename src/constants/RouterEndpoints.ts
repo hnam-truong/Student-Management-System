@@ -7,44 +7,37 @@ enum RouterEndpoints {
 
   // USERS MANAGEMENT
   UsersManagement = "/users",
-  UserDetail = "/user/:id",
-  UserDetailGeneral = "/user/",
-  AddUser = "/user/add",
-  EditUser = "/user/edit",
-  UserPermission = "/user/permission",
+  UserDetail = "/users/:id",
+  UserDetailGeneral = "/users/",
+  AddUser = "/users/add",
+  EditUser = "/users/edit",
+  UserPermission = "/users/permission",
 
   // STUDENTS ROUTES
   StudentsManagement = "/students",
-  AttendeeDetail = "/student/:id",
-  StudentDetail = "/class100/student/:id",
-  AddStudent = "/student/add",
-  EditStudent = "/student/edit/:id",
+  AttendeeDetail = "/students/:id",
+  StudentDetail = "/classes/:classId/student-management/:studentId",
+  AddStudent = "/students/add",
+  EditStudent = "/students/edit/:id",
 
   // RESERVED STUDENTS ROUTES
   ReservedStudents = "/reserved-students",
 
   // CLASSES MANAGEMENT
   ClassesManagement = "/classes",
-  StudentsClassManagement = "/class100",
-  SyllabusManagement = "/syllabus",
-  TrainingProgramManagement = "/training-program",
-  TrainingCalendarManagement = "/training-calendar",
-  LearningMaterialsManagement = "/learning-materials",
-  CalendarManagement = "/calendar",
-  ClassDetail = "/class/:id",
+  ClassDetail = "/classes/:id",
 
   // SCORES ROUTES
-  ScoresManagement = "/class100/scores",
-  ScoreDetail = "/class100/scores/:id",
-  AddScore = "/class100/score/add",
-  EditScore = "/class100/score/edit/:id",
+  ScoreDetail = "/classes/:id/scores/:id",
+  AddScore = "/classes/:id/scores/add",
+  EditScore = "/classes/:classId/scores/edit/:studentId",
 
   // EMAILS ROUTES
   EmailsManagement = "/emails",
-  EmailConfiguration = "/email-configuration",
-  EmailDetail = "/email-detail/:id",
-  AddEmail = "/email/add",
-  EditEmail = "/email/edit/:id",
+  EmailTemplate = "/email-template",
+  EmailDetail = "/emails/:id",
+  AddEmail = "/emails/add",
+  EditEmail = "/emails/edit/:id",
 }
 
 export default RouterEndpoints;

@@ -1,8 +1,10 @@
-export const getCourseStatus = (status: boolean | undefined): string => {
-  if (status === true) {
+export const getCourseStatus = (
+  status: number | boolean | undefined
+): string => {
+  if (status === true || status === 1) {
     return "Passed";
   }
-  if (status === false) {
+  if (status === false || status === 0) {
     return "Failed";
   }
   return "-";
