@@ -20,6 +20,7 @@ import formatDate from "../../../utils/DateFormatting";
 import { IAccount } from "../../../interfaces/account.interface";
 import { IEmail } from "../../../interfaces/email.interface";
 import { validateEmail } from "../../../utils/Validations";
+import { useStudentClassStore } from "../../../store/StudentClassStore";
 
 interface EmailTemplateProps {
   data: IReservedStudent | IUser;
@@ -54,9 +55,14 @@ const EmailTemplate: React.FC<EmailTemplateProps> = ({
   const [previewModal, setPreviewModal] = useState<boolean>(false);
   const { email, getEmailByType } = useEmailStore();
   const [isChooseType, setIsChooseType] = useState<boolean>(false);
-  const { postActivityLog, loadingActivityLog, postActivityLogForTrainer } =
-    useSingleActivityLogStore();
+  const {
+    postActivityLog,
+    loadingActivityLog,
+    postActivityLogForTrainer,
+    postEmailScore,
+  } = useSingleActivityLogStore();
   const { postActivityLogByClassID } = useActivityLogStore();
+  const { fetchStudentClass, studentClass } = useStudentClassStore();
   const [receiver, setReceiver] = useState<string>(classId ?? data.Email);
   const [CC, setCC] = useState<string>("");
   const [isModalOpen, setModalOpen] = useState<boolean>(open ?? false);
@@ -81,6 +87,9 @@ const EmailTemplate: React.FC<EmailTemplateProps> = ({
       setPreviewModal(true);
     });
   };
+  useEffect(() => {
+    classId && fetchStudentClass(classId);
+  }, [classId, fetchStudentClass]);
   const handleTemplateChange = (value: string) => {
     const chooseTemplate = email?.find((el) => el.Id === value);
     setTypeTemplate(chooseTemplate);
@@ -93,6 +102,8 @@ const EmailTemplate: React.FC<EmailTemplateProps> = ({
   };
 
   const handleSendRemind = () => {
+    console.log(11111111);
+
     form.validateFields().then((values: IActivityLog) => {
       console.log(values);
       const ReceiverArray = !Array.isArray(values.Receiver)
@@ -114,13 +125,23 @@ const EmailTemplate: React.FC<EmailTemplateProps> = ({
         CC: ArrayCC,
         To: ReceiverArray,
         UserEmail: [],
+        StudentId: "",
+        ClassId: classId,
+        TemplateId: values.EmailTemplateId,
       };
       try {
-        console.log(dataActivityLog);
-        console.log(classId, data.Email);
         if (type === "Trainer") {
           dataActivityLog.UserEmail = dataActivityLog.To;
           postActivityLogForTrainer(dataActivityLog);
+        } else if (
+          classId &&
+          type === "Student" &&
+          typeTemplate?.Type === "Score"
+        ) {
+          studentClass?.forEach((student) => {
+            dataActivityLog.StudentId = student.StudentId;
+            postEmailScore(dataActivityLog);
+          });
         } else {
           classId && !data.Email
             ? postActivityLogByClassID(dataActivityLog, classId)
@@ -137,20 +158,17 @@ const EmailTemplate: React.FC<EmailTemplateProps> = ({
       }
     });
   };
-  console.log(open);
 
   const emailTemplateInitialValues = {
     Receiver: isIndividual ? data?.Email : classId,
     ReceiverType: type ?? "Student",
   };
-  console.log(type);
 
   const applyTo: string = type === "Trainer" ? "Trainer" : "Student";
   const handleChooseType = async (value: string) => {
     setIsChooseType(true);
     await getEmailByType(value, applyTo);
   };
-  console.log(email);
 
   const typeOptions = [
     {

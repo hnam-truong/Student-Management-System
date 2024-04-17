@@ -3,7 +3,7 @@ const HandleTableScore = (moduleScores: string[]) => {
  ${
    moduleScores.includes("Quiz Module")
      ? `<tr>
-    <th rowspan="7" style="background-color: rgb(241, 238, 66); padding: 5px; border: 1px solid black;">Quiz Module</th>
+    <th rowspan="6" style="background-color: rgb(241, 238, 66); padding: 5px; border: 1px solid black;">Quiz Module</th>
     <th style="padding: 5px; border: 1px solid black;">Quiz 1</th>
     <td style="padding: 5px; border: 1px solid black;">%Quiz 1%</td>
   </tr>
@@ -22,10 +22,6 @@ const HandleTableScore = (moduleScores: string[]) => {
   <tr>
     <th style="padding: 5px; border: 1px solid black;">Quiz 5</th>
     <td style="padding: 5px; border: 1px solid black;">%Quiz 5%</td>
-  </tr>
-  <tr>
-    <th style="padding: 5px; border: 1px solid black;">Quiz 6</th>
-    <td style="padding: 5px; border: 1px solid black;">%Quiz 6%</td>
   </tr>
   <tr>
     <th style="padding: 5px; border: 1px solid black;">Average Quiz</th>

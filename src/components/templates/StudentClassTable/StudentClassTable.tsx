@@ -127,7 +127,7 @@ const StudentClassTable: React.FC<StudentClassTableProps> = ({
       onFilter: (value, record) => record.CertificationStatus === value,
     },
     {
-      title: "GPALevel",
+      title: "GPA Level",
       dataIndex: "GPALevel",
       key: "GPALevel",
       render: (level) => (

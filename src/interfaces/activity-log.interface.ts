@@ -10,4 +10,7 @@ export interface IActivityLog {
   CC: string[];
   To: string[];
   UserEmail: string[];
+  StudentId: string;
+  ClassId: string;
+  TemplateId: string;
 }

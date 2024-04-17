@@ -17,11 +17,9 @@ describe("ClassDetailInfo component", () => {
     localStorageMock.getItem.mockClear();
   });
 
-  it("renders class details and tabs", () => {
+  test("should render class details and tabs", () => {
     // Mocking the user info stored in localStorage
-    const userInfo = {
-      /* Your mock user info object */
-    };
+    const userInfo = {};
     localStorageMock.getItem.mockReturnValue(JSON.stringify(userInfo));
 
     render(

@@ -84,7 +84,7 @@ const Account: React.FC = () => {
             </div>
           )
         )}
-        <div className="user-name centered">
+        <div className="user-name centered" id="userNameAvatar">
           <p>{userName}</p>
           <MdKeyboardArrowDown size={20} />
         </div>

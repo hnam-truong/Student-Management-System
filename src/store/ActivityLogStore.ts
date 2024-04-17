@@ -12,6 +12,7 @@ import {
   postActivityLogByClass,
   postAnActivityLog,
   postAnActivityLogForTrainer,
+  postAnScoreEmail,
 } from "../services/api/api-caller/ActivityLogApiCaller";
 import { errorNotify, successNotify } from "../components/atoms/Notify/Notify";
 import {
@@ -64,6 +65,7 @@ interface ISingleActivityLogs {
   anActivityLog: IActivityLog | null;
   postActivityLog: (data: IActivityLog) => void;
   postActivityLogForTrainer: (data: IActivityLog) => void;
+  postEmailScore: (data: IActivityLog) => void;
 }
 export const useSingleActivityLogStore = create<ISingleActivityLogs>((set) => ({
   loadingActivityLog: false,
@@ -91,10 +93,22 @@ export const useSingleActivityLogStore = create<ISingleActivityLogs>((set) => ({
     set((state) => ({ ...state, loadingActivityLog: true }));
     try {
       await postAnActivityLogForTrainer({ data });
-      successNotify(generateSuccessMessage("has been sent", "Email remind"));
+      successNotify(generateSuccessMessage("has been sent", "Email"));
     } catch (error) {
       console.log("API Error:", error);
-      errorNotify(generateErrorMessage("Send", "email remind"));
+      errorNotify(generateErrorMessage("Send", "email"));
+    } finally {
+      set((state) => ({ ...state, loadingActivityLog: false }));
+    }
+  },
+  postEmailScore: async (data: IActivityLog) => {
+    set((state) => ({ ...state, loadingActivityLog: true }));
+    try {
+      await postAnScoreEmail({ data });
+      successNotify(generateSuccessMessage("has been sent", "Email"));
+    } catch (error) {
+      console.log("API Error:", error);
+      errorNotify(generateErrorMessage("Send", "email"));
     } finally {
       set((state) => ({ ...state, loadingActivityLog: false }));
     }

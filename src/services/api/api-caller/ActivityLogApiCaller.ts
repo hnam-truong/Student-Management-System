@@ -106,3 +106,21 @@ export const postAnActivityLogForTrainer = async ({
   }
   return [];
 };
+
+export const postAnScoreEmail = async ({
+  data,
+}: PostAnActivityLog): Promise<IActivityLog[]> => {
+  try {
+    const response = await post<IActivityLog[]>(
+      `${Endpoints.Email}send-score-email`,
+      data
+    );
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+  return [];
+};

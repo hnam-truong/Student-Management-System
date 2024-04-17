@@ -29,7 +29,7 @@ const AttendeeDetail: React.FC = () => {
 
   if (loading || !aStudent) {
     return (
-      <div className="spin-container">
+      <div className="spin-container" data-testid="loading-spinner">
         <Spin />
       </div>
     );

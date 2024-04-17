@@ -46,50 +46,16 @@ unit-test-job: # Test Stage - Run unit tests
     - echo "Running unit tests..."
     - npm run test
 
-# cypress-test-job: # Test Stage - Run end-to-end tests with Cypress
-#   allow_failure: true
-#   image: node:20.11.0
-#   stage: test
-#   parallel: 5
-#   script:
-#     - echo "End-to-end testing..."
-#     - npm ci # install dependencies
-#     - npx cypress run --record --parallel --key $CYPRESS_RECORD_KEY
-#   artifacts:
-#     when: always
-#     paths:
-#       - cypress/videos/**/*.mp4
-#       - cypress/screenshots/**/*.png
-#     expire_in: 7 days
-
-# coverage-test-job: # Test Stage - Measure test coverage
-#   allow_failure: true
-#   stage: test
-#   script:
-#     - echo "Test coverage... "
-#     - npm run coverage
-#   artifacts:
-#     paths:
-#       - src/__test__/unit/coverage/
-#     expire_in: 7 days
-
-# lighthouse-job: # Test Stage - Run Lighthouse tests
-#   allow_failure: true
-#   image: cypress/browsers:node14.15.0-chrome86-ff82
-#   stage: test
-#   script:
-#     - echo "Running Lighthouse tests..."
-#     - npm run build
-#     - npm run lighthouse
-#   artifacts:
-#     when: always
-#     paths:
-#       - lighthouse-report/
-#     expire_in: 7 days
-#   rules:
-#     # Only run Lighthouse on merge request events and commits to the main branch
-#     - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
-#     - if: '$CI_COMMIT_BRANCH == "main"'
+coverage-test-job: # Test Stage - Measure test coverage
+  allow_failure: true
+  stage: test
+  script:
+    - echo "Test coverage... "
+    - npm run coverage
+  artifacts:
+    paths:
+      - src/__test__/unit/coverage/
+    expire_in: 7 days
 
 deploy-job: # Deploy Stage - Deploy application
   stage: deploy # It only runs when *both* jobs in the test stage complete successfully.

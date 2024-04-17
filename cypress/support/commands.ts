@@ -35,3 +35,24 @@
 //     }
 //   }
 // }
+
+Cypress.Commands.add("login", (username: string, password: string) => {
+  cy.session(
+    [username, password],
+    () => {
+      cy.visit("/login");
+
+      // Fill in username and password
+      cy.get("#username").type(username);
+      cy.get("#password").type(password);
+
+      // Submit the login form
+      cy.get("button").click();
+      // Check if the user is redirected to the dashboard page after successful login
+      cy.url().should("include", "/dashboard");
+    },
+    {
+      cacheAcrossSpecs: true,
+    }
+  );
+});
